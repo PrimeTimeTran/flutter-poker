@@ -6,19 +6,27 @@ Play poker with Flutter
 
 ```dart
 final state = {
-  'dealerIdx': 0,
-  'playerCount': 2,
-  'playerIds': []
-  'hands': [],
-  'deck': [],
-  'blind': 100,
-  'board': []
+  deck: [],
+  board: [],
+  blind: 100,
+  buttonIdx: 0,
+  playerIds: [],
+  playerCount: 2,
+  status: inactive | active,
+  hands: [
+    0: {
+      state: empty | playing | fold
+      cards: [],
+    },
+    1: [],
+    3: [],
+    4: [],
+  ],
 
-  'handHistory': [
+  handHistory: [
     {
 
     }
   ]
 }
-
 ```

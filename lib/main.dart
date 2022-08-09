@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
-import 'package:flutpoke/widgets/CardWidget.dart';
-
-import 'package:flutpoke/utils/Deck.dart';
+import 'package:flutpoke/widgets/Game.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(const MyApp());
 }
 
@@ -40,34 +33,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final deck = new Deck();
-    deck.shuffle();
-    final cards = deck.getCards();
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Hi GO"),
-      ),
+      body: Game(),
       backgroundColor: Colors.green,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: cards.length,
-              scrollDirection: Axis.vertical,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: ((c, i) {
-                return Container(
-                  height: 200,
-                  width: 100,
-                  child: SvgPicture.asset("${cards[i].path}"),
-                );
-                return CardWidget(rank: cards[i].rank, suit: cards[i].suit);
-              }),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

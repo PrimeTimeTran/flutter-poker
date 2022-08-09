@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Deck {
-  List<Card> cards = [];
+  List<PlayingCard> cards = [];
   Deck() {
     var ranks = [
       '2',
@@ -23,11 +23,9 @@ class Deck {
     var suits = ['h', 'd', 'c', 's'];
 
     for (var suit in suits) {
-      ranks
-          .asMap()
-          .forEach((index, rank) => {
-            cards
-                .add(new Card(rank, suit, index, "assets/cards/$suit$rank.svg"))
+      ranks.asMap().forEach((index, rank) => {
+            cards.add(new PlayingCard(
+                rank, suit, index, "assets/cards/$suit$rank.svg"))
           });
     }
   }
@@ -51,17 +49,32 @@ class Deck {
   cardsWithSuit(String suit) {
     return cards.where((card) => card.suit == suit);
   }
+
+  deal(numOfHands) {
+    debugPrint('Dealing');
+    var handIdx = 0;
+    List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
+    cards.removeAt(0);
+
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
+    return handsDealt;
+  }
 }
 
-class Card {
+class PlayingCard {
   String rank;
   String suit;
   int value;
   String path;
 
-  Card(this.rank, this.suit, this.value, this.path);
+  PlayingCard(this.rank, this.suit, this.value, this.path);
 
   toString() {
-    return '$rank of $suit';
+    return '$suit$rank';
   }
 }
