@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'package:flutpoke/widgets/CardWidget.dart';
 
 import 'package:flutpoke/utils/Deck.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -36,10 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final deck = new Deck();
+    deck.shuffle();
     final cards = deck.getCards();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hslslsls"),
+        title: Text("Hi GO"),
       ),
       backgroundColor: Colors.green,
       body: SingleChildScrollView(
@@ -51,6 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.vertical,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: ((c, i) {
+                return Container(
+                  height: 200,
+                  width: 100,
+                  child: SvgPicture.asset("${cards[i].path}"),
+                );
                 return CardWidget(rank: cards[i].rank, suit: cards[i].suit);
               }),
             )

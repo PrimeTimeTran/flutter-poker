@@ -14,17 +14,21 @@ class Deck {
       '8',
       '9',
       '10',
-      'J',
-      'Q',
-      'K',
-      'A',
+      'j',
+      'q',
+      'k',
+      'a',
     ];
-    var suits = ['c', 'd', 'h', 's'];
+
+    var suits = ['h', 'd', 'c', 's'];
 
     for (var suit in suits) {
       ranks
           .asMap()
-          .forEach((index, rank) => {cards.add(new Card(rank, suit, index))});
+          .forEach((index, rank) => {
+            cards
+                .add(new Card(rank, suit, index, "assets/cards/$suit$rank.svg"))
+          });
     }
   }
 
@@ -53,11 +57,11 @@ class Card {
   String rank;
   String suit;
   int value;
+  String path;
 
-  Card(this.rank, this.suit, this.value);
+  Card(this.rank, this.suit, this.value, this.path);
 
   toString() {
     return '$rank of $suit';
   }
-
 }

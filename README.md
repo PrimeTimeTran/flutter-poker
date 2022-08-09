@@ -1,16 +1,24 @@
 # flutpoke
 
-A new Flutter project.
+Play poker with Flutter
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```dart
+final state = {
+  'dealerIdx': 0,
+  'playerCount': 2,
+  'playerIds': []
+  'hands': [],
+  'deck': [],
+  'blind': 100,
+  'board': []
 
-A few resources to get you started if this is your first Flutter project:
+  'handHistory': [
+    {
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+    }
+  ]
+}
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
