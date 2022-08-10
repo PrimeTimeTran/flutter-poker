@@ -14,7 +14,7 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   late Deck deck;
 
-  // ante, started,
+  // preround, ante, preflop, flop, turn, river
   var status = 'ante';
   late List<List> cards = [
     [],

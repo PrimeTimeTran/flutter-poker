@@ -5,12 +5,15 @@ import 'package:flutpoke/utils/Deck.dart';
 
 class PokerTable extends StatefulWidget {
   PokerTable(
-      {Key? key, this.cards, required this.status, required this.dealCards})
+      {Key? key,
+      required this.cards,
+      required this.status,
+      required this.dealCards})
       : super(key: key);
 
   String status;
   final Function dealCards;
-  final List<List>? cards;
+  final List<List> cards;
 
   @override
   State<PokerTable> createState() => _PokerTableState();
@@ -18,7 +21,7 @@ class PokerTable extends StatefulWidget {
 
 class _PokerTableState extends State<PokerTable> {
   getPlayerCards(idx) {
-    return widget.cards?[idx];
+    return widget.cards[idx];
   }
 
   @override

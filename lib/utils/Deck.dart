@@ -30,10 +30,6 @@ class Deck {
     }
   }
 
-  getCards() {
-    return cards;
-  }
-
   toString() {
     return cards.toString();
   }
@@ -42,19 +38,15 @@ class Deck {
     cards.shuffle();
   }
 
-  length() {
-    return cards.length;
-  }
-
   cardsWithSuit(String suit) {
     return cards.where((card) => card.suit == suit);
   }
 
   deal(numOfHands) {
-    debugPrint('Dealing');
-    var handIdx = 0;
     List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
     cards.removeAt(0);
+
+    var handIdx = 0;
 
     while (handIdx < numOfHands) {
       var card = cards.removeAt(0);
