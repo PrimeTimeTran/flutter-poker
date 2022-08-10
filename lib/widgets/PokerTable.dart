@@ -27,120 +27,141 @@ class _PokerTableState extends State<PokerTable> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            top: 100,
+            left: 150,
+            right: 150,
+            bottom: 150,
             child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              color: Colors.red,
+              child: Column(
                 children: [
-                  PlayerHand(
-                    idx: 4,
-                    status: widget.status,
-                    cards: getPlayerCards(4),
-                  ),
-                  PlayerHand(
-                    idx: 5,
-                    cards: getPlayerCards(5),
-                    status: widget.status,
-                  ),
-                  PlayerHand(
-                    idx: 6,
-                    status: widget.status,
-                    cards: getPlayerCards(6),
-                  ),
+                  Text('Hello'),
+                  Text('Hello'),
+                  Text('Hello'),
                 ],
               ),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PlayerHand(
-                      idx: 3,
-                      status: widget.status,
-                      cards: getPlayerCards(3),
-                    ),
-                    PlayerHand(
-                      idx: 7,
-                      status: widget.status,
-                      cards: getPlayerCards(7),
-                    ),
-                  ],
+          Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      PlayerHand(
+                        idx: 4,
+                        status: widget.status,
+                        cards: getPlayerCards(4),
+                      ),
+                      PlayerHand(
+                        idx: 5,
+                        cards: getPlayerCards(5),
+                        status: widget.status,
+                      ),
+                      PlayerHand(
+                        idx: 6,
+                        status: widget.status,
+                        cards: getPlayerCards(6),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PlayerHand(
-                      idx: 2,
-                      status: widget.status,
-                      cards: getPlayerCards(2),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PlayerHand(
+                          idx: 3,
+                          status: widget.status,
+                          cards: getPlayerCards(3),
+                        ),
+                        PlayerHand(
+                          idx: 7,
+                          status: widget.status,
+                          cards: getPlayerCards(7),
+                        ),
+                      ],
                     ),
-                    PlayerHand(
-                      idx: 8,
-                      status: widget.status,
-                      cards: getPlayerCards(8),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  PlayerHand(
-                    idx: 1,
-                    status: widget.status,
-                    cards: getPlayerCards(1),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PlayerHand(
+                          idx: 2,
+                          status: widget.status,
+                          cards: getPlayerCards(2),
+                        ),
+                        PlayerHand(
+                          idx: 8,
+                          status: widget.status,
+                          cards: getPlayerCards(8),
+                        ),
+                      ],
+                    ),
                   ),
-                  PlayerHand(
-                    idx: 0,
-                    status: widget.status,
-                    cards: getPlayerCards(0),
-                  ),
-                  PlayerHand(
-                    idx: 9,
-                    status: widget.status,
-                    cards: getPlayerCards(9),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      widget.dealCards();
-                    },
-                    child: Container(color: Colors.grey, child: Text('Deal')),
-                  )
-                ],
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      PlayerHand(
+                        idx: 1,
+                        status: widget.status,
+                        cards: getPlayerCards(1),
+                      ),
+                      PlayerHand(
+                        idx: 0,
+                        status: widget.status,
+                        cards: getPlayerCards(0),
+                      ),
+                      PlayerHand(
+                        idx: 9,
+                        status: widget.status,
+                        cards: getPlayerCards(9),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          widget.dealCards();
+                        },
+                        child:
+                            Container(color: Colors.grey, child: Text('Deal')),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

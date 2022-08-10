@@ -78,3 +78,9 @@ class PlayingCard {
     return '$suit$rank';
   }
 }
+
+class Hand {
+  List<PlayingCard> cards = [];
+
+  Hand(this.cards);
+}
