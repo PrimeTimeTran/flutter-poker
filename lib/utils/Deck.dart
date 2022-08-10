@@ -62,6 +62,14 @@ class Deck {
       handIdx++;
     }
 
+    handIdx = 0;
+
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
     return handsDealt;
   }
 }

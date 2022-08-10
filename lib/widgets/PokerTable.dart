@@ -5,24 +5,24 @@ import 'package:flutpoke/utils/Deck.dart';
 
 class PokerTable extends StatefulWidget {
   PokerTable(
-      {Key? key,
-      this.cards,
-      required this.status,
-      required this.dealCards})
+      {Key? key, this.cards, required this.status, required this.dealCards})
       : super(key: key);
 
   String status;
   final Function dealCards;
-  final List<PlayingCard>? cards;
+  final List<List>? cards;
 
   @override
   State<PokerTable> createState() => _PokerTableState();
 }
 
 class _PokerTableState extends State<PokerTable> {
+  getPlayerCards(idx) {
+    return widget.cards?[idx];
+  }
+
   @override
   Widget build(BuildContext context) {
-    var cards = widget.cards;
     return Center(
       child: Column(
         children: <Widget>[
@@ -33,17 +33,20 @@ class _PokerTableState extends State<PokerTable> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   PlayerHand(
-                      idx: 4,
-                      cards: [cards[4], cards[5]],
-                      status: widget.status),
+                    idx: 4,
+                    status: widget.status,
+                    cards: getPlayerCards(4),
+                  ),
                   PlayerHand(
-                      idx: 5,
-                      cards: [cards[2], cards[3]],
-                      status: widget.status),
+                    idx: 5,
+                    cards: getPlayerCards(5),
+                    status: widget.status,
+                  ),
                   PlayerHand(
-                      idx: 6,
-                      cards: [cards[0], cards[1]],
-                      status: widget.status),
+                    idx: 6,
+                    status: widget.status,
+                    cards: getPlayerCards(6),
+                  ),
                 ],
               ),
             ),
@@ -57,13 +60,15 @@ class _PokerTableState extends State<PokerTable> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     PlayerHand(
-                        idx: 3,
-                        cards: [cards[6], cards[7]],
-                        status: widget.status),
+                      idx: 3,
+                      status: widget.status,
+                      cards: getPlayerCards(3),
+                    ),
                     PlayerHand(
-                        idx: 7,
-                        cards: [cards[8], cards[9]],
-                        status: widget.status),
+                      idx: 7,
+                      status: widget.status,
+                      cards: getPlayerCards(7),
+                    ),
                   ],
                 ),
               ),
@@ -78,13 +83,15 @@ class _PokerTableState extends State<PokerTable> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     PlayerHand(
-                        idx: 2,
-                        cards: [cards[6], cards[7]],
-                        status: widget.status),
+                      idx: 2,
+                      status: widget.status,
+                      cards: getPlayerCards(2),
+                    ),
                     PlayerHand(
-                        idx: 8,
-                        cards: [cards[8], cards[9]],
-                        status: widget.status),
+                      idx: 8,
+                      status: widget.status,
+                      cards: getPlayerCards(8),
+                    ),
                   ],
                 ),
               ),
@@ -97,17 +104,20 @@ class _PokerTableState extends State<PokerTable> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   PlayerHand(
-                      idx: 1,
-                      cards: [cards[0], cards[1]],
-                      status: widget.status),
+                    idx: 1,
+                    status: widget.status,
+                    cards: getPlayerCards(1),
+                  ),
                   PlayerHand(
-                      idx: 0,
-                      cards: [cards[2], cards[3]],
-                      status: widget.status),
+                    idx: 0,
+                    status: widget.status,
+                    cards: getPlayerCards(0),
+                  ),
                   PlayerHand(
-                      idx: 9,
-                      cards: [cards[4], cards[5]],
-                      status: widget.status),
+                    idx: 9,
+                    status: widget.status,
+                    cards: getPlayerCards(9),
+                  ),
                 ],
               ),
             ),

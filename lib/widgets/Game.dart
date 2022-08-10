@@ -16,25 +16,25 @@ class _GameState extends State<Game> {
 
   // ante, started,
   var status = 'ante';
-  late List<PlayingCard> cards = [];
-
-  @override
-  void initState() {
-    super.initState();
-    deck = new Deck();
-    deck.shuffle();
-    cards = deck.getCards();
-  }
+  late List<List> cards = [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ];
 
   dealCards() {
+    deck = Deck();
     deck.shuffle();
-    deck.deal(10);
-    cards = deck.cards;
-    debugPrint(cards.toString());
     setState(() {
+      cards = deck.deal(10);
       status = 'started';
-      cards = cards;
-      // _hands = widget.deck.cards.deal(10);
     });
   }
 
