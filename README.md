@@ -13,7 +13,7 @@ final state = {
   playerCount: 2,
   hands: [
     0: {
-      state: empty | playing | fold
+      state: 
       cards: [],
     },
     1: [],
@@ -29,6 +29,25 @@ final state = {
 
   deck: [],
   cards: [[], []],
-  status: preround | ante | preflop | flop | turn | river,
+  status: ante | preflop | flop | turn | river,
 }
 ```
+
+- Count num of players
+  Collect blinds
+  Identify button position
+  Deal cards
+
+- Small blind action
+  Action moves left until button closes round with their action
+
+- Small blind action
+  Action moves left until button closes round with their action
+
+- Small blind action
+  Action moves left until button closes round with their action
+
+- Small blind action
+  Action moves left until button closes round with their action
+
+- Back to antie
