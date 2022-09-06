@@ -31,7 +31,6 @@ class Hand {
   high(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
-    // print(cards);
     final ranks = cards.map((c) => c.rank);
     var map = Map();
     ranks.forEach((e) {
@@ -42,10 +41,14 @@ class Hand {
       }
     });
 
-    // print(map);
+    print(cards);
+    print(map);
 
     if (fourOfAKind(map)) {
       print('Four of a kind!');
+    } else if (flush()) {
+      print('Flush!');
+    } else if (threeOfAKind(map)) {
     } else if (straight(map)) {
       print('Straight!');
     } else if (threeOfAKind(map)) {
@@ -83,6 +86,7 @@ class Hand {
     final dp = [1, 1, 1, 1, 1, 1, 1];
     final ranks = cards.map((c) => c.value);
     final nums = ranks.toSet().toList();
+
     for (var i = 0; i < nums.length; i++) {
       for (var j = 0; j < nums.length; j++) {
         if (nums[i] == nums[j] - 1) {
@@ -96,7 +100,21 @@ class Hand {
         res = dp[i];
       }
     }
-    return res == 5;
+    print('Straight logic $nums max straight is $res');
+    return res > 4;
+  }
+
+  flush() {
+    final map = Map();
+    final suits = cards.map((c) => c.suit);
+    suits.forEach((e) {
+      if (!map.containsKey(e)) {
+        map[e] = 1;
+      } else {
+        map[e] += 1;
+      }
+    });
+    return map.values.any((e) => e > 4);
   }
 }
 
