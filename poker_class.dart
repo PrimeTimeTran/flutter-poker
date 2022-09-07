@@ -2,17 +2,22 @@ import 'package:colorize/colorize.dart';
 
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
+import 'package:flutpoke/classes/round.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 void main() {
-  //First Method - update
-  List myList = [1, 2, 3];
-  myList[0] = 123;
-  print(myList);
-
-  //Second Method - using .replaceRange() method
-  var myList2 = [10, 20, 30, 40, 50]
-  myList2.replaceRange(0, 3, [11, 21]);
-  print(myList2);
+  final player1 = Player('Loi', 0);
+  final player2 = Player('Bob', 1);
+  final player3 = Player('John', 2);
+  final players = [player1, player2, player3];
+  final round = Round(players);
+  round.deck.shuffle();
+  round.dealPlayers();
+  round.flop();
+  round.turn();
+  round.river();
+  round.finalComparisons();
+  round.outcome();
+  round.winner();
 }

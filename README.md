@@ -51,3 +51,7 @@ final state = {
   Action moves left until button closes round with their action
 
 - Back to antie
+
+- Find winning hand from high cards.
+- Find winning hand from multiple pairs.
+- Find winning hand from multiple two pairs.

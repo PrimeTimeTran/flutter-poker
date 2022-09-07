@@ -1,4 +1,5 @@
 import 'package:colorize/colorize.dart';
+import "dart:io";
 
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
@@ -6,13 +7,13 @@ import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 class Round {
-  String step = 'ante';
   int blind = 100;
-  List<PlayingCard> board = [];
   List players = [];
-  List handsDealt = [];
   int buttonIdx = 0;
   Deck deck = Deck();
+  String step = 'ante';
+  List handsDealt = [];
+  List<PlayingCard> board = [];
 
   Round(this.players);
 
@@ -23,7 +24,7 @@ class Round {
   dealPlayers() {
     final numOfHands = players.length;
     for (int i = 0; i < numOfHands; i++) {
-      handsDealt.add(Hand());
+      handsDealt.add(Hand(i));
     }
 
     deck.cards.removeAt(0);
@@ -73,22 +74,37 @@ class Round {
     return board;
   }
 
-  winner() {
-    return handsDealt[0].high(board);
+  finalComparisons() {
+    handsDealt.map((h) => h.addHandAndBoard(board)).toList();
   }
 
-  dealFlush(deck) {
-    final cards = deck.cards;
-    final hand = Hand();
-    hand.add(cards[25]);
-    hand.add(cards[11]);
-    handsDealt.add(hand);
+  outcome() {
+    final highs = handsDealt.map((h) => h.high()).toList();
+    Colorize string = new Colorize("-----------------");
+    string.green();
+    print(string);
+    print(board);
+    print(string);
 
-    board.add(cards[10]);
-    // board.add(cards[23]);
-    board.add(cards[9]);
-    board.add(cards[8]);
-    board.add(cards[7]);
-    board.add(cards[24]);
+    for (var i = 0; i < handsDealt.length; i++) {
+      stdout.write(handsDealt[i]);
+      print(': ' + highs[i] + '\n');
+    }
+  }
+
+  winner() {
+    final highs = handsDealt.map((h) => h.high());
+    var map = {};
+    for (var high in highs) {
+      if (!map.containsKey(high)) {
+        map[high] = 1;
+      } else {
+        map[high] += 1;
+      }
+    }
+
+    print('Winner!');
+    print(highs);
+    print(map);
   }
 }

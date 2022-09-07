@@ -3,9 +3,20 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
+final handRankings = {
+  'royal-flush': 10,
+  'straight-flush': 9,
+  'four-of-a-kind': 8,
+  'full-house': 7,
+  'flush': 6,
+};
+
 class Hand {
+  int seatIdx;
   List<PlayingCard> cards = [];
   List<PlayingCard> playerHand = [];
+
+  Hand(this.seatIdx);
 
   add(card) {
     cards.add(card);
@@ -13,7 +24,7 @@ class Hand {
   }
 
   toString() {
-    return cards.map((c) => '$c').join(', ');
+    return seatIdx.toString() + ': ' + playerHand.map((c) => '$c').join(', ');
   }
 
   Map rankMap() {
@@ -67,15 +78,15 @@ class Hand {
         ranks.contains(1) &&
         ranks.contains(2) &&
         ranks.contains(3);
-    
   }
 
-  high(board) {
+  addHandAndBoard(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
-    var outcome;
+  }
 
-    print(cards);
+  high() {
+    var outcome;
 
     if (royalFlush()) {
       outcome = 'royal-flush';

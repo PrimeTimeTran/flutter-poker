@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 import 'package:flutpoke/classes/deck.dart';
-import 'package:flutpoke/classes/Hand.dart';
+import 'package:flutpoke/classes/hand.dart';
 
 void main() {
   final deck = Deck();
   final cards = deck.cards;
   test('Royal flushes to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
     hand.add(cards[12]);
     hand.add(cards[11]);
@@ -18,11 +18,12 @@ void main() {
     board.add(cards[7]);
     board.add(cards[24]);
     // [ha, hk, dk, hq, hj, h10, h9]
-    expect(hand.high(board), 'royal-flush');
+    hand.addHandAndBoard(board);
+    expect(hand.high(), 'royal-flush');
   });
 
   test('Straight flushes to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[1]);
@@ -33,12 +34,13 @@ void main() {
     board.add(cards[8]);
     board.add(cards[7]);
     board.add(cards[24]);
+    hand.addHandAndBoard(board);
     // [hk, dk, hq, hj, h10, h9, h3]
-    expect(hand.high(board), 'straight-flush');
+    expect(hand.high(), 'straight-flush');
   });
 
   test('Four of a kind be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[0]);
@@ -49,12 +51,13 @@ void main() {
     board.add(cards[24]);
     board.add(cards[26]);
     board.add(cards[39]);
+    hand.addHandAndBoard(board);
     // [dk, h10, h9, h2, d2, c2, s2]
-    expect(hand.high(board), 'four-of-a-kind');
+    expect(hand.high(), 'four-of-a-kind');
   });
 
   test('Full house to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[12]);
@@ -65,12 +68,13 @@ void main() {
     board.add(cards[7]);
     board.add(cards[14]);
     board.add(cards[27]);
+    hand.addHandAndBoard(board);
     // [ha, da, h9, h4, h3, d3, c3]
-    expect(hand.high(board), 'full-house');
+    expect(hand.high(), 'full-house');
   });
 
   test('Flush to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[12]);
@@ -81,12 +85,13 @@ void main() {
     board.add(cards[4]);
     board.add(cards[14]);
     board.add(cards[27]);
+    hand.addHandAndBoard(board);
     // [ha, h6, h5, h4, h3, d3, c3]
-    expect(hand.high(board), 'flush');
+    expect(hand.high(), 'flush');
   });
 
-  test('Straight to be recognized', () {
-    final Hand hand = Hand();
+  test('Straights to be recognized', () {
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[0]);
@@ -97,12 +102,13 @@ void main() {
     board.add(cards[4]);
     board.add(cards[33]);
     board.add(cards[27]);
+    hand.addHandAndBoard(board);
     // [c9, h6, h5, h4, d3, c3, h2]
-    expect(hand.high(board), 'straight');
+    expect(hand.high(), 'straight');
   });
 
   test('Ace low straight to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[12]);
@@ -113,14 +119,15 @@ void main() {
     board.add(cards[16]);
     board.add(cards[33]);
     board.add(cards[27]);
+    hand.addHandAndBoard(board);
     // [c9, h6, h5, h4, d3, c3, h2]
-    expect(hand.high(board), 'straight');
+    expect(hand.high(), 'straight');
   });
 
   // TODO Straight with Ace
 
   test('Three of a kind be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[1]);
@@ -131,12 +138,13 @@ void main() {
     board.add(cards[24]);
     board.add(cards[26]);
     board.add(cards[39]);
+    hand.addHandAndBoard(board);
     // [dk, h10, h9, h2, d2, c2, s2]
-    expect(hand.high(board), 'three-of-a-kind');
+    expect(hand.high(), 'three-of-a-kind');
   });
 
   test('Two pairs to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[0]);
@@ -147,12 +155,13 @@ void main() {
     board.add(cards[2]);
     board.add(cards[3]);
     board.add(cards[18]);
+    hand.addHandAndBoard(board);
     // [sa, h6, h5, h3, d3, h2, d2]
-    expect(hand.high(board), 'two-pair');
+    expect(hand.high(), 'two-pair');
   });
 
   test('A pair to be recognized', () {
-    final Hand hand = Hand();
+    final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
     hand.add(cards[12]); // ah
@@ -163,7 +172,8 @@ void main() {
     board.add(cards[13]); // 2D
     board.add(cards[14]); // 3D
     board.add(cards[18]); // 7D
+    hand.addHandAndBoard(board);
     // [ha, da, d7, h5, h4, d3, d2]
-    expect(hand.high(board), 'pair');
+    expect(hand.high(), 'pair');
   });
 }
