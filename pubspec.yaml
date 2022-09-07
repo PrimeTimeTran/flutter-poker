@@ -16,10 +16,10 @@ dependencies:
   flutter_svg: ^1.1.3
 
 dev_dependencies:
-
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  test: ^1.21.1
 
 flutter:
 

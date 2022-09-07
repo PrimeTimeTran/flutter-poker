@@ -41,4 +41,12 @@ class Deck {
   cardsWithSuit(String suit) {
     return cards.where((card) => card.suit == suit);
   }
+
+  getCards() {
+    return cards;
+  }
+
+  remainingCards() {
+    return cards;
+  }
 }
