@@ -17,7 +17,7 @@ class Hand {
     return cards.map((c) => '$c').join(', ');
   }
 
-  rankMap() {
+  Map rankMap() {
     final ranks = cards.map((c) => c.rank);
     var map = {};
     for (var e in ranks) {
@@ -46,8 +46,6 @@ class Hand {
   high(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
-    print(cards);
-
     var outcome;
 
     if (royalFlush()) {
@@ -71,22 +69,17 @@ class Hand {
     } else {
       outcome = 'high-card';
     }
-    // Colorize string = Colorize(outcome);
-    // string.yellow();
-    // print(string);
     return outcome;
   }
 
   paired() {
-    final ranks = cards.map((c) => c.rank);
-    var n = ranks.toSet().toList();
-    return n.length == 6;
+    final map = rankMap();
+    return map.values.any((e) => e == 2);
   }
 
   twoPaired() {
-    final ranks = cards.map((c) => c.rank);
-    var n = ranks.toSet().toList();
-    return n.length == 5;
+    final map = rankMap();
+    return map.values.where((value) => value == 2).length > 1;
   }
 
   threeOfAKind() {
