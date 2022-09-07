@@ -46,6 +46,7 @@ class Hand {
   high(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
+    print(cards);
 
     var outcome;
 

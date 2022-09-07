@@ -22,11 +22,13 @@ class Round {
 
   dealPlayers() {
     final numOfHands = players.length;
-    handsDealt = [Hand(), Hand()];
+    for (int i = 0; i < numOfHands; i++) {
+      handsDealt.add(Hand());
+    }
+
     deck.cards.removeAt(0);
 
     var handIdx = 0;
-
     while (handIdx < numOfHands) {
       var card = deck.cards.removeAt(0);
       handsDealt[handIdx].add(card);
@@ -34,7 +36,6 @@ class Round {
     }
 
     handIdx = 0;
-
     while (handIdx < numOfHands) {
       var card = deck.cards.removeAt(0);
       handsDealt[handIdx].add(card);
