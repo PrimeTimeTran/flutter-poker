@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:colorize/colorize.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 class Hand {
@@ -30,9 +30,10 @@ class Hand {
 
     var msg;
 
-    if (fourOfAKind()) {
-      print('Four of a kind!');
-      msg = 'Four of a kind!';
+    if (straightFlush()) {
+      msg = 'Straight Flush';
+    } else if (fourOfAKind()) {
+      msg = 'Four of a kind';
     } else if (fullHouse()) {
       msg = 'Full house';
     } else if (flush()) {
@@ -48,7 +49,9 @@ class Hand {
     } else {
       msg = 'High Card';
     }
-    print(msg);
+    Colorize string = new Colorize(msg);
+    string.yellow();
+    print(string);
   }
 
   paired() {
@@ -68,17 +71,10 @@ class Hand {
     return map.values.any((e) => e == 3);
   }
 
-  fourOfAKind() {
-    final map = rankMap();
-    return map.values.any((e) => e == 4);
-  }
-
   straight() {
-    final map = rankMap();
     final dp = [1, 1, 1, 1, 1, 1, 1];
     final ranks = cards.map((c) => c.value);
-    final nums = ranks.toSet().toList();
-
+    var nums = ranks.toSet().toList();
     for (var i = 0; i < nums.length; i++) {
       for (var j = 0; j < nums.length; j++) {
         if (nums[i] == nums[j] - 1) {
@@ -92,7 +88,6 @@ class Hand {
         res = dp[i];
       }
     }
-    print('Straight logic $nums max straight is $res');
     return res > 4;
   }
 
@@ -112,5 +107,36 @@ class Hand {
   fullHouse() {
     final map = rankMap();
     return map.values.any((e) => e == 3) && map.values.any((e) => e == 2);
+  }
+
+  fourOfAKind() {
+    final map = rankMap();
+    return map.values.any((e) => e == 4);
+  }
+
+  straightFlush() {
+    final dp = [1, 1, 1, 1, 1, 1, 1];
+    final ranks = cards.map((c) => c.value);
+    var nums = ranks.toSet().toList();
+    for (var i = 0; i < nums.length; i++) {
+      for (var j = 0; j < nums.length; j++) {
+        if (nums[i] == nums[j] - 1) {
+          dp[i] = max(dp[i], dp[j] + 1);
+        }
+      }
+    }
+    var res = 1;
+    for (var i = 0; i < nums.length; i++) {
+      if (res < dp[i]) {
+        res = dp[i];
+      }
+    }
+    print(dp);
+    final endingIdx = dp.indexOf(5);
+    final straightCards = cards.sublist(endingIdx - 4, endingIdx + 1);
+    final suit = straightCards[0].suit;
+    final isStraightFlush =
+        straightCards.map((e) => e.suit).every((s) => s == suit);
+    return isStraightFlush;
   }
 }

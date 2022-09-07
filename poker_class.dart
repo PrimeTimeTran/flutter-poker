@@ -5,7 +5,6 @@ import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
-
 class Round {
   String step = 'ante';
   int blind = 100;
@@ -68,11 +67,23 @@ class Round {
   }
 
   winner() {
-    Colorize string = new Colorize("Winner");
-    string.green();
-    print(string);
+    handsDealt[0].high(board);
+  }
 
-    final hand1 = handsDealt[0].high(board);
+  dealFlush(deck) {
+    final cards = deck.cards;
+    final hand = Hand();
+    hand.add(cards[12]);
+    hand.add(cards[11]);
+    handsDealt.add(hand);
+    print(handsDealt);
+
+    board.add(cards[10]);
+    // board.add(cards[23]);
+    board.add(cards[9]);
+    board.add(cards[8]);
+    board.add(cards[7]);
+    board.add(cards[6]);
   }
 
   Round(this.players);
@@ -81,13 +92,13 @@ class Round {
 main() {
   final player1 = Player('Loi', 1);
   final player2 = Player('Bob', 0);
-  final players = [player1, player2];
+  final players = [player1];
   final round = Round(players);
-  round.deck.shuffle();
-  round.dealPlayers();
-  round.flop();
-  round.turn();
-  round.river();
-
+  // round.deck.shuffle();
+  // round.dealPlayers();
+  // round.flop();
+  // round.turn();
+  // round.river();
+  round.dealFlush(round.deck);
   round.winner();
 }
