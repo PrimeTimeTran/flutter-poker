@@ -13,6 +13,7 @@ final handRankings = {
 
 class Hand {
   int seatIdx;
+  late String outcome;
   List<PlayingCard> cards = [];
   List<PlayingCard> playerHand = [];
 
@@ -83,33 +84,34 @@ class Hand {
   addHandAndBoard(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
+    getHandOutcome();
   }
 
-  high() {
-    var outcome;
+  getHandOutcome() {
+    String res;
 
     if (royalFlush()) {
-      outcome = 'royal-flush';
+      res = 'royal-flush';
     } else if (straightFlush()) {
-      outcome = 'straight-flush';
+      res = 'straight-flush';
     } else if (fourOfAKind()) {
-      outcome = 'four-of-a-kind';
+      res = 'four-of-a-kind';
     } else if (fullHouse()) {
-      outcome = 'full-house';
+      res = 'full-house';
     } else if (flush()) {
-      outcome = 'flush';
+      res = 'flush';
     } else if (straight()) {
-      outcome = 'straight';
+      res = 'straight';
     } else if (threeOfAKind()) {
-      outcome = 'three-of-a-kind';
+      res = 'three-of-a-kind';
     } else if (twoPaired()) {
-      outcome = 'two-pair';
+      res = 'two-pair';
     } else if (paired()) {
-      outcome = 'pair';
+      res = 'pair';
     } else {
-      outcome = 'high-card';
+      res = 'high-card';
     }
-    return outcome;
+    outcome = res;
   }
 
   paired() {

@@ -11,13 +11,13 @@ void main() {
   final player2 = Player('Bob', 1);
   final player3 = Player('John', 2);
   final players = [player1, player2, player3];
+
   final round = Round(players);
   round.deck.shuffle();
   round.dealPlayers();
   round.flop();
   round.turn();
   round.river();
-  round.finalComparisons();
   round.outcome();
   round.winner();
 }

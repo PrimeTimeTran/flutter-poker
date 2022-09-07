@@ -1,6 +1,6 @@
 # flutpoke
 
-Play poker with Flutter
+Flutter implementation of Poker.
 
 ## Getting Started
 
@@ -25,7 +25,6 @@ final state = {
 
     }
   ]
-
 
   deck: [],
   cards: [[], []],
@@ -52,6 +51,23 @@ final state = {
 
 - Back to antie
 
-- Find winning hand from high cards.
+- Find winning hand from multiple high cards.
+- Find winning hand from high cards board.
+
 - Find winning hand from multiple pairs.
+
 - Find winning hand from multiple two pairs.
+
+- Find winning hand from multiple three of a kinds.
+
+- Find winning hand from multiple straights.
+
+- Find winning hand from multiple flushes.
+
+- Find winning hand from multiple full houses.
+
+- Find winning hand from multiple four of a kinds.
+
+- Find winning hand from multiple straight flushes.
+
+- Find winning hand from multiple royal flushes.

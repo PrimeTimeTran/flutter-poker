@@ -49,4 +49,22 @@ class Deck {
   remainingCards() {
     return cards;
   }
+
+  flop() {
+    cards.removeAt(0);
+    var card1 = cards.removeAt(0);
+    var card2 = cards.removeAt(0);
+    var card3 = cards.removeAt(0);
+    return [card1, card2, card3];
+  }
+
+  turn() {
+    cards.removeAt(0);
+    return cards.removeAt(0);
+  }
+
+  river() {
+    cards.removeAt(0);
+    return cards.removeAt(0);
+  }
 }
