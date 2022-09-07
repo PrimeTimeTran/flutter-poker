@@ -1,24 +1,45 @@
 import 'dart:math';
 import 'package:colorize/colorize.dart';
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 class Hand {
   List<PlayingCard> cards = [];
+  List<PlayingCard> playerHand = [];
 
   add(card) {
     cards.add(card);
+    playerHand.add(card);
+  }
+
+  toString() {
+    return cards.map((c) => '$c').join(', ');
   }
 
   rankMap() {
     final ranks = cards.map((c) => c.rank);
-    var map = Map();
-    ranks.forEach((e) {
+    var map = {};
+    for (var e in ranks) {
       if (!map.containsKey(e)) {
         map[e] = 1;
       } else {
         map[e] += 1;
       }
-    });
+    }
+    return map;
+  }
+
+  Map suitMap() {
+    final map = {};
+    final suits = cards.map((c) => c.suit);
+    for (var e in suits) {
+      if (!map.containsKey(e)) {
+        map[e] = 1;
+      } else {
+        map[e] += 1;
+      }
+    }
     return map;
   }
 
@@ -26,34 +47,33 @@ class Hand {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
 
-    print(cards);
-
-    var msg;
+    var outcome;
 
     if (royalFlush()) {
-      msg = 'Royal Flush';
+      outcome = 'royal-flush';
     } else if (straightFlush()) {
-      msg = 'Straight Flush';
+      outcome = 'straight-flush';
     } else if (fourOfAKind()) {
-      msg = 'Four of a kind';
+      outcome = 'four-of-a-kind';
     } else if (fullHouse()) {
-      msg = 'Full house';
+      outcome = 'full-house';
     } else if (flush()) {
-      msg = 'Flush';
+      outcome = 'flush';
     } else if (straight()) {
-      msg = 'Straight';
+      outcome = 'straight';
     } else if (threeOfAKind()) {
-      msg = 'Three of a kind!';
+      outcome = 'three-of-a-kind';
     } else if (twoPaired()) {
-      msg = 'Two Pair';
+      outcome = 'two-pair';
     } else if (paired()) {
-      msg = 'Pair';
+      outcome = 'pair';
     } else {
-      msg = 'High Card';
+      outcome = 'high-card';
     }
-    Colorize string = Colorize(msg);
-    string.yellow();
-    print(string);
+    // Colorize string = Colorize(outcome);
+    // string.yellow();
+    // print(string);
+    return outcome;
   }
 
   paired() {
@@ -94,15 +114,7 @@ class Hand {
   }
 
   flush() {
-    final map = {};
-    final suits = cards.map((c) => c.suit);
-    for (var e in suits) {
-      if (!map.containsKey(e)) {
-        map[e] = 1;
-      } else {
-        map[e] += 1;
-      }
-    }
+    final map = suitMap();
     return map.values.any((e) => e > 4);
   }
 
@@ -118,15 +130,7 @@ class Hand {
 
   straightFlush() {
     if (flush()) {
-      final map = {};
-      final suits = cards.map((c) => c.suit);
-      for (var e in suits) {
-        if (!map.containsKey(e)) {
-          map[e] = 1;
-        } else {
-          map[e] += 1;
-        }
-      }
+      final map = suitMap();
       final suit = map.keys.firstWhere((k) => map[k] > 4);
 
       final dp = [1, 1, 1, 1, 1, 1, 1];
@@ -148,12 +152,17 @@ class Hand {
           res = dp[i];
         }
       }
-
       return res > 4;
+    } else {
+      return false;
     }
   }
 
   royalFlush() {
-    return cards[0].rank == 'a' && straightFlush();
+    final map = suitMap();
+    final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
+    if (suit == null) return false;
+    final ranks = cards.where((element) => element.suit == suit).toList();
+    return ranks[0].rank == 'a' && straightFlush();
   }
 }

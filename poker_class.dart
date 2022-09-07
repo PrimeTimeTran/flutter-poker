@@ -14,6 +14,12 @@ class Round {
   int buttonIdx = 0;
   Deck deck = Deck();
 
+  Round(this.players);
+
+  getHandsDealt() {
+    return handsDealt;
+  }
+
   dealPlayers() {
     final numOfHands = players.length;
     handsDealt = [Hand(), Hand()];
@@ -67,13 +73,13 @@ class Round {
   }
 
   winner() {
-    handsDealt[0].high(board);
+    return handsDealt[0].high(board);
   }
 
   dealFlush(deck) {
     final cards = deck.cards;
     final hand = Hand();
-    hand.add(cards[12]);
+    hand.add(cards[25]);
     hand.add(cards[11]);
     handsDealt.add(hand);
 
@@ -85,19 +91,32 @@ class Round {
     board.add(cards[24]);
   }
 
-  Round(this.players);
+  
 }
 
 main() {
   final player1 = Player('Loi', 1);
   final player2 = Player('Bob', 0);
-  final players = [player1];
-  final round = Round(players);
-  // round.deck.shuffle();
-  // round.dealPlayers();
-  // round.flop();
-  // round.turn();
-  // round.river();
-  round.dealFlush(round.deck);
-  round.winner();
+  final players = [player1, player2];
+
+  var outcome = '';
+  var count = 0;
+  var round;
+  while (outcome != 'full-house') {
+    round = Round(players);
+    round.deck.shuffle();
+    round.dealPlayers();
+    round.flop();
+    round.turn();
+    round.river();
+    outcome = round.winner();
+    print(count);
+    print(outcome);
+    // print(round.winner());
+    count++;
+  }
+  print(outcome);
+  print(round.getHandsDealt()[0]);
+  print(round.board);
+  print(count);
 }
