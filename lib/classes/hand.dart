@@ -67,6 +67,7 @@ class Hand {
         ranks.contains(1) &&
         ranks.contains(2) &&
         ranks.contains(3);
+    
   }
 
   high(board) {
@@ -135,14 +136,11 @@ class Hand {
   }
 
   straightFlush() {
-    if (flush()) {
-      final map = suitMap();
-      final suit = map.keys.firstWhere((k) => map[k] > 4);
-      var cardz = cards.where((element) => element.suit == suit);
-      return checkStraight(cardz);
-    } else {
-      return false;
-    }
+    final map = suitMap();
+    final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
+    if (suit == null) return false;
+    final cardz = cards.where((element) => element.suit == suit);
+    return checkStraight(cardz);
   }
 
   royalFlush() {
