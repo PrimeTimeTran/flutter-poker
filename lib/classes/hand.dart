@@ -30,7 +30,9 @@ class Hand {
 
     var msg;
 
-    if (straightFlush()) {
+    if (royalFlush()) {
+      msg = 'Royal Flush';
+    } else if (straightFlush()) {
       msg = 'Straight Flush';
     } else if (fourOfAKind()) {
       msg = 'Four of a kind';
@@ -49,7 +51,7 @@ class Hand {
     } else {
       msg = 'High Card';
     }
-    Colorize string = new Colorize(msg);
+    Colorize string = Colorize(msg);
     string.yellow();
     print(string);
   }
@@ -92,15 +94,15 @@ class Hand {
   }
 
   flush() {
-    final map = Map();
+    final map = {};
     final suits = cards.map((c) => c.suit);
-    suits.forEach((e) {
+    for (var e in suits) {
       if (!map.containsKey(e)) {
         map[e] = 1;
       } else {
         map[e] += 1;
       }
-    });
+    }
     return map.values.any((e) => e > 4);
   }
 
@@ -115,28 +117,43 @@ class Hand {
   }
 
   straightFlush() {
-    final dp = [1, 1, 1, 1, 1, 1, 1];
-    final ranks = cards.map((c) => c.value);
-    var nums = ranks.toSet().toList();
-    for (var i = 0; i < nums.length; i++) {
-      for (var j = 0; j < nums.length; j++) {
-        if (nums[i] == nums[j] - 1) {
-          dp[i] = max(dp[i], dp[j] + 1);
+    if (flush()) {
+      final map = {};
+      final suits = cards.map((c) => c.suit);
+      for (var e in suits) {
+        if (!map.containsKey(e)) {
+          map[e] = 1;
+        } else {
+          map[e] += 1;
         }
       }
-    }
-    var res = 1;
-    for (var i = 0; i < nums.length; i++) {
-      if (res < dp[i]) {
-        res = dp[i];
+      final suit = map.keys.firstWhere((k) => map[k] > 4);
+
+      final dp = [1, 1, 1, 1, 1, 1, 1];
+      final ranks =
+          cards.where((element) => element.suit == suit).map((c) => c.value);
+
+      final nums = ranks.toSet().toList();
+
+      for (var i = 0; i < nums.length; i++) {
+        for (var j = 0; j < nums.length; j++) {
+          if (nums[i] == nums[j] - 1) {
+            dp[i] = max(dp[i], dp[j] + 1);
+          }
+        }
       }
+      var res = 1;
+      for (var i = 0; i < nums.length; i++) {
+        if (res < dp[i]) {
+          res = dp[i];
+        }
+      }
+
+      return res > 4;
     }
-    print(dp);
-    final endingIdx = dp.indexOf(5);
-    final straightCards = cards.sublist(endingIdx - 4, endingIdx + 1);
-    final suit = straightCards[0].suit;
-    final isStraightFlush =
-        straightCards.map((e) => e.suit).every((s) => s == suit);
-    return isStraightFlush;
+  }
+
+  royalFlush() {
+    return cards[0].rank == 'a' && straightFlush();
   }
 }

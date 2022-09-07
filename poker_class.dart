@@ -76,14 +76,13 @@ class Round {
     hand.add(cards[12]);
     hand.add(cards[11]);
     handsDealt.add(hand);
-    print(handsDealt);
 
     board.add(cards[10]);
     // board.add(cards[23]);
     board.add(cards[9]);
     board.add(cards[8]);
     board.add(cards[7]);
-    board.add(cards[6]);
+    board.add(cards[24]);
   }
 
   Round(this.players);
