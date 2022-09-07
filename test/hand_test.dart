@@ -101,6 +101,22 @@ void main() {
     expect(hand.high(board), 'straight');
   });
 
+  test('Ace low straight to be recognized', () {
+    final Hand hand = Hand();
+    final List<PlayingCard> board = [];
+
+    hand.add(cards[12]);
+    hand.add(cards[13]);
+
+    board.add(cards[14]);
+    board.add(cards[15]);
+    board.add(cards[16]);
+    board.add(cards[33]);
+    board.add(cards[27]);
+    // [c9, h6, h5, h4, d3, c3, h2]
+    expect(hand.high(board), 'straight');
+  });
+
   // TODO Straight with Ace
 
   test('Three of a kind be recognized', () {
@@ -139,14 +155,14 @@ void main() {
     final Hand hand = Hand();
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]);
-    hand.add(cards[25]);
+    hand.add(cards[12]); // ah
+    hand.add(cards[25]); // ad
 
-    board.add(cards[13]);
-    board.add(cards[14]);
-    board.add(cards[2]);
-    board.add(cards[3]);
-    board.add(cards[18]);
+    board.add(cards[11]); // 4H
+    board.add(cards[3]); // 5H
+    board.add(cards[13]); // 2D
+    board.add(cards[14]); // 3D
+    board.add(cards[18]); // 7D
     // [ha, da, d7, h5, h4, d3, d2]
     expect(hand.high(board), 'pair');
   });

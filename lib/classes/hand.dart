@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:colorize/colorize.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:flutpoke/classes/playing_card.dart';
@@ -48,6 +47,8 @@ class Hand {
     cards.sort((a, b) => b.value.compareTo(a.value));
     var outcome;
 
+    print(cards);
+
     if (royalFlush()) {
       outcome = 'royal-flush';
     } else if (straightFlush()) {
@@ -88,8 +89,8 @@ class Hand {
   }
 
   straight() {
-    final dp = [1, 1, 1, 1, 1, 1, 1];
-    final ranks = cards.map((c) => c.value);
+    var dp = [1, 1, 1, 1, 1, 1, 1];
+    var ranks = cards.map((c) => c.value);
     var nums = ranks.toSet().toList();
     for (var i = 0; i < nums.length; i++) {
       for (var j = 0; j < nums.length; j++) {
@@ -104,7 +105,14 @@ class Hand {
         res = dp[i];
       }
     }
-    return res > 4;
+    if (res > 4) {
+      return true;
+    }
+    return ranks.contains(12) &&
+        ranks.contains(0) &&
+        ranks.contains(1) &&
+        ranks.contains(2) &&
+        ranks.contains(3);
   }
 
   flush() {
