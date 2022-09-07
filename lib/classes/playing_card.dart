@@ -7,6 +7,6 @@ class PlayingCard {
   PlayingCard(this.rank, this.suit, this.value, this.path);
 
   toString() {
-    return '$suit$rank';
+    return '$rank$suit';
   }
 }

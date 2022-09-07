@@ -42,6 +42,33 @@ class Hand {
     return map;
   }
 
+  checkStraight(cardsToCheck) {
+    var dp = [1, 1, 1, 1, 1, 1, 1];
+    var ranks = cardsToCheck.map((c) => c.value);
+    var nums = ranks.toSet().toList();
+    for (var i = 0; i < nums.length; i++) {
+      for (var j = 0; j < nums.length; j++) {
+        if (nums[i] == nums[j] - 1) {
+          dp[i] = max(dp[i], dp[j] + 1);
+        }
+      }
+    }
+    var res = 1;
+    for (var i = 0; i < nums.length; i++) {
+      if (res < dp[i]) {
+        res = dp[i];
+      }
+    }
+    if (res > 4) {
+      return true;
+    }
+    return ranks.contains(12) &&
+        ranks.contains(0) &&
+        ranks.contains(1) &&
+        ranks.contains(2) &&
+        ranks.contains(3);
+  }
+
   high(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
@@ -89,30 +116,7 @@ class Hand {
   }
 
   straight() {
-    var dp = [1, 1, 1, 1, 1, 1, 1];
-    var ranks = cards.map((c) => c.value);
-    var nums = ranks.toSet().toList();
-    for (var i = 0; i < nums.length; i++) {
-      for (var j = 0; j < nums.length; j++) {
-        if (nums[i] == nums[j] - 1) {
-          dp[i] = max(dp[i], dp[j] + 1);
-        }
-      }
-    }
-    var res = 1;
-    for (var i = 0; i < nums.length; i++) {
-      if (res < dp[i]) {
-        res = dp[i];
-      }
-    }
-    if (res > 4) {
-      return true;
-    }
-    return ranks.contains(12) &&
-        ranks.contains(0) &&
-        ranks.contains(1) &&
-        ranks.contains(2) &&
-        ranks.contains(3);
+    return checkStraight(cards);
   }
 
   flush() {
@@ -134,27 +138,8 @@ class Hand {
     if (flush()) {
       final map = suitMap();
       final suit = map.keys.firstWhere((k) => map[k] > 4);
-
-      final dp = [1, 1, 1, 1, 1, 1, 1];
-      final ranks =
-          cards.where((element) => element.suit == suit).map((c) => c.value);
-
-      final nums = ranks.toSet().toList();
-
-      for (var i = 0; i < nums.length; i++) {
-        for (var j = 0; j < nums.length; j++) {
-          if (nums[i] == nums[j] - 1) {
-            dp[i] = max(dp[i], dp[j] + 1);
-          }
-        }
-      }
-      var res = 1;
-      for (var i = 0; i < nums.length; i++) {
-        if (res < dp[i]) {
-          res = dp[i];
-        }
-      }
-      return res > 4;
+      var cardz = cards.where((element) => element.suit == suit);
+      return checkStraight(cardz);
     } else {
       return false;
     }
