@@ -3,17 +3,23 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
-final handRankings = {
+final handRankings = <String, int>{
   'royal-flush': 10,
   'straight-flush': 9,
   'four-of-a-kind': 8,
   'full-house': 7,
   'flush': 6,
+  'straight': 6,
+  'three-of-a-kind': 5,
+  'two-pair': 4,
+  'pair': 3,
+  'high-card': 2,
 };
 
 class Hand {
   int seatIdx;
   late String outcome;
+  late int ranking;
   List<PlayingCard> cards = [];
   List<PlayingCard> playerHand = [];
 
@@ -81,10 +87,15 @@ class Hand {
         ranks.contains(3);
   }
 
-  addHandAndBoard(board) {
+  evaluateHand(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
     getHandOutcome();
+    getHandRaking();
+  }
+
+  getHandRaking() {
+    ranking = handRankings[outcome] as int;
   }
 
   getHandOutcome() {
@@ -152,8 +163,8 @@ class Hand {
     final map = suitMap();
     final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
     if (suit == null) return false;
-    final cardz = cards.where((element) => element.suit == suit);
-    return checkStraight(cardz);
+    final playingCards = cards.where((element) => element.suit == suit);
+    return checkStraight(playingCards);
   }
 
   royalFlush() {

@@ -18,7 +18,7 @@ void main() {
     board.add(cards[7]);
     board.add(cards[24]);
     // [ha, hk, dk, hq, hj, h10, h9]
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     expect(hand.outcome, 'royal-flush');
   });
 
@@ -34,7 +34,7 @@ void main() {
     board.add(cards[8]);
     board.add(cards[7]);
     board.add(cards[24]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [hk, dk, hq, hj, h10, h9, h3]
     expect(hand.outcome, 'straight-flush');
   });
@@ -51,7 +51,7 @@ void main() {
     board.add(cards[24]);
     board.add(cards[26]);
     board.add(cards[39]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [dk, h10, h9, h2, d2, c2, s2]
     expect(hand.outcome, 'four-of-a-kind');
   });
@@ -68,7 +68,7 @@ void main() {
     board.add(cards[7]);
     board.add(cards[14]);
     board.add(cards[27]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [ha, da, h9, h4, h3, d3, c3]
     expect(hand.outcome, 'full-house');
   });
@@ -85,7 +85,7 @@ void main() {
     board.add(cards[4]);
     board.add(cards[14]);
     board.add(cards[27]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [ha, h6, h5, h4, h3, d3, c3]
     expect(hand.outcome, 'flush');
   });
@@ -102,7 +102,7 @@ void main() {
     board.add(cards[4]);
     board.add(cards[33]);
     board.add(cards[27]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [c9, h6, h5, h4, d3, c3, h2]
     expect(hand.outcome, 'straight');
   });
@@ -119,7 +119,7 @@ void main() {
     board.add(cards[16]);
     board.add(cards[33]);
     board.add(cards[27]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [c9, h6, h5, h4, d3, c3, h2]
     expect(hand.outcome, 'straight');
   });
@@ -138,7 +138,7 @@ void main() {
     board.add(cards[24]);
     board.add(cards[26]);
     board.add(cards[39]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [dk, h10, h9, h2, d2, c2, s2]
     expect(hand.outcome, 'three-of-a-kind');
   });
@@ -155,7 +155,7 @@ void main() {
     board.add(cards[2]);
     board.add(cards[3]);
     board.add(cards[18]);
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [sa, h6, h5, h3, d3, h2, d2]
     expect(hand.outcome, 'two-pair');
   });
@@ -172,7 +172,7 @@ void main() {
     board.add(cards[13]); // 2D
     board.add(cards[14]); // 3D
     board.add(cards[18]); // 7D
-    hand.addHandAndBoard(board);
+    hand.evaluateHand(board);
     // [ha, da, d7, h5, h4, d3, d2]
     expect(hand.outcome, 'pair');
   });

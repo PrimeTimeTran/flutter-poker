@@ -1,7 +1,7 @@
-import 'dart:collection';
-
-import 'package:colorize/colorize.dart';
 import "dart:io";
+import 'dart:collection';
+import "package:collection/collection.dart";
+import 'package:colorize/colorize.dart';
 
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
@@ -22,10 +22,7 @@ class Round {
       playerMap[player.seat] = {'cards': []};
     }
     players = playerMap;
-  }
-
-  dealPlayerBySeat(seatIdx, card) {
-    handsDealt[seatIdx].add(card);
+    prepareHands(players.length);
   }
 
   prepareHands(numOfHands) {
@@ -34,38 +31,33 @@ class Round {
     }
   }
 
+  dealPlayerBySeat(seatIdx, card) {
+    handsDealt[seatIdx].add(card);
+  }
+
   dealPlayers() {
     final numOfHands = players.entries.length;
-    prepareHands(numOfHands);
 
     deck.cards.removeAt(0);
-    var handIdx = 0;
-    while (handIdx < numOfHands) {
-      var card = deck.cards.removeAt(0);
-      dealPlayerBySeat(handIdx, card);
-      handIdx++;
-    }
 
-    handIdx = 0;
-    while (handIdx < numOfHands) {
-      var card = deck.cards.removeAt(0);
-      dealPlayerBySeat(handIdx, card);
-      handIdx++;
+    for (var i = 0; i < 2; i++) {
+      var handIdx = 0;
+      while (handIdx < numOfHands) {
+        var card = deck.cards.removeAt(0);
+        dealPlayerBySeat(handIdx, card);
+        handIdx++;
+      }
     }
-
-    step = 'pre-flop';
 
     return handsDealt;
   }
 
   flop() {
     board = deck.flop();
-    step = 'pre-turn';
   }
 
   turn() {
     board.add(deck.turn());
-    step = 'pre-river';
   }
 
   river() {
@@ -73,10 +65,11 @@ class Round {
   }
 
   updatePlayerHandAndBoard() {
-    handsDealt.map((h) => h.addHandAndBoard(board)).toList();
+    handsDealt.map((h) => h.evaluateHand(board)).toList();
     for (var i = 0; i < handsDealt.length; i++) {
       players[i]['cards'] = handsDealt[i];
       players[i]['outcome'] = handsDealt[i].outcome;
+      players[i]['ranking'] = handsDealt[i].ranking;
     }
   }
 
@@ -99,18 +92,35 @@ class Round {
   }
 
   winner() {
-    final highs = handsDealt.map((h) => h.outcome);
-    var map = {};
-    for (var high in highs) {
-      if (!map.containsKey(high)) {
-        map[high] = 1;
-      } else {
-        map[high] += 1;
+    final hands = collectHighestHands();
+    final hand = identifyHighest(hands);
+
+    // print('Hi Loi');
+    // print(hand);
+    // print('Hi Loi');
+  }
+
+  collectHighestHands() {
+    final la = players.entries.map((e) => e).toList();
+    print(la);
+    final highestRanking = handsDealt[0].ranking;
+
+    final hands = [];
+
+    for (var hand in handsDealt) {
+      if (hand.ranking == highestRanking) {
+        hands.add(hand);
       }
     }
 
-    print('Winner func');
-    print(players);
-    print(board);
+    return hands;
+  }
+
+  identifyHighest(hands) {
+    if (hands.length == 1) {
+      return hands[0];
+    } else {
+      // print(hands[0]);
+    }
   }
 }
