@@ -1,4 +1,5 @@
 import "dart:io";
+import 'dart:math';
 import 'dart:collection';
 import "package:collection/collection.dart";
 import 'package:colorize/colorize.dart';
@@ -86,12 +87,13 @@ class Round {
 
   winner() {
     final players = collectPlayersWithBestHands();
-    final hand = identifyHighest(players);
+    final player = identifyHighest(players);
 
-    print(board);
-    print(players[0].hand);
-    print(players[1].hand);
-    print(players[2].hand);
+    // print(board);
+    // print(players[0].hand);
+    // print(players[1].hand);
+    // print(players[2].hand);
+    return player;
   }
 
   collectPlayersWithBestHands() {
@@ -99,24 +101,31 @@ class Round {
 
     final highestRanking = players[0].hand.ranking;
 
-    final playersz = [];
+    final bestPlayers = [];
 
     for (var p in players) {
       if (p.hand.ranking == highestRanking) {
-        playersz.add(p);
+        bestPlayers.add(p);
       }
     }
 
-    return playersz;
+    return bestPlayers;
   }
 
   identifyHighest(players) {
     if (players.length == 1) {
-      print('Single player');
       return players[0];
     } else {
-      print('Multiple Players');
-      // print(hands[0]);
+      final highestCard = [];
+      for (var i = 0; i < players.length; i++) {
+        List copy = players[i].hand.cards;
+        highestCard.add(copy[0].value);
+      }
+      print(highestCard);
+      // print(highestCard[0]);
+
+      players.indexOf();
+      return players[0];
     }
   }
 }

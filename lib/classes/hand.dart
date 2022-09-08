@@ -20,7 +20,7 @@ class Hand {
   int seatIdx;
   late String outcome;
   late int ranking;
-  List<PlayingCard> cards = [];
+  List cards = [];
   List<PlayingCard> playerHand = [];
 
   Hand(this.seatIdx);
@@ -172,6 +172,6 @@ class Hand {
     final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
     if (suit == null) return false;
     final ranks = cards.where((element) => element.suit == suit).toList();
-    return ranks[0].rank == 'a' && straightFlush();
+    return ranks[0].rank == 'a' && ranks[4].rank == '10' && straightFlush();
   }
 }
