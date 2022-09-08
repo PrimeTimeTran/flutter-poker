@@ -68,12 +68,14 @@ class Round {
   }
 
   winner() {
+    print('Winner');
     final players = collectPlayersWithBestHands();
     final player = identifyHighest(players);
     return player;
   }
 
   collectPlayersWithBestHands() {
+    print('collectPlayersWithBestHands');
     players.sort((a, b) => b.hand.ranking.compareTo(a.hand.ranking));
     final highestRanking = players[0].hand.ranking;
 
@@ -89,6 +91,7 @@ class Round {
   }
 
   identifyHighest(players) {
+    print('identifyHighest');
     if (players.length == 1) {
       return players[0];
     } else {
@@ -103,27 +106,18 @@ class Round {
         return players[0];
       }
       if (outcome == 'pair') {
-        if (outcome == 'high-card') {
-          final maxs = [];
-
-          for (var p in players) {
-            var maximum =
-                p.hand.cards.reduce((a, b) => a.value > b.value ? a : b);
-            maxs.add(maximum);
-          }
-          final card = maxs.reduce((a, b) => a.value > b.value ? a : b);
-          return getPlayerWithCard(card);
-        }
+        
       }
       if (outcome == 'high-card') {
         final maxs = [];
-
         for (var p in players) {
           var maximum =
               p.hand.cards.reduce((a, b) => a.value > b.value ? a : b);
           maxs.add(maximum);
         }
         final card = maxs.reduce((a, b) => a.value > b.value ? a : b);
+        print('sss');
+        print(card);
         return getPlayerWithCard(card);
       }
     }

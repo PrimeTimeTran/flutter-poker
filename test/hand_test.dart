@@ -6,6 +6,8 @@ import 'package:flutpoke/classes/hand.dart';
 void main() {
   final deck = Deck();
   final cards = deck.cards;
+
+  // Test hands recognized
   test('Royal flushes to be recognized', () {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
@@ -120,11 +122,9 @@ void main() {
     board.add(cards[33]);
     board.add(cards[27]);
     hand.evaluateHand(board);
-    // [c9, h6, h5, h4, d3, c3, h2]
+    // [ah, 9c, 5d, 4d, 3d, 3c, 2d]
     expect(hand.outcome, 'straight');
   });
-
-  // TODO Straight with Ace
 
   test('Three of a kind be recognized', () {
     final Hand hand = Hand(0);
@@ -175,5 +175,33 @@ void main() {
     hand.evaluateHand(board);
     // [ha, da, d7, h5, h4, d3, d2]
     expect(hand.outcome, 'pair');
+  });
+
+  // Test played hands
+  test(
+      'Board cards to be selected if outcome is high card and every board card is higher than dealt card',
+      () {
+    final Hand hand = Hand(0);
+    final List<PlayingCard> board = [];
+
+    hand.add(cards[0]); // 2h
+    hand.add(cards[1]); // 3h
+
+    board.add(cards[8]);
+    board.add(cards[7]);
+    board.add(cards[16]);
+    board.add(cards[17]);
+    board.add(cards[18]);
+    hand.evaluateHand(board);
+
+    List<PlayingCard> winningHand = [
+      cards[8], // 10h
+      cards[7], // 9h
+      cards[18], // 7d
+      cards[17], // 6d
+      cards[16], // 5d
+    ];
+
+    expect(hand.highHand, winningHand);
   });
 }

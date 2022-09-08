@@ -39,7 +39,8 @@ void main() {
   });
 
   test('High card wins', () {
-    final players = [player2, player1];
+    // final players = [player2, player1];
+    final players = [player1, player2];
     final round = Round(players);
 
     final cards = round.deck.cards;
