@@ -4,9 +4,10 @@ import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 void main() {
+  final player1 = Player('Loi', 0);
+  final player2 = Player('Bob', 1);
+
   test('2 hands in handsDealt if 2 players', () {
-    final player1 = Player('Loi', 1);
-    final player2 = Player('Bob', 0);
     final players = [player1, player2];
     final round = Round(players);
 
@@ -15,8 +16,6 @@ void main() {
   });
 
   test('3 hands in handsDealt if 2 players', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
     final player3 = Player('John', 2);
     final players = [player1, player2, player3];
     final round = Round(players);
@@ -26,9 +25,6 @@ void main() {
   });
 
   test('2 player round to have 39 cards in deck after final action', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
-
     final players = [player1, player2];
     final round = Round(players);
 
@@ -43,9 +39,7 @@ void main() {
   });
 
   test('High card wins', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
-    final players = [player1, player2];
+    final players = [player2, player1];
     final round = Round(players);
 
     final cards = round.deck.cards;
@@ -63,9 +57,6 @@ void main() {
     board.add(cards[5]); // 8h
     board.add(cards[14]); // 3d
 
-    print('hi');
-    print(board);
-
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
@@ -74,8 +65,6 @@ void main() {
   });
 
   test('Straight flush beats straight', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
     final players = [player1, player2];
     final round = Round(players);
 
@@ -102,8 +91,6 @@ void main() {
   });
 
   test('Straight flush beats flush', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
     final players = [player1, player2];
     final round = Round(players);
 
@@ -130,8 +117,6 @@ void main() {
   });
 
   test('Higher straight flush beats lower straight flush', () {
-    final player1 = Player('Loi', 0);
-    final player2 = Player('Bob', 1);
     final players = [player1, player2];
     final round = Round(players);
 
@@ -154,6 +139,33 @@ void main() {
     round.updatePlayerHandAndBoard();
 
     // ([kh, qh, jh, 10h, 9h, 6d, 5d], [jh, 10h, 9h, 8h, 7h, 6d, 5d])
+    expect(round.winner().seat, player1.seat);
+  });
+
+  test('Top pair wins', () {
+    // final players = [player1, player2];
+    final players = [player2, player1];
+    final round = Round(players);
+
+    final cards = round.deck.cards;
+    round.dealPlayerBySeat(0, cards[25]); // ad
+    round.dealPlayerBySeat(0, cards[24]); // kd
+
+    round.dealPlayerBySeat(1, cards[23]); // qd
+    round.dealPlayerBySeat(1, cards[22]); // jd
+
+    final board = <PlayingCard>[];
+
+    board.add(cards[2]); // 4h
+    board.add(cards[4]); // 6h
+    board.add(cards[10]); // qh
+    board.add(cards[12]); // ah
+    board.add(cards[26]); // 2c
+
+    round.dealCardsForTest(board);
+    round.updatePlayerHandAndBoard();
+
+    // ([ad, ah, kd, qh, 6h, 4h, 2c], [ah, qd, qh, jd, 6h, 4h, 2c])
     expect(round.winner().seat, player1.seat);
   });
 

@@ -22,6 +22,7 @@ class Hand {
   late int ranking;
   List cards = [];
   List<PlayingCard> playerHand = [];
+  List<PlayingCard> winningHand = [];
 
   Hand(this.seatIdx);
 
@@ -92,7 +93,14 @@ class Hand {
     cards.sort((a, b) => b.value.compareTo(a.value));
     getHandOutcome();
     getHandRaking();
+    return cards;
   }
+
+  // setPairHand() {
+  // final map = rankMap();
+  // final la = map.entries.where((entry) => entry.value == 2);
+  // // winningHand = [];
+  // }
 
   getHandRaking() {
     ranking = handRankings[outcome] as int;
@@ -119,6 +127,7 @@ class Hand {
       res = 'two-pair';
     } else if (paired()) {
       res = 'pair';
+      // setPairHand();
     } else {
       res = 'high-card';
     }

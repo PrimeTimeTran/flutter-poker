@@ -14,23 +14,22 @@ class Round {
   int buttonIdx = 0;
   Deck deck = Deck();
   String step = 'ante';
-  List handsDealt = [];
   List<PlayingCard> board = [];
-  List<Player> players = <Player>[];
+  List<Player> players = [];
 
   Round(List<Player> currentPlayers) {
-    this.players = currentPlayers;
-    prepareHands(players.length);
+    players = currentPlayers;
+    prepareHands();
   }
 
-  prepareHands(numOfHands) {
-    for (int i = 0; i < numOfHands; i++) {
-      handsDealt.add(Hand(i));
+  prepareHands() {
+    for (var p in players) {
+      p.hand = Hand(p.seat);
     }
   }
 
   dealPlayerBySeat(seatIdx, card) {
-    handsDealt[seatIdx].add(card);
+    players.firstWhere((p) => p.seat == seatIdx).hand.cards.add(card);
   }
 
   dealPlayers() {
@@ -46,8 +45,6 @@ class Round {
         handIdx++;
       }
     }
-
-    return handsDealt;
   }
 
   flop() {
@@ -63,8 +60,7 @@ class Round {
   }
 
   updatePlayerHandAndBoard() {
-    handsDealt.map((h) => h.evaluateHand(board)).toList();
-    handsDealt.forEachIndexed((i, h) => players[i].hand = h);
+    players.map((p) => p.hand.evaluateHand(board)).toList();
   }
 
   dealCardsForTest(b) {
@@ -79,7 +75,6 @@ class Round {
 
   collectPlayersWithBestHands() {
     players.sort((a, b) => b.hand.ranking.compareTo(a.hand.ranking));
-    print(players.map((p) => p.hand.cards));
     final highestRanking = players[0].hand.ranking;
 
     final bestPlayers = [];
@@ -98,17 +93,43 @@ class Round {
       return players[0];
     } else {
       final outcome = players[0].hand.outcome;
-      print(outcome);
-      final highestCard = [];
       if (outcome == 'straight-flush') {
         return players[0];
       }
       if (outcome == 'straight') {
         return players[0];
       }
-      if (outcome == 'high-card') {
+      if (outcome == 'two-pair') {
         return players[0];
       }
+      if (outcome == 'pair') {
+        if (outcome == 'high-card') {
+          final maxs = [];
+
+          for (var p in players) {
+            var maximum =
+                p.hand.cards.reduce((a, b) => a.value > b.value ? a : b);
+            maxs.add(maximum);
+          }
+          final card = maxs.reduce((a, b) => a.value > b.value ? a : b);
+          return getPlayerWithCard(card);
+        }
+      }
+      if (outcome == 'high-card') {
+        final maxs = [];
+
+        for (var p in players) {
+          var maximum =
+              p.hand.cards.reduce((a, b) => a.value > b.value ? a : b);
+          maxs.add(maximum);
+        }
+        final card = maxs.reduce((a, b) => a.value > b.value ? a : b);
+        return getPlayerWithCard(card);
+      }
     }
+  }
+
+  getPlayerWithCard(c) {
+    return players.firstWhere((p) => p.hand.cards.contains(c));
   }
 }
