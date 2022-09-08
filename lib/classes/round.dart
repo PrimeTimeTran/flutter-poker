@@ -71,34 +71,15 @@ class Round {
     board = b;
   }
 
-  outcome() {
-    final highs = handsDealt.map((h) => h.outcome).toList();
-    Colorize string = new Colorize("-----------------");
-    string.green();
-    print(string);
-    print(board);
-    print(string);
-
-    for (var i = 0; i < handsDealt.length; i++) {
-      stdout.write(handsDealt[i]);
-      print(': ' + highs[i] + '\n');
-    }
-  }
-
   winner() {
     final players = collectPlayersWithBestHands();
     final player = identifyHighest(players);
-
-    // print(board);
-    // print(players[0].hand);
-    // print(players[1].hand);
-    // print(players[2].hand);
     return player;
   }
 
   collectPlayersWithBestHands() {
     players.sort((a, b) => b.hand.ranking.compareTo(a.hand.ranking));
-
+    print(players.map((p) => p.hand.cards));
     final highestRanking = players[0].hand.ranking;
 
     final bestPlayers = [];
@@ -116,16 +97,18 @@ class Round {
     if (players.length == 1) {
       return players[0];
     } else {
+      final outcome = players[0].hand.outcome;
+      print(outcome);
       final highestCard = [];
-      for (var i = 0; i < players.length; i++) {
-        List copy = players[i].hand.cards;
-        highestCard.add(copy[0].value);
+      if (outcome == 'straight-flush') {
+        return players[0];
       }
-      print(highestCard);
-      // print(highestCard[0]);
-
-      players.indexOf();
-      return players[0];
+      if (outcome == 'straight') {
+        return players[0];
+      }
+      if (outcome == 'high-card') {
+        return players[0];
+      }
     }
   }
 }

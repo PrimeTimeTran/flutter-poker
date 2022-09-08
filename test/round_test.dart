@@ -42,7 +42,66 @@ void main() {
     expect(round.deck.remainingCards().length, 39);
   });
 
+  test('High card wins', () {
+    final player1 = Player('Loi', 0);
+    final player2 = Player('Bob', 1);
+    final players = [player1, player2];
+    final round = Round(players);
+
+    final cards = round.deck.cards;
+    round.dealPlayerBySeat(0, cards[25]); // ad
+    round.dealPlayerBySeat(0, cards[24]); // kd
+
+    round.dealPlayerBySeat(1, cards[23]); // qd
+    round.dealPlayerBySeat(1, cards[22]); // jd
+
+    final board = <PlayingCard>[];
+
+    board.add(cards[0]); // 2h
+    board.add(cards[2]); // 4h
+    board.add(cards[4]); // 6h
+    board.add(cards[5]); // 8h
+    board.add(cards[14]); // 3d
+
+    print('hi');
+    print(board);
+
+    round.dealCardsForTest(board);
+    round.updatePlayerHandAndBoard();
+
+    // ([qd, jh, 9h, 8h, 7h, 6d, 5d], [kd, qh, qd, jh, 9h, 6d, 5d])
+    expect(round.winner().seat, player1.seat);
+  });
+
   test('Straight flush beats straight', () {
+    final player1 = Player('Loi', 0);
+    final player2 = Player('Bob', 1);
+    final players = [player1, player2];
+    final round = Round(players);
+
+    final cards = round.deck.cards;
+    round.dealPlayerBySeat(0, cards[24]); // kd
+    round.dealPlayerBySeat(0, cards[23]); // qd
+
+    round.dealPlayerBySeat(1, cards[6]); // 8h
+    round.dealPlayerBySeat(1, cards[5]); // 9h
+
+    final board = <PlayingCard>[];
+
+    board.add(cards[9]); // jh
+    board.add(cards[8]); // 10h
+    board.add(cards[7]); // 9h
+    board.add(cards[16]);
+    board.add(cards[17]);
+
+    round.dealCardsForTest(board);
+    round.updatePlayerHandAndBoard();
+
+    // ([jh, 10h, 9h, 8h, 7h, 6d, 5d], [kd, qd, jh, 10h, 9h, 6d, 5d])
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Straight flush beats flush', () {
     final player1 = Player('Loi', 0);
     final player2 = Player('Bob', 1);
     final players = [player1, player2];
@@ -66,10 +125,11 @@ void main() {
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
+    // ([ah, kh, 6h, 5h, 4h, 3h, 2h], [ah, kh, 6d, 5d, 4h, 3h, 2h])
     expect(round.winner().seat, player1.seat);
   });
 
-  test('Higher straight flush wins', () {
+  test('Higher straight flush beats lower straight flush', () {
     final player1 = Player('Loi', 0);
     final player2 = Player('Bob', 1);
     final players = [player1, player2];
@@ -93,7 +153,9 @@ void main() {
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
+    // ([kh, qh, jh, 10h, 9h, 6d, 5d], [jh, 10h, 9h, 8h, 7h, 6d, 5d])
     expect(round.winner().seat, player1.seat);
   });
+
   // test('A pair to defeat a highcard', () {});
 }
