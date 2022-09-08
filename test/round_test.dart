@@ -11,7 +11,7 @@ void main() {
     final round = Round(players);
 
     round.dealPlayers();
-    expect(round.players.entries.length, 2);
+    expect(round.players.length, 2);
   });
 
   test('3 hands in handsDealt if 2 players', () {
@@ -22,7 +22,7 @@ void main() {
     final round = Round(players);
 
     round.dealPlayers();
-    expect(round.players.entries.length, 3);
+    expect(round.players.length, 3);
   });
 
   test('2 player round to have 39 cards in deck after final action', () {

@@ -4,6 +4,7 @@ import "package:collection/collection.dart";
 import 'package:colorize/colorize.dart';
 
 import 'package:flutpoke/classes/deck.dart';
+import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
@@ -14,14 +15,10 @@ class Round {
   String step = 'ante';
   List handsDealt = [];
   List<PlayingCard> board = [];
-  Map players = <int, Map<dynamic, dynamic>>{};
+  List<Player> players = <Player>[];
 
-  Round(List currentPlayers) {
-    final playerMap = <int, Map>{};
-    for (var player in currentPlayers) {
-      playerMap[player.seat] = {'cards': []};
-    }
-    players = playerMap;
+  Round(List<Player> currentPlayers) {
+    this.players = currentPlayers;
     prepareHands(players.length);
   }
 
@@ -36,7 +33,7 @@ class Round {
   }
 
   dealPlayers() {
-    final numOfHands = players.entries.length;
+    final numOfHands = players.length;
 
     deck.cards.removeAt(0);
 
@@ -66,11 +63,7 @@ class Round {
 
   updatePlayerHandAndBoard() {
     handsDealt.map((h) => h.evaluateHand(board)).toList();
-    for (var i = 0; i < handsDealt.length; i++) {
-      players[i]['cards'] = handsDealt[i];
-      players[i]['outcome'] = handsDealt[i].outcome;
-      players[i]['ranking'] = handsDealt[i].ranking;
-    }
+    handsDealt.forEachIndexed((i, h) => players[i].hand = h);
   }
 
   dealCardsForTest(b) {
@@ -92,34 +85,37 @@ class Round {
   }
 
   winner() {
-    final hands = collectHighestHands();
-    final hand = identifyHighest(hands);
+    final players = collectPlayersWithBestHands();
+    final hand = identifyHighest(players);
 
-    // print('Hi Loi');
-    // print(hand);
-    // print('Hi Loi');
+    print(board);
+    print(players[0].hand);
+    print(players[1].hand);
+    print(players[2].hand);
   }
 
-  collectHighestHands() {
-    final la = players.entries.map((e) => e).toList();
-    print(la);
-    final highestRanking = handsDealt[0].ranking;
+  collectPlayersWithBestHands() {
+    players.sort((a, b) => b.hand.ranking.compareTo(a.hand.ranking));
 
-    final hands = [];
+    final highestRanking = players[0].hand.ranking;
 
-    for (var hand in handsDealt) {
-      if (hand.ranking == highestRanking) {
-        hands.add(hand);
+    final playersz = [];
+
+    for (var p in players) {
+      if (p.hand.ranking == highestRanking) {
+        playersz.add(p);
       }
     }
 
-    return hands;
+    return playersz;
   }
 
-  identifyHighest(hands) {
-    if (hands.length == 1) {
-      return hands[0];
+  identifyHighest(players) {
+    if (players.length == 1) {
+      print('Single player');
+      return players[0];
     } else {
+      print('Multiple Players');
       // print(hands[0]);
     }
   }
