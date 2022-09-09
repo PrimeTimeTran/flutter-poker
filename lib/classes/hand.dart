@@ -82,7 +82,7 @@ class Hand {
       var newCards = List.from(cards);
       var firstPair = getPairFromCards(cards).first.toList();
 
-      var secondPair = getPairFromCards(cards).last.toList();
+      var secondPair = getPairFromCards(cards)[1].toList();
 
       newCards.removeWhere((c) => c.rank == firstPair.first.rank);
       newCards.removeWhere((c) => c.rank == secondPair.first.rank);

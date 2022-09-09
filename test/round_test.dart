@@ -160,7 +160,7 @@ void main() {
     round.evaluateHands();
 
     // TODO board played
-    // expect(round.winner().seat, player2.seat);
+    expect(round.winner(), null);
   });
 
   test('Top pair wins', () {
@@ -303,8 +303,8 @@ void main() {
     final players = [player1, player2, player3];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, card('qc'));
     round.dealPlayerBySeat(0, card('kc'));
+    round.dealPlayerBySeat(0, card('qc'));
 
     round.dealPlayerBySeat(1, card('kd'));
     round.dealPlayerBySeat(1, card('ad'));
@@ -318,10 +318,33 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
-
     expect(round.winner().seat, player2.seat);
   });
-  // TODO Same two pairs with high card in player hand wins
-  // TODO Same two pairs with high card on board pushes
+
+  test('Same two pairs with high card on board pushes', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kc'));
+    round.dealPlayerBySeat(0, card('qc'));
+
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('jd'));
+
+    round.dealPlayerBySeat(2, card('ks'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board
+        .addAll([card('kh'), card('10h'), card('10d'), card('3d'), card('ah')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    printOutcome(round);
+
+    // TODO board played
+    expect(round.winner(), null);
+  });
 }

@@ -122,6 +122,8 @@ findPlayerWithHighestTwoPairs(players) {
     players[i].hand.cardValues = rankings;
   }
 
+  print(matrix);
+
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);
 
