@@ -20,9 +20,9 @@ class Hand {
   int seatIdx;
   late String outcome;
   late int ranking;
-  List<dynamic> cards = [];
-  List<dynamic> playerHand = [];
-  List<dynamic> highHand = [];
+  List cards = [];
+  List playerHand = [];
+  List highHand = [];
 
   Hand(this.seatIdx);
 
@@ -133,7 +133,7 @@ class Hand {
 
   setPlayedCards() {
     if (outcome == 'high-card') {
-      highHand = List<dynamic>.from(cards.take(5));
+      highHand = List.from(cards.take(5));
     }
     if (outcome == 'pair') {
       var newCards = List.from(cards);

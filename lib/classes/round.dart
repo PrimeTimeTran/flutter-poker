@@ -102,7 +102,30 @@ class Round {
       if (outcome == 'two-pair') {
         return players[0];
       }
-      if (outcome == 'pair') {}
+      if (outcome == 'pair') {
+        getPairValue(cards) {
+          var dto = groupBy(cards, (dynamic c) => c.rank);
+          var val = dto.values
+              .where((g) => g.length > 1)
+              .toList()
+              .first
+              .toList()
+              .first
+              .value;
+
+          return val;
+        }
+
+        var winner = [getPairValue(players[0].hand.cards), players[0]];
+
+        for (var p in players) {
+          var val = getPairValue(p.hand.cards);
+          if (val > winner.first) {
+            winner = [val, p];
+          }
+        }
+        return winner.last;
+      }
       if (outcome == 'high-card') {
         final maxs = [];
         for (var p in players) {
