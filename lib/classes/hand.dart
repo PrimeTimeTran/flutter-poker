@@ -70,13 +70,27 @@ class Hand {
     }
     if (outcome == 'pair') {
       var newCards = List.from(cards);
-      var pair = getPairFromCards(cards);
+      var pair = getPairFromCards(cards).first.toList();
 
       newCards.removeWhere((c) => c.rank == pair.first.rank);
 
       pair.addAll(List.from(newCards.take(3).toList()));
 
       highHand = pair;
+    }
+    if (outcome == 'two pair') {
+      var newCards = List.from(cards);
+      var firstPair = getPairFromCards(cards).first.toList();
+
+      var secondPair = getPairFromCards(cards).first.toList();
+
+      newCards.removeWhere((c) => c.rank == firstPair.first.rank);
+      newCards.removeWhere((c) => c.rank == secondPair.first.rank);
+
+      firstPair.addAll(List.from(secondPair));
+      firstPair.addAll(List.from(newCards.take(3).toList()));
+
+      highHand = firstPair;
     }
   }
 

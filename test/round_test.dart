@@ -278,6 +278,33 @@ void main() {
   });
 
   // TODO Same top pair higher lower pair wins
+  test('Same top pair higher lower pair wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kc'));
+    round.dealPlayerBySeat(0, card('3c'));
+
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('qd'));
+
+    round.dealPlayerBySeat(2, card('ks'));
+    round.dealPlayerBySeat(2, card('3s'));
+
+    board.addAll([card('kh'), card('qh'), card('2d'), card('3d'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    print(player1.hand.highHand);
+    print(player2.hand.highHand);
+    print(player3.hand.highHand);
+
+    expect(round.winner().seat, player2.seat);
+  });
+
   // TODO Same top pair higher lower pair
   // TODO Same two pairs with high card in player hand wins
   // TODO Same two pairs with high card on board pushes

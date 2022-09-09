@@ -55,17 +55,7 @@ getPairFromCards(cards) {
   return groupBy(cards, (dynamic c) => c.rank)
       .values
       .where((g) => g.length > 1)
-      .toList()
-      .first
       .toList();
-}
-
-getPairValueFromCards(cards) {
-  return getPairFromCards(cards).first.value;
-}
-
-getHighestRankedCard(cards) {
-  return cards.reduce((a, b) => a.value > b.value ? a : b);
 }
 
 checkStraight(cards) {
@@ -117,18 +107,23 @@ findPlayerWithHighestTwoPairs(players) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    var firstPairValue = getPairFromCards(players[i].hand.highHand).first.value;
-    var secondPairValue = getPairFromCards(players[i].hand.highHand).last.value;
-    var singleValues = groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
-        .values
-        .where((g) => g.length == 1)
-        .map((c) => c.first.value);
+    final firstPairValue =
+        getPairFromCards(players[i].hand.highHand).first.toList().first.value;
+    final secondPairValue =
+        getPairFromCards(players[i].hand.highHand).first.toList().last.value;
+    final singleValues =
+        groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
+            .values
+            .where((g) => g.length == 1)
+            .map((c) => c.first.value);
 
     final rankings = [firstPairValue, secondPairValue, ...singleValues];
 
     matrix[i].addAll(rankings);
     players[i].hand.cardValues = rankings;
   }
+
+  print(matrix);
 
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);
@@ -141,7 +136,7 @@ findPlayerWithHighestTwoPairs(players) {
 
 setPairValues(players, matrix, i) {
   final hand = players[i].hand;
-  final pairValue = getPairFromCards(hand.highHand).first.value;
+  final pairValue = getPairFromCards(hand.highHand).first.toList().first.value;
   final singleValues = groupBy(hand.highHand, (dynamic c) => c.rank)
       .values
       .where((g) => g.length == 1)
