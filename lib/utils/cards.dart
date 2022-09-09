@@ -51,6 +51,13 @@ Map suitMap(cards) {
   return map;
 }
 
+getTripsFromCards(cards) {
+  return groupBy(cards, (dynamic c) => c.rank)
+      .values
+      .where((g) => g.length > 2)
+      .toList();
+}
+
 getPairFromCards(cards) {
   return groupBy(cards, (dynamic c) => c.rank)
       .values
@@ -103,6 +110,10 @@ getPlayerFromValues(values, players, i) {
   }
 }
 
+getBestThreeOfAKind(players) {
+  print('getBestThreeOfAKind');
+}
+
 findPlayerWithHighestTwoPairs(players) {
   final matrix = List.generate(players.length, (_) => []);
 
@@ -121,8 +132,6 @@ findPlayerWithHighestTwoPairs(players) {
     matrix[i].addAll(rankings);
     players[i].hand.cardValues = rankings;
   }
-
-  print(matrix);
 
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);

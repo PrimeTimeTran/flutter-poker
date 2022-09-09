@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'package:collection/collection.dart';
-
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/hand.dart';
@@ -87,6 +84,7 @@ class Round {
   }
 
   identifyHighest(players) {
+    print(players);
     final outcome = players.first.hand.outcome;
     if (outcome == 'royal flush') {
       return players.first;
@@ -94,8 +92,8 @@ class Round {
     if (outcome == 'straight flush') {
       return players.first;
     }
-    if (outcome == 'straight') {
-      return players.first;
+    if (outcome == 'three of a kind') {
+      return getBestThreeOfAKind(players);
     }
     if (outcome == 'two pair') {
       return findPlayerWithHighestTwoPairs(players);

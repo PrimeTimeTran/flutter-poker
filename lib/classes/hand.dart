@@ -92,6 +92,14 @@ class Hand {
 
       highHand = firstPair;
     }
+    if (outcome == 'three of a kind') {
+      var newCards = List.from(cards);
+      var trips = getTripsFromCards(cards).first.toList();
+      print(trips);
+      newCards.removeWhere((c) => c.rank == trips.first.rank);
+      trips.addAll(List.from(newCards.take(2).toList()));
+      highHand = trips;
+    }
   }
 
   pair() {
