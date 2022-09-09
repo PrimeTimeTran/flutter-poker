@@ -88,7 +88,7 @@ class Hand {
       newCards.removeWhere((c) => c.rank == secondPair.first.rank);
 
       firstPair.addAll(List.from(secondPair));
-      firstPair.addAll(List.from(newCards.take(3).toList()));
+      firstPair.addAll(List.from(newCards.take(1).toList()));
 
       highHand = firstPair;
     }
