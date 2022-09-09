@@ -95,13 +95,13 @@ class Round {
       return players[0];
     } else {
       final outcome = players[0].hand.outcome;
-      if (outcome == 'straight-flush') {
+      if (outcome == 'straight flush') {
         return players[0];
       }
       if (outcome == 'straight') {
         return players[0];
       }
-      if (outcome == 'two-pair') {
+      if (outcome == 'two pair') {
         return players[0];
       }
       if (outcome == 'pair') {
@@ -118,7 +118,8 @@ class Round {
         }
         return winner.last;
       }
-      if (outcome == 'high-card') {
+
+      if (outcome == 'high card') {
         final highestRankedCards = [];
         for (var p in players) {
           var maximum = getHighestRankedCard(p.hand.cards);

@@ -1,18 +1,27 @@
 import 'dart:math';
 import 'package:collection/collection.dart';
 
+import 'package:flutpoke/classes/deck.dart';
+
 const handRankings = <String, int>{
-  'royal-flush': 10,
-  'straight-flush': 9,
-  'four-of-a-kind': 8,
-  'full-house': 7,
+  'royal flush': 10,
+  'straight flush': 9,
+  'four of a kind': 8,
+  'full house': 7,
   'flush': 6,
   'straight': 6,
-  'three-of-a-kind': 5,
-  'two-pair': 4,
+  'three of a kind': 5,
+  'two pair': 4,
   'pair': 3,
-  'high-card': 2,
+  'high card': 2,
 };
+
+final deck = Deck();
+final cards = deck.cards;
+
+getCard(code) {
+  return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
+}
 
 Map rankMap(cards) {
   final ranks = cards.map((c) => c.rank);
@@ -84,3 +93,5 @@ checkStraight(cards) {
 
   return res > 4;
 }
+
+

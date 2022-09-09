@@ -33,29 +33,31 @@ class Hand {
     return cards;
   }
 
+  
+
   getOutcome() {
     String res;
 
     if (royalFlush()) {
-      res = 'royal-flush';
+      res = 'royal flush';
     } else if (straightFlush()) {
-      res = 'straight-flush';
+      res = 'straight flush';
     } else if (fourOfAKind()) {
-      res = 'four-of-a-kind';
+      res = 'four of a kind';
     } else if (fullHouse()) {
-      res = 'full-house';
+      res = 'full house';
     } else if (flush()) {
       res = 'flush';
     } else if (straight()) {
       res = 'straight';
     } else if (threeOfAKind()) {
-      res = 'three-of-a-kind';
-    } else if (twoPaired()) {
-      res = 'two-pair';
-    } else if (paired()) {
+      res = 'three of a kind';
+    } else if (twoPair()) {
+      res = 'two pair';
+    } else if (pair()) {
       res = 'pair';
     } else {
-      res = 'high-card';
+      res = 'high card';
     }
     outcome = res;
   }
@@ -65,7 +67,7 @@ class Hand {
   }
 
   setPlayedCards() {
-    if (outcome == 'high-card') {
+    if (outcome == 'high card') {
       highHand = List.from(cards.take(5));
     }
     if (outcome == 'pair') {
@@ -80,12 +82,12 @@ class Hand {
     }
   }
 
-  paired() {
+  pair() {
     final map = rankMap(cards);
     return map.values.any((e) => e == 2);
   }
 
-  twoPaired() {
+  twoPair() {
     final map = rankMap(cards);
     return map.values.where((value) => value == 2).length > 1;
   }

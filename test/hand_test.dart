@@ -3,14 +3,9 @@ import 'package:flutpoke/classes/playing_card.dart';
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
 
+import 'package:flutpoke/utils/cards.dart';
+
 void main() {
-  final deck = Deck();
-  final cards = deck.cards;
-
-  getCard(code) {
-    return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
-  }
-
   // Test hands recognized
   test('Royal flushes to be recognized', () {
     final Hand hand = Hand(0);
@@ -26,7 +21,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'royal-flush');
+    expect(hand.outcome, 'royal flush');
   });
 
   test('Straight flushes to be recognized', () {
@@ -44,7 +39,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'straight-flush');
+    expect(hand.outcome, 'straight flush');
   });
 
   test('Four of a kind be recognized', () {
@@ -62,7 +57,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'four-of-a-kind');
+    expect(hand.outcome, 'four of a kind');
   });
 
   test('Full house to be recognized', () {
@@ -80,7 +75,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'full-house');
+    expect(hand.outcome, 'full house');
   });
 
   test('Flush to be recognized', () {
@@ -152,7 +147,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'three-of-a-kind');
+    expect(hand.outcome, 'three of a kind');
   });
 
   test('Two pairs to be recognized', () {
@@ -170,7 +165,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'two-pair');
+    expect(hand.outcome, 'two pair');
   });
 
   test('A pair to be recognized', () {

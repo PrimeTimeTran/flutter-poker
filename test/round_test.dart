@@ -136,13 +136,14 @@ void main() {
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
+    print(player1.hand.highHand);
+    print(round.winner().hand.cards);
     expect(round.winner().seat, player1.seat);
   });
 
   // ignore: todo
   // TODO High cards win
 
-  
   test('Top pair wins', () {
     final board = <PlayingCard>[];
     final players = [player1, player2, player3];
@@ -196,5 +197,4 @@ void main() {
 
     expect(round.winner().seat, player2.seat);
   });
-
 }
