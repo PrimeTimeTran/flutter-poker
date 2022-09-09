@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PlayerHand.dart';
-import 'package:flutpoke/utils/Deck.dart';
+import 'package:flutpoke/classes/Deck.dart';
 
 class PokerTable extends StatefulWidget {
   PokerTable(

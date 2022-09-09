@@ -12,7 +12,7 @@ void main() {
   final player2 = Player('Bob', 1);
   final player3 = Player('John', 2);
 
-  getCard(code) {
+  card(code) {
     return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
   }
 
@@ -51,20 +51,16 @@ void main() {
     final players = [player1, player2];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('kd'));
-    round.dealPlayerBySeat(0, getCard('qd'));
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('qd'));
 
-    round.dealPlayerBySeat(1, getCard('2h'));
-    round.dealPlayerBySeat(1, getCard('2d'));
+    round.dealPlayerBySeat(1, card('2h'));
+    round.dealPlayerBySeat(1, card('2d'));
 
-    board.add(getCard('jd'));
-    board.add(getCard('10d'));
-    board.add(getCard('9d'));
-    board.add(getCard('2c'));
-    board.add(getCard('2s'));
+    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player1.seat);
   });
@@ -74,20 +70,16 @@ void main() {
     final players = [player2, player1];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('ad'));
-    round.dealPlayerBySeat(0, getCard('kd'));
+    round.dealPlayerBySeat(0, card('ad'));
+    round.dealPlayerBySeat(0, card('kd'));
 
-    round.dealPlayerBySeat(1, getCard('9d'));
-    round.dealPlayerBySeat(1, getCard('8d'));
+    round.dealPlayerBySeat(1, card('9d'));
+    round.dealPlayerBySeat(1, card('8d'));
 
-    board.add(getCard('qd'));
-    board.add(getCard('jd'));
-    board.add(getCard('10d'));
-    board.add(getCard('2c'));
-    board.add(getCard('2s'));
+    board.addAll([card('qd'), card('jd'), card('10d'), card('2c'), card('2s')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player1.seat);
   });
@@ -98,20 +90,16 @@ void main() {
     final players = [player1, player2];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('kd'));
-    round.dealPlayerBySeat(0, getCard('qd'));
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('qd'));
 
-    round.dealPlayerBySeat(1, getCard('8d'));
-    round.dealPlayerBySeat(1, getCard('7d'));
+    round.dealPlayerBySeat(1, card('8d'));
+    round.dealPlayerBySeat(1, card('7d'));
 
-    board.add(getCard('jd'));
-    board.add(getCard('10d'));
-    board.add(getCard('9d'));
-    board.add(getCard('2c'));
-    board.add(getCard('2s'));
+    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player1.seat);
   });
@@ -121,49 +109,83 @@ void main() {
     final players = [player2, player1];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('ad'));
-    round.dealPlayerBySeat(0, getCard('kd'));
+    round.dealPlayerBySeat(0, card('ad'));
+    round.dealPlayerBySeat(0, card('kd'));
 
-    round.dealPlayerBySeat(1, getCard('qd'));
-    round.dealPlayerBySeat(1, getCard('jd'));
+    round.dealPlayerBySeat(1, card('qd'));
+    round.dealPlayerBySeat(1, card('jd'));
 
-    board.add(getCard('2h'));
-    board.add(getCard('3h'));
-    board.add(getCard('4d'));
-    board.add(getCard('6h'));
-    board.add(getCard('7h'));
+    board.addAll([card('2h'), card('3h'), card('4d'), card('6h'), card('7h')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player1.seat);
   });
 
-  // ignore: todo
-  // TODO High cards win
+  test('Highest cards wins', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('as'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('ad'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('ac'));
+    round.dealPlayerBySeat(2, card('jd'));
+
+    board.addAll([card('2h'), card('3h'), card('4d'), card('6h'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest cards board plays draws', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('2c'));
+    round.dealPlayerBySeat(0, card('3c'));
+
+    round.dealPlayerBySeat(1, card('2s'));
+    round.dealPlayerBySeat(1, card('3s'));
+
+    round.dealPlayerBySeat(2, card('2d'));
+    round.dealPlayerBySeat(2, card('3d'));
+
+    board.addAll([card('9h'), card('10h'), card('4d'), card('6h'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    // TODO board played
+    // expect(round.winner().seat, player2.seat);
+  });
 
   test('Top pair wins', () {
     final board = <PlayingCard>[];
     final players = [player1, player2, player3];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('ah'));
-    round.dealPlayerBySeat(0, getCard('jh'));
+    round.dealPlayerBySeat(0, card('ah'));
+    round.dealPlayerBySeat(0, card('jh'));
 
-    round.dealPlayerBySeat(1, getCard('kh'));
-    round.dealPlayerBySeat(1, getCard('qh'));
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('qh'));
 
-    round.dealPlayerBySeat(2, getCard('6d'));
-    round.dealPlayerBySeat(2, getCard('8c'));
+    round.dealPlayerBySeat(2, card('6d'));
+    round.dealPlayerBySeat(2, card('8c'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('kd'));
-    board.add(getCard('4d'));
-    board.add(getCard('6h'));
-    board.add(getCard('7h'));
+    board.addAll([card('ad'), card('kd'), card('4d'), card('6h'), card('7h')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player1.seat);
   });
@@ -175,23 +197,19 @@ void main() {
     final players = [player1, player2, player3];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, getCard('2c'));
-    round.dealPlayerBySeat(0, getCard('3c'));
+    round.dealPlayerBySeat(0, card('2c'));
+    round.dealPlayerBySeat(0, card('3c'));
 
-    round.dealPlayerBySeat(1, getCard('kd'));
-    round.dealPlayerBySeat(1, getCard('qd'));
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('qd'));
 
-    round.dealPlayerBySeat(2, getCard('2s'));
-    round.dealPlayerBySeat(2, getCard('3s'));
+    round.dealPlayerBySeat(2, card('2s'));
+    round.dealPlayerBySeat(2, card('3s'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('ah'));
-    board.add(getCard('4d'));
-    board.add(getCard('6h'));
-    board.add(getCard('7h'));
+    board.addAll([card('ad'), card('ah'), card('4d'), card('6h'), card('7h')]);
 
     round.dealCardsForTest(board);
-    round.updatePlayerHandAndBoard();
+    round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
   });

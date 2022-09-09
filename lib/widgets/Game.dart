@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
 
-import 'package:flutpoke/utils/Deck.dart';
+import 'package:flutpoke/classes/Deck.dart';
 
 class Game extends StatefulWidget {
-  Game({Key? key}) : super(key: key);
+  const Game({Key? key}) : super(key: key);
 
   @override
   State<Game> createState() => _GameState();
@@ -33,7 +33,7 @@ class _GameState extends State<Game> {
     deck = Deck();
     deck.shuffle();
     setState(() {
-      cards = deck.deal(10);
+      // cards = deck.deal(10);
       status = 'started';
     });
   }

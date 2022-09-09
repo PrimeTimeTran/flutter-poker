@@ -28,7 +28,7 @@ class Round {
   }
 
   dealPlayerBySeat(seatIdx, card) {
-    players.firstWhere((p) => p.seat == seatIdx).hand.cards.add(card);
+    players.firstWhere((p) => p.seat == seatIdx).hand.add(card);
   }
 
   dealPlayers() {
@@ -58,7 +58,7 @@ class Round {
     board.add(deck.river());
   }
 
-  updatePlayerHandAndBoard() {
+  evaluateHands() {
     players.map((p) => p.hand.evaluateHand(board)).toList();
   }
 

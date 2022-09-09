@@ -19,7 +19,7 @@ const handRankings = <String, int>{
 final deck = Deck();
 final cards = deck.cards;
 
-getCard(code) {
+card(code) {
   return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
 }
 
@@ -124,5 +124,6 @@ getHighestCardsHand(players) {
     }
   }
 
+  print('Pst here');
   // If here board played;
 }

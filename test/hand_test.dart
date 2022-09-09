@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:flutpoke/classes/playing_card.dart';
-import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
 
 import 'package:flutpoke/utils/cards.dart';
@@ -9,15 +8,11 @@ void main() {
   // Test hands recognized
   test('Royal flushes to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
-    hand.add(getCard('ah'));
-    hand.add(getCard('kh'));
+    final List board = [];
+    hand.add(card('ah'));
+    hand.add(card('kh'));
 
-    board.add(getCard('qh'));
-    board.add(getCard('jh'));
-    board.add(getCard('10h'));
-    board.add(getCard('2d'));
-    board.add(getCard('3d'));
+    board.addAll([card('qh'), card('jh'), card('10h'), card('2d'), card('3d')]);
 
     hand.evaluateHand(board);
 
@@ -26,16 +21,11 @@ void main() {
 
   test('Straight flushes to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('kh'));
-    hand.add(getCard('qh'));
-
-    board.add(getCard('jh'));
-    board.add(getCard('10h'));
-    board.add(getCard('9h'));
-    board.add(getCard('2d'));
-    board.add(getCard('3d'));
+    hand.add(card('kh'));
+    hand.add(card('qh'));
+    board.addAll([card('jh'), card('10h'), card('9h'), card('2d'), card('3d')]);
 
     hand.evaluateHand(board);
 
@@ -44,16 +34,12 @@ void main() {
 
   test('Four of a kind be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('kh'));
-    hand.add(getCard('kd'));
+    hand.add(card('kh'));
+    hand.add(card('kd'));
 
-    board.add(getCard('kc'));
-    board.add(getCard('ks'));
-    board.add(getCard('9h'));
-    board.add(getCard('9d'));
-    board.add(getCard('9s'));
+    board.addAll([card('kc'), card('ks'), card('9h'), card('9d'), card('9s')]);
 
     hand.evaluateHand(board);
 
@@ -62,16 +48,12 @@ void main() {
 
   test('Full house to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('kh'));
+    hand.add(card('ah'));
+    hand.add(card('kh'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('ac'));
-    board.add(getCard('kd'));
-    board.add(getCard('3d'));
-    board.add(getCard('2d'));
+    board.addAll([card('ad'), card('ac'), card('kd'), card('3d'), card('2d')]);
 
     hand.evaluateHand(board);
 
@@ -80,16 +62,12 @@ void main() {
 
   test('Flush to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('kh'));
+    hand.add(card('ah'));
+    hand.add(card('kh'));
 
-    board.add(getCard('jh'));
-    board.add(getCard('10h'));
-    board.add(getCard('9h'));
-    board.add(getCard('3d'));
-    board.add(getCard('2d'));
+    board.addAll([card('jh'), card('10h'), card('9h'), card('3d'), card('2d')]);
 
     hand.evaluateHand(board);
 
@@ -98,16 +76,12 @@ void main() {
 
   test('Straights to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ad'));
-    hand.add(getCard('kh'));
+    hand.add(card('ad'));
+    hand.add(card('kh'));
 
-    board.add(getCard('qh'));
-    board.add(getCard('jh'));
-    board.add(getCard('10h'));
-    board.add(getCard('3d'));
-    board.add(getCard('2d'));
+    board.addAll([card('qh'), card('jh'), card('10h'), card('3d'), card('2d')]);
 
     hand.evaluateHand(board);
 
@@ -116,16 +90,12 @@ void main() {
 
   test('Ace low straight to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('2h'));
+    hand.add(card('ah'));
+    hand.add(card('2h'));
 
-    board.add(getCard('3d'));
-    board.add(getCard('4d'));
-    board.add(getCard('5d'));
-    board.add(getCard('ac'));
-    board.add(getCard('kc'));
+    board.addAll([card('3d'), card('4d'), card('5d'), card('ac'), card('kc')]);
 
     hand.evaluateHand(board);
 
@@ -134,16 +104,12 @@ void main() {
 
   test('Three of a kind be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('2h'));
+    hand.add(card('ah'));
+    hand.add(card('2h'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('ac'));
-    board.add(getCard('5d'));
-    board.add(getCard('qc'));
-    board.add(getCard('kc'));
+    board.addAll([card('ad'), card('ac'), card('5d'), card('qc'), card('kc')]);
 
     hand.evaluateHand(board);
 
@@ -152,16 +118,12 @@ void main() {
 
   test('Two pairs to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('kh'));
+    hand.add(card('ah'));
+    hand.add(card('kh'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('kd'));
-    board.add(getCard('5c'));
-    board.add(getCard('4c'));
-    board.add(getCard('3c'));
+    board.addAll([card('ad'), card('kd'), card('5c'), card('4c'), card('3c')]);
 
     hand.evaluateHand(board);
 
@@ -170,16 +132,12 @@ void main() {
 
   test('A pair to be recognized', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('kh'));
+    hand.add(card('ah'));
+    hand.add(card('kh'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('6h'));
-    board.add(getCard('5c'));
-    board.add(getCard('4c'));
-    board.add(getCard('3c'));
+    board.addAll([card('ad'), card('6h'), card('5c'), card('4c'), card('3c')]);
 
     hand.evaluateHand(board);
 
@@ -191,25 +149,21 @@ void main() {
       'Board cards to be highHand if outcome is high card and every board card is higher than dealt card',
       () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('2h'));
-    hand.add(getCard('3h'));
+    hand.add(card('2h'));
+    hand.add(card('3h'));
 
-    board.add(getCard('ad'));
-    board.add(getCard('kd'));
-    board.add(getCard('qd'));
-    board.add(getCard('jd'));
-    board.add(getCard('9c'));
+    board.addAll([card('ad'), card('kd'), card('qd'), card('jd'), card('9c')]);
 
     hand.evaluateHand(board);
 
-    List<PlayingCard> winningHand = [
-      getCard('ad'),
-      getCard('kd'),
-      getCard('qd'),
-      getCard('jd'),
-      getCard('9c')
+    List winningHand = [
+      card('ad'),
+      card('kd'),
+      card('qd'),
+      card('jd'),
+      card('9c')
     ];
 
     expect(hand.highHand, winningHand);
@@ -217,24 +171,21 @@ void main() {
 
   test('Pair in high hand and 3 highest cards', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('ad'));
+    hand.add(card('ah'));
+    hand.add(card('ad'));
 
-    board.add(getCard('5h'));
-    board.add(getCard('kh'));
-    board.add(getCard('2d'));
-    board.add(getCard('3d'));
-    board.add(getCard('7d'));
+    board.addAll([card('5h'), card('kh'), card('2d'), card('3d'), card('7d')]);
+
     hand.evaluateHand(board);
 
-    List<PlayingCard> winningHand = [
-      getCard('ah'),
-      getCard('ad'),
-      getCard('kh'),
-      getCard('7d'),
-      getCard('5h'),
+    List winningHand = [
+      card('ah'),
+      card('ad'),
+      card('kh'),
+      card('7d'),
+      card('5h'),
     ];
 
     expect(hand.highHand, winningHand);
@@ -242,24 +193,21 @@ void main() {
 
   test('Pair in high hand and 3 highest cards', () {
     final Hand hand = Hand(0);
-    final List<PlayingCard> board = [];
+    final List board = [];
 
-    hand.add(getCard('ah'));
-    hand.add(getCard('ad'));
+    hand.add(card('ah'));
+    hand.add(card('ad'));
 
-    board.add(getCard('kh'));
-    board.add(getCard('7d'));
-    board.add(getCard('5h'));
-    board.add(getCard('3d'));
-    board.add(getCard('2d'));
+    board.addAll([card('kh'), card('7d'), card('5h'), card('3d'), card('2d')]);
+
     hand.evaluateHand(board);
 
-    List<PlayingCard> winningHand = [
-      getCard('ah'),
-      getCard('ad'),
-      getCard('kh'),
-      getCard('7d'),
-      getCard('5h'),
+    List winningHand = [
+      card('ah'),
+      card('ad'),
+      card('kh'),
+      card('7d'),
+      card('5h'),
     ];
 
     expect(hand.highHand, winningHand);
