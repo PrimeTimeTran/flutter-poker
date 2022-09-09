@@ -11,20 +11,21 @@ void main() {
     return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
   }
 
-  // // Test hands recognized
+  // Test hands recognized
   test('Royal flushes to be recognized', () {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
-    hand.add(cards[12]);
-    hand.add(cards[11]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[10]);
-    board.add(cards[9]);
-    board.add(cards[8]);
-    board.add(cards[7]);
-    board.add(cards[24]);
-    // [ha, hk, dk, hq, hj, h10, h9]
+    board.add(getCard('qh'));
+    board.add(getCard('jh'));
+    board.add(getCard('10h'));
+    board.add(getCard('2d'));
+    board.add(getCard('3d'));
+
     hand.evaluateHand(board);
+
     expect(hand.outcome, 'royal-flush');
   });
 
@@ -32,16 +33,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[1]);
-    hand.add(cards[11]);
+    hand.add(getCard('kh'));
+    hand.add(getCard('qh'));
 
-    board.add(cards[10]);
-    board.add(cards[9]);
-    board.add(cards[8]);
-    board.add(cards[7]);
-    board.add(cards[24]);
+    board.add(getCard('jh'));
+    board.add(getCard('10h'));
+    board.add(getCard('9h'));
+    board.add(getCard('2d'));
+    board.add(getCard('3d'));
+
     hand.evaluateHand(board);
-    // [hk, dk, hq, hj, h10, h9, h3]
+
     expect(hand.outcome, 'straight-flush');
   });
 
@@ -49,16 +51,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[0]);
-    hand.add(cards[13]);
+    hand.add(getCard('kh'));
+    hand.add(getCard('kd'));
 
-    board.add(cards[7]);
-    board.add(cards[8]);
-    board.add(cards[24]);
-    board.add(cards[26]);
-    board.add(cards[39]);
+    board.add(getCard('kc'));
+    board.add(getCard('ks'));
+    board.add(getCard('9h'));
+    board.add(getCard('9d'));
+    board.add(getCard('9s'));
+
     hand.evaluateHand(board);
-    // [dk, h10, h9, h2, d2, c2, s2]
+
     expect(hand.outcome, 'four-of-a-kind');
   });
 
@@ -66,16 +69,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]);
-    hand.add(cards[25]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[1]);
-    board.add(cards[2]);
-    board.add(cards[7]);
-    board.add(cards[14]);
-    board.add(cards[27]);
+    board.add(getCard('ad'));
+    board.add(getCard('ac'));
+    board.add(getCard('kd'));
+    board.add(getCard('3d'));
+    board.add(getCard('2d'));
+
     hand.evaluateHand(board);
-    // [ha, da, h9, h4, h3, d3, c3]
+
     expect(hand.outcome, 'full-house');
   });
 
@@ -83,16 +87,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]);
-    hand.add(cards[1]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[2]);
-    board.add(cards[3]);
-    board.add(cards[4]);
-    board.add(cards[14]);
-    board.add(cards[27]);
+    board.add(getCard('jh'));
+    board.add(getCard('10h'));
+    board.add(getCard('9h'));
+    board.add(getCard('3d'));
+    board.add(getCard('2d'));
+
     hand.evaluateHand(board);
-    // [ha, h6, h5, h4, h3, d3, c3]
+
     expect(hand.outcome, 'flush');
   });
 
@@ -100,16 +105,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[0]);
-    hand.add(cards[14]);
+    hand.add(getCard('ad'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[2]);
-    board.add(cards[3]);
-    board.add(cards[4]);
-    board.add(cards[33]);
-    board.add(cards[27]);
+    board.add(getCard('qh'));
+    board.add(getCard('jh'));
+    board.add(getCard('10h'));
+    board.add(getCard('3d'));
+    board.add(getCard('2d'));
+
     hand.evaluateHand(board);
-    // [c9, h6, h5, h4, d3, c3, h2]
+
     expect(hand.outcome, 'straight');
   });
 
@@ -117,16 +123,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]);
-    hand.add(cards[13]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('2h'));
 
-    board.add(cards[14]);
-    board.add(cards[15]);
-    board.add(cards[16]);
-    board.add(cards[33]);
-    board.add(cards[27]);
+    board.add(getCard('3d'));
+    board.add(getCard('4d'));
+    board.add(getCard('5d'));
+    board.add(getCard('ac'));
+    board.add(getCard('kc'));
+
     hand.evaluateHand(board);
-    // [ah, 9c, 5d, 4d, 3d, 3c, 2d]
+
     expect(hand.outcome, 'straight');
   });
 
@@ -134,16 +141,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[1]);
-    hand.add(cards[13]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('2h'));
 
-    board.add(cards[7]);
-    board.add(cards[8]);
-    board.add(cards[24]);
-    board.add(cards[26]);
-    board.add(cards[39]);
+    board.add(getCard('ad'));
+    board.add(getCard('ac'));
+    board.add(getCard('5d'));
+    board.add(getCard('qc'));
+    board.add(getCard('kc'));
+
     hand.evaluateHand(board);
-    // [dk, h10, h9, h2, d2, c2, s2]
+
     expect(hand.outcome, 'three-of-a-kind');
   });
 
@@ -151,16 +159,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[0]);
-    hand.add(cards[1]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[13]);
-    board.add(cards[14]);
-    board.add(cards[2]);
-    board.add(cards[3]);
-    board.add(cards[18]);
+    board.add(getCard('ad'));
+    board.add(getCard('kd'));
+    board.add(getCard('5c'));
+    board.add(getCard('4c'));
+    board.add(getCard('3c'));
+
     hand.evaluateHand(board);
-    // [sa, h6, h5, h3, d3, h2, d2]
+
     expect(hand.outcome, 'two-pair');
   });
 
@@ -168,15 +177,17 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]);
-    hand.add(cards[25]);
+    hand.add(getCard('ah'));
+    hand.add(getCard('kh'));
 
-    board.add(cards[3]);
-    board.add(cards[11]);
-    board.add(cards[13]);
-    board.add(cards[14]);
-    board.add(cards[18]);
+    board.add(getCard('ad'));
+    board.add(getCard('6h'));
+    board.add(getCard('5c'));
+    board.add(getCard('4c'));
+    board.add(getCard('3c'));
+
     hand.evaluateHand(board);
+
     expect(hand.outcome, 'pair');
   });
 
@@ -187,22 +198,23 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[0]);
-    hand.add(cards[1]);
+    hand.add(getCard('2h'));
+    hand.add(getCard('3h'));
 
-    board.add(cards[7]);
-    board.add(cards[8]);
-    board.add(cards[16]);
-    board.add(cards[17]);
-    board.add(cards[18]);
+    board.add(getCard('ad'));
+    board.add(getCard('kd'));
+    board.add(getCard('qd'));
+    board.add(getCard('jd'));
+    board.add(getCard('9c'));
+
     hand.evaluateHand(board);
 
     List<PlayingCard> winningHand = [
-      cards[8],
-      cards[7],
-      cards[18],
-      cards[17],
-      cards[16],
+      getCard('ad'),
+      getCard('kd'),
+      getCard('qd'),
+      getCard('jd'),
+      getCard('9c')
     ];
 
     expect(hand.highHand, winningHand);
@@ -240,11 +252,11 @@ void main() {
     hand.add(getCard('ah'));
     hand.add(getCard('ad'));
 
-    board.add(getCard('5h'));
     board.add(getCard('kh'));
-    board.add(getCard('2d'));
-    board.add(getCard('3d'));
     board.add(getCard('7d'));
+    board.add(getCard('5h'));
+    board.add(getCard('3d'));
+    board.add(getCard('2d'));
     hand.evaluateHand(board);
 
     List<PlayingCard> winningHand = [
