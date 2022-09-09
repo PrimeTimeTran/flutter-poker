@@ -68,7 +68,6 @@ getHighestRankedCard(cards) {
   return cards.reduce((a, b) => a.value > b.value ? a : b);
 }
 
-
 checkStraight(cards) {
   var dp = [1, 1, 1, 1, 1, 1, 1];
   var ranks = cards.map((c) => c.value);
@@ -95,4 +94,35 @@ checkStraight(cards) {
   }
 
   return res > 4;
+}
+
+getHighestCardsHand(players) {
+  // Create 2d array
+  // Iterate each rows col until we find a col that has a highest value
+  // Return row that has that highest value
+  final matrix = List.generate(players.length, (_) => []);
+
+  for (var i = 0; i < players.length; i++) {
+    for (var j = 0; j < 5; j++) {
+      matrix[i].add(players[i].hand.highHand[j].value);
+    }
+  }
+
+  for (var i = 0; i < matrix[0].length; i++) {
+    final values = Set();
+    for (var j = 0; j < matrix.length; j++) {
+      values.add(matrix[j][i]);
+    }
+
+    if (values.length == matrix.length) {
+      var go = values.reduce((curr, next) => curr > next ? curr : next);
+      for (var p in players) {
+        if (p.hand.highHand[i].value == go) {
+          return p;
+        }
+      }
+    }
+  }
+
+  // If here board played;
 }
