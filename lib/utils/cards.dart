@@ -140,8 +140,9 @@ findPlayerWithHighestTwoPairs(players) {
 }
 
 setPairValues(players, matrix, i) {
-  var pairValue = getPairFromCards(players[i].hand.highHand).first.value;
-  var singleValues = groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
+  final hand = players[i].hand;
+  final pairValue = getPairFromCards(hand.highHand).first.value;
+  final singleValues = groupBy(hand.highHand, (dynamic c) => c.rank)
       .values
       .where((g) => g.length == 1)
       .map((c) => c.first.value);
@@ -149,16 +150,16 @@ setPairValues(players, matrix, i) {
   final rankings = [pairValue, ...singleValues];
 
   matrix[i].addAll(rankings);
-  players[i].hand.cardValues = rankings;
+  hand.cardValues = rankings;
 }
 
-getWinningPlayerFromMatrix(players, matrix, condition) {
+getWinningPlayerFromType(players, matrix, handType) {
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);
 
-    if (condition == 'values greater than' && values.length > 1) {
+    if (handType == 'pair' && values.length > 1) {
       return getPlayerFromValues(values, players, i);
-    } else if (condition == 'values equal' && values.length == matrix.length) {
+    } else if (handType == 'high hand' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
     }
   }
@@ -179,11 +180,7 @@ findPlayerWithHighestPairedHand(players) {
   // [[7, 11, 9, 5], [9, 8, 7, 5], [0, 9, 7, 6]]
   final matrix = getPairMatrix(players);
 
-  print(matrix);
-
-  const condition = 'values greater than';
-
-  final player = getWinningPlayerFromMatrix(players, matrix, condition);
+  final player = getWinningPlayerFromType(players, matrix, 'pair');
   if (player != null) {
     return player;
   }
@@ -220,9 +217,7 @@ findPlayerWithHighestHighCardHand(players) {
   // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
   final matrix = getHighCardMatrix(players);
 
-  const condition = 'values equal';
-
-  final player = getWinningPlayerFromMatrix(players, matrix, condition);
+  final player = getWinningPlayerFromType(players, matrix, 'high hand');
   if (player != null) {
     return player;
   }
