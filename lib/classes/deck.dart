@@ -23,8 +23,8 @@ class Deck {
 
     for (var suit in suits) {
       ranks.asMap().forEach((index, rank) => {
-            cards.add(new PlayingCard(
-                rank, suit, index, "assets/cards/$suit$rank.svg"))
+            cards.add(
+                PlayingCard(rank, suit, index, "assets/cards/$suit$rank.svg"))
           });
     }
   }

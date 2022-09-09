@@ -9,6 +9,8 @@ import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
+import 'package:flutpoke/utils/cards.dart';
+
 class Round {
   int blind = 100;
   int buttonIdx = 0;
@@ -103,23 +105,13 @@ class Round {
         return players[0];
       }
       if (outcome == 'pair') {
-        getPairValue(cards) {
-          var dto = groupBy(cards, (dynamic c) => c.rank);
-          var val = dto.values
-              .where((g) => g.length > 1)
-              .toList()
-              .first
-              .toList()
-              .first
-              .value;
-
-          return val;
-        }
-
-        var winner = [getPairValue(players[0].hand.cards), players[0]];
+        var winner = [
+          getPairValueFromCards(players.first.hand.cards),
+          players.first
+        ];
 
         for (var p in players) {
-          var val = getPairValue(p.hand.cards);
+          var val = getPairValueFromCards(p.hand.cards);
           if (val > winner.first) {
             winner = [val, p];
           }
@@ -127,13 +119,12 @@ class Round {
         return winner.last;
       }
       if (outcome == 'high-card') {
-        final maxs = [];
+        final highestRankedCards = [];
         for (var p in players) {
-          var maximum =
-              p.hand.cards.reduce((a, b) => a.value > b.value ? a : b);
-          maxs.add(maximum);
+          var maximum = getHighestRankedCard(p.hand.cards);
+          highestRankedCards.add(maximum);
         }
-        final card = maxs.reduce((a, b) => a.value > b.value ? a : b);
+        final card = getHighestRankedCard(highestRankedCards);
         return getPlayerWithCard(card);
       }
     }

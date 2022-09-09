@@ -10,6 +10,7 @@ void main() {
 
   final player1 = Player('Loi', 0);
   final player2 = Player('Bob', 1);
+  final player3 = Player('John', 2);
 
   getCard(code) {
     return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
@@ -23,8 +24,7 @@ void main() {
     expect(round.players.length, 2);
   });
 
-  test('3 players if begun with 3 playeers', () {
-    final player3 = Player('John', 2);
+  test('3 players if begun with 3 players', () {
     final players = [player1, player2, player3];
     final round = Round(players);
 
@@ -113,7 +113,6 @@ void main() {
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
-    // ([kh, qh, jh, 10h, 9h, 6d, 5d], [jh, 10h, 9h, 8h, 7h, 6d, 5d])
     expect(round.winner().seat, player1.seat);
   });
 
@@ -140,9 +139,12 @@ void main() {
     expect(round.winner().seat, player1.seat);
   });
 
+  // ignore: todo
+  // TODO High cards win
+
+  
   test('Top pair wins', () {
     final board = <PlayingCard>[];
-    final player3 = Player('John', 2);
     final players = [player1, player2, player3];
     final round = Round(players);
 
@@ -167,5 +169,32 @@ void main() {
     expect(round.winner().seat, player1.seat);
   });
 
-  // test('A pair to defeat a highcard', () {});
+  // TODO Same top pair high card
+  test('Shared pair with high card wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, getCard('2c'));
+    round.dealPlayerBySeat(0, getCard('3c'));
+
+    round.dealPlayerBySeat(1, getCard('kd'));
+    round.dealPlayerBySeat(1, getCard('qd'));
+
+    round.dealPlayerBySeat(2, getCard('2s'));
+    round.dealPlayerBySeat(2, getCard('3s'));
+
+    board.add(getCard('ad'));
+    board.add(getCard('ah'));
+    board.add(getCard('4d'));
+    board.add(getCard('6h'));
+    board.add(getCard('7h'));
+
+    round.dealCardsForTest(board);
+    round.updatePlayerHandAndBoard();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
 }
