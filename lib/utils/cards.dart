@@ -107,10 +107,9 @@ findPlayerWithHighestTwoPairs(players) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    final firstPairValue =
-        getPairFromCards(players[i].hand.highHand).first.toList().first.value;
-    final secondPairValue =
-        getPairFromCards(players[i].hand.highHand).first.toList().last.value;
+    final pairs = getPairFromCards(players[i].hand.highHand);
+    final firstPairValue = pairs.first.toList().first.value;
+    final secondPairValue = pairs.last.toList().first.value;
     final singleValues =
         groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
             .values
@@ -122,8 +121,6 @@ findPlayerWithHighestTwoPairs(players) {
     matrix[i].addAll(rankings);
     players[i].hand.cardValues = rankings;
   }
-
-  print(matrix);
 
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);

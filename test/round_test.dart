@@ -270,10 +270,6 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    print(player1.hand.highHand);
-    print(player2.hand.highHand);
-    print(player3.hand.highHand);
-
     expect(round.winner().seat, player2.seat);
   });
 
@@ -297,10 +293,6 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
-
-    print(player1.hand.highHand);
-    print(player2.hand.highHand);
-    print(player3.hand.highHand);
 
     expect(round.winner().seat, player2.seat);
   });
