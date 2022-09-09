@@ -23,6 +23,8 @@ getCard(code) {
   return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
 }
 
+int sortDesc(a, b) => b.hand.ranking.compareTo(a.hand.ranking);
+
 Map rankMap(cards) {
   final ranks = cards.map((c) => c.rank);
   var map = {};
@@ -66,6 +68,7 @@ getHighestRankedCard(cards) {
   return cards.reduce((a, b) => a.value > b.value ? a : b);
 }
 
+
 checkStraight(cards) {
   var dp = [1, 1, 1, 1, 1, 1, 1];
   var ranks = cards.map((c) => c.value);
@@ -93,5 +96,3 @@ checkStraight(cards) {
 
   return res > 4;
 }
-
-

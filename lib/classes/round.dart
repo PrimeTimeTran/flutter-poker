@@ -1,8 +1,5 @@
-import "dart:io";
 import 'dart:math';
-import 'dart:collection';
-import "package:collection/collection.dart";
-import 'package:colorize/colorize.dart';
+import 'dart:math';
 
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/player.dart';
@@ -70,14 +67,14 @@ class Round {
   }
 
   winner() {
-    final players = collectPlayersWithBestHands();
+    final players = getPlayersWithBestHands();
     final player = identifyHighest(players);
     return player;
   }
 
-  collectPlayersWithBestHands() {
-    players.sort((a, b) => b.hand.ranking.compareTo(a.hand.ranking));
-    final highestRanking = players[0].hand.ranking;
+  getPlayersWithBestHands() {
+    players.sort(sortDesc);
+    final highestRanking = players.first.hand.ranking;
 
     final bestPlayers = [];
 
@@ -92,41 +89,67 @@ class Round {
 
   identifyHighest(players) {
     if (players.length == 1) {
-      return players[0];
+      return players.first;
     } else {
-      final outcome = players[0].hand.outcome;
+      final outcome = players.first.hand.outcome;
+      if (outcome == 'royal flush') {
+        return players.first;
+      }
       if (outcome == 'straight flush') {
-        return players[0];
+        return players.first;
       }
       if (outcome == 'straight') {
-        return players[0];
+        return players.first;
       }
       if (outcome == 'two pair') {
-        return players[0];
+        return players.first;
       }
       if (outcome == 'pair') {
-        var winner = [
-          getPairValueFromCards(players.first.hand.cards),
-          players.first
-        ];
+        var winner = {
+          'player': players.first,
+          'score': getPairValueFromCards(players.first.hand.cards),
+        };
 
         for (var p in players) {
           var val = getPairValueFromCards(p.hand.cards);
-          if (val > winner.first) {
-            winner = [val, p];
+          if (val > winner['score']) {
+            winner = {
+              'score': val,
+              'player': p,
+            };
           }
         }
-        return winner.last;
+        return winner['player'];
       }
 
       if (outcome == 'high card') {
-        final highestRankedCards = [];
-        for (var p in players) {
-          var maximum = getHighestRankedCard(p.hand.cards);
-          highestRankedCards.add(maximum);
+        // Create 2d array
+        // Iterate each rows col until we find a col that has a highest value
+        // Return row that has that highest value
+
+        final matrix = new List.generate(players.length, (_) => []);
+
+        for (var i = 0; i < players.length; i++) {
+          for (var j = 0; j < 5; j++) {
+            matrix[i].add(players[i].hand.highHand[j].value);
+          }
         }
-        final card = getHighestRankedCard(highestRankedCards);
-        return getPlayerWithCard(card);
+
+        for (var i = 0; i < matrix[0].length; i++) {
+          final values = Set();
+          for (var j = 0; j < matrix.length; j++) {
+            values.add(matrix[j][i]);
+          }
+
+          if (values.length == matrix.length) {
+            var go = values.reduce((curr, next) => curr > next ? curr : next);
+            for (var p in players) {
+              if (p.hand.highHand[i].value == go) {
+                return p;
+              }
+            }
+          }
+        }
       }
     }
   }

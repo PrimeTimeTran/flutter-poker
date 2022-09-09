@@ -136,8 +136,6 @@ void main() {
     round.dealCardsForTest(board);
     round.updatePlayerHandAndBoard();
 
-    print(player1.hand.highHand);
-    print(round.winner().hand.cards);
     expect(round.winner().seat, player1.seat);
   });
 

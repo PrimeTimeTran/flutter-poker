@@ -1,7 +1,6 @@
 import 'dart:math';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
-import 'package:flutpoke/classes/playing_card.dart';
 
 import 'package:flutpoke/utils/cards.dart';
 
@@ -27,15 +26,13 @@ class Hand {
   evaluateHand(board) {
     cards.addAll(board);
     cards.sort((a, b) => b.value.compareTo(a.value));
-    getOutcome();
-    getHandRanking();
+    setOutcome();
+    setHandRanking();
     setPlayedCards();
     return cards;
   }
 
-  
-
-  getOutcome() {
+  setOutcome() {
     String res;
 
     if (royalFlush()) {
@@ -62,7 +59,7 @@ class Hand {
     outcome = res;
   }
 
-  getHandRanking() {
+  setHandRanking() {
     ranking = handRankings[outcome] as int;
   }
 
@@ -76,7 +73,7 @@ class Hand {
 
       newCards.removeWhere((c) => c.rank == pair.first.rank);
 
-      pair.addAll(List<dynamic>.from(newCards.take(3).toList()));
+      pair.addAll(List.from(newCards.take(3).toList()));
 
       highHand = pair;
     }
@@ -128,7 +125,11 @@ class Hand {
     final map = suitMap(cards);
     final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
     if (suit == null) return false;
-    final ranks = cards.toSet().toList();
-    return ranks[0].rank == 'a' && ranks[4].rank == '10' && straightFlush();
+    final kards = cards.toSet().toList();
+    return kards.first.suit == suit &&
+        kards.first.rank == 'a' &&
+        kards[4].suit == suit &&
+        kards[4].rank == '10' &&
+        straightFlush();
   }
 }
