@@ -20,7 +20,7 @@ class Hand {
   int seatIdx;
   late String outcome;
   late int ranking;
-  List cards = [];
+  List<PlayingCard> cards = [];
   List<PlayingCard> playerHand = [];
   List<PlayingCard> highHand = [];
 
@@ -134,6 +134,17 @@ class Hand {
   setPlayedCards() {
     if (outcome == 'high-card') {
       highHand = List<PlayingCard>.from(cards.take(5));
+    }
+    if (outcome == 'pair') {
+      var newCards = List.from(cards);
+      var dto = groupBy(cards, (PlayingCard c) => c.rank);
+      var pair = dto.values.where((g) => g.length > 1).toList().first.toList();
+
+      newCards.removeWhere((c) => c.rank == pair.first.rank);
+
+      pair.addAll(List<PlayingCard>.from(newCards.take(3).toList()));
+
+      highHand = pair;
     }
   }
 

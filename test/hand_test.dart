@@ -7,7 +7,11 @@ void main() {
   final deck = Deck();
   final cards = deck.cards;
 
-  // Test hands recognized
+  getCard(code) {
+    return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
+  }
+
+  // // Test hands recognized
   test('Royal flushes to be recognized', () {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
@@ -164,42 +168,91 @@ void main() {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[12]); // ah
-    hand.add(cards[25]); // ad
+    hand.add(cards[12]);
+    hand.add(cards[25]);
 
-    board.add(cards[11]); // 4H
-    board.add(cards[3]); // 5H
-    board.add(cards[13]); // 2D
-    board.add(cards[14]); // 3D
-    board.add(cards[18]); // 7D
+    board.add(cards[3]);
+    board.add(cards[11]);
+    board.add(cards[13]);
+    board.add(cards[14]);
+    board.add(cards[18]);
     hand.evaluateHand(board);
-    // [ha, da, d7, h5, h4, d3, d2]
     expect(hand.outcome, 'pair');
   });
 
   // Test played hands
   test(
-      'Board cards to be selected if outcome is high card and every board card is higher than dealt card',
+      'Board cards to be highHand if outcome is high card and every board card is higher than dealt card',
       () {
     final Hand hand = Hand(0);
     final List<PlayingCard> board = [];
 
-    hand.add(cards[0]); // 2h
-    hand.add(cards[1]); // 3h
+    hand.add(cards[0]);
+    hand.add(cards[1]);
 
-    board.add(cards[8]);
     board.add(cards[7]);
+    board.add(cards[8]);
     board.add(cards[16]);
     board.add(cards[17]);
     board.add(cards[18]);
     hand.evaluateHand(board);
 
     List<PlayingCard> winningHand = [
-      cards[8], // 10h
-      cards[7], // 9h
-      cards[18], // 7d
-      cards[17], // 6d
-      cards[16], // 5d
+      cards[8],
+      cards[7],
+      cards[18],
+      cards[17],
+      cards[16],
+    ];
+
+    expect(hand.highHand, winningHand);
+  });
+
+  test('Pair in high hand and 3 highest cards', () {
+    final Hand hand = Hand(0);
+    final List<PlayingCard> board = [];
+
+    hand.add(getCard('ah'));
+    hand.add(getCard('ad'));
+
+    board.add(getCard('5h'));
+    board.add(getCard('kh'));
+    board.add(getCard('2d'));
+    board.add(getCard('3d'));
+    board.add(getCard('7d'));
+    hand.evaluateHand(board);
+
+    List<PlayingCard> winningHand = [
+      getCard('ah'),
+      getCard('ad'),
+      getCard('kh'),
+      getCard('7d'),
+      getCard('5h'),
+    ];
+
+    expect(hand.highHand, winningHand);
+  });
+
+  test('Pair in high hand and 3 highest cards', () {
+    final Hand hand = Hand(0);
+    final List<PlayingCard> board = [];
+
+    hand.add(getCard('ah'));
+    hand.add(getCard('ad'));
+
+    board.add(getCard('5h'));
+    board.add(getCard('kh'));
+    board.add(getCard('2d'));
+    board.add(getCard('3d'));
+    board.add(getCard('7d'));
+    hand.evaluateHand(board);
+
+    List<PlayingCard> winningHand = [
+      getCard('ah'),
+      getCard('ad'),
+      getCard('kh'),
+      getCard('7d'),
+      getCard('5h'),
     ];
 
     expect(hand.highHand, winningHand);
