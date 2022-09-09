@@ -6,7 +6,7 @@ import 'package:flutpoke/utils/cards.dart';
 
 void main() {
   // Test hands recognized
-  test('Royal flushes to be recognized', () {
+  test('Royal flush to be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
     hand.add(card('ah'));
@@ -19,7 +19,7 @@ void main() {
     expect(hand.outcome, 'royal flush');
   });
 
-  test('Straight flushes to be recognized', () {
+  test('Straight flush to be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
 
@@ -74,7 +74,7 @@ void main() {
     expect(hand.outcome, 'flush');
   });
 
-  test('Straights to be recognized', () {
+  test('Straight to be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
 
@@ -146,7 +146,8 @@ void main() {
 
   // Test played hands
   test(
-      'Board cards to be highHand if outcome is high card and every board card is higher than dealt card',
+      '''Board cards to be highHand if outcome is high 
+      card and every board card is higher than dealt cards''',
       () {
     final Hand hand = Hand(0);
     final List board = [];

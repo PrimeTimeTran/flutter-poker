@@ -96,34 +96,137 @@ checkStraight(cards) {
   return res > 4;
 }
 
-getHighestCardsHand(players) {
-  // Create 2d array
-  // Iterate each rows col until we find a col that has a highest value
-  // Return row that has that highest value
+setValuesFromColOfMatrix(matrix, i) {
+  final values = Set();
+  for (var j = 0; j < matrix.length; j++) {
+    values.add(matrix[j][i]);
+  }
+  return values;
+}
+
+getPlayerFromValues(values, players, i) {
+  final highestValue = values.reduce((c, n) => c > n ? c : n);
+  for (var p in players) {
+    if (p.hand.cardValues[i] == highestValue) {
+      return p;
+    }
+  }
+}
+
+findPlayerWithHighestTwoPairs(players) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    for (var j = 0; j < 5; j++) {
-      matrix[i].add(players[i].hand.highHand[j].value);
-    }
+    var firstPairValue = getPairFromCards(players[i].hand.highHand).first.value;
+    var secondPairValue = getPairFromCards(players[i].hand.highHand).last.value;
+    var singleValues = groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
+        .values
+        .where((g) => g.length == 1)
+        .map((c) => c.first.value);
+
+    final rankings = [firstPairValue, secondPairValue, ...singleValues];
+
+    matrix[i].addAll(rankings);
+    players[i].hand.cardValues = rankings;
   }
 
-  for (var i = 0; i < matrix[0].length; i++) {
-    final values = Set();
-    for (var j = 0; j < matrix.length; j++) {
-      values.add(matrix[j][i]);
-    }
+  for (var i = 0; i < matrix.first.length; i++) {
+    final values = setValuesFromColOfMatrix(matrix, i);
 
-    if (values.length == matrix.length) {
-      var go = values.reduce((curr, next) => curr > next ? curr : next);
-      for (var p in players) {
-        if (p.hand.highHand[i].value == go) {
-          return p;
-        }
-      }
+    if (values.length > 1) {
+      return getPlayerFromValues(values, players, i);
     }
   }
+}
 
-  print('Pst here');
-  // If here board played;
+setPairValues(players, matrix, i) {
+  var pairValue = getPairFromCards(players[i].hand.highHand).first.value;
+  var singleValues = groupBy(players[i].hand.highHand, (dynamic c) => c.rank)
+      .values
+      .where((g) => g.length == 1)
+      .map((c) => c.first.value);
+
+  final rankings = [pairValue, ...singleValues];
+
+  matrix[i].addAll(rankings);
+  players[i].hand.cardValues = rankings;
+}
+
+getWinningPlayerFromMatrix(players, matrix, condition) {
+  for (var i = 0; i < matrix.first.length; i++) {
+    final values = setValuesFromColOfMatrix(matrix, i);
+
+    if (condition == 'values greater than' && values.length > 1) {
+      return getPlayerFromValues(values, players, i);
+    } else if (condition == 'values equal' && values.length == matrix.length) {
+      return getPlayerFromValues(values, players, i);
+    }
+  }
+}
+
+getPairMatrix(players) {
+  final matrix = List.generate(players.length, (_) => []);
+
+  for (var i = 0; i < players.length; i++) {
+    setPairValues(players, matrix, i);
+  }
+  return matrix;
+}
+
+findPlayerWithHighestPairedHand(players) {
+  // Flatten pairs
+  // [[12, 5, 4, 2], [12, 11, 10, 5], [12, 5, 4, 2]]
+  // [[7, 11, 9, 5], [9, 8, 7, 5], [0, 9, 7, 6]]
+  final matrix = getPairMatrix(players);
+
+  print(matrix);
+
+  const condition = 'values greater than';
+
+  final player = getWinningPlayerFromMatrix(players, matrix, condition);
+  if (player != null) {
+    return player;
+  }
+
+  // If here board played
+  print('If here board played');
+}
+
+setHighCardValues(players, matrix, i) {
+  final rankings = [];
+  for (var j = 0; j < 5; j++) {
+    rankings.add(players[i].hand.highHand[j].value);
+  }
+  matrix[i].addAll(rankings);
+  players[i].hand.cardValues = rankings;
+}
+
+getHighCardMatrix(players) {
+  final matrix = List.generate(players.length, (_) => []);
+
+  for (var i = 0; i < players.length; i++) {
+    setHighCardValues(players, matrix, i);
+  }
+
+  return matrix;
+}
+
+// A 2d matrix makes identifying highest card easier.
+// We move left to right in each row until one column has a higher card
+// than the other rows/hands in the same column
+
+findPlayerWithHighestHighCardHand(players) {
+  // Create matrix from players and their hands
+  // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
+  final matrix = getHighCardMatrix(players);
+
+  const condition = 'values equal';
+
+  final player = getWinningPlayerFromMatrix(players, matrix, condition);
+  if (player != null) {
+    return player;
+  }
+
+  // If here board played
+  print('If here board played');
 }

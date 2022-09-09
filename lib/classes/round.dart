@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'dart:math';
+import 'package:collection/collection.dart';
 
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/player.dart';
@@ -68,8 +68,7 @@ class Round {
 
   winner() {
     final players = getPlayersWithBestHands();
-    final player = identifyHighest(players);
-    return player;
+    return players.length == 1 ? players.first : identifyHighest(players);
   }
 
   getPlayersWithBestHands() {
@@ -88,43 +87,25 @@ class Round {
   }
 
   identifyHighest(players) {
-    if (players.length == 1) {
+    final outcome = players.first.hand.outcome;
+    if (outcome == 'royal flush') {
       return players.first;
-    } else {
-      final outcome = players.first.hand.outcome;
-      if (outcome == 'royal flush') {
-        return players.first;
-      }
-      if (outcome == 'straight flush') {
-        return players.first;
-      }
-      if (outcome == 'straight') {
-        return players.first;
-      }
-      if (outcome == 'two pair') {
-        return players.first;
-      }
-      if (outcome == 'pair') {
-        var winner = {
-          'player': players.first,
-          'score': getPairValueFromCards(players.first.hand.cards),
-        };
+    }
+    if (outcome == 'straight flush') {
+      return players.first;
+    }
+    if (outcome == 'straight') {
+      return players.first;
+    }
+    if (outcome == 'two pair') {
+      return findPlayerWithHighestTwoPairs(players);
+    }
+    if (outcome == 'pair') {
+      return findPlayerWithHighestPairedHand(players);
+    }
 
-        for (var p in players) {
-          var val = getPairValueFromCards(p.hand.cards);
-          if (val > winner['score']) {
-            winner = {
-              'score': val,
-              'player': p,
-            };
-          }
-        }
-        return winner['player'];
-      }
-
-      if (outcome == 'high card') {
-        return getHighestCardsHand(players);
-      }
+    if (outcome == 'high card') {
+      return findPlayerWithHighestHighCardHand(players);
     }
   }
 }

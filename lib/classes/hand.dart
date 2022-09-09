@@ -11,6 +11,7 @@ class Hand {
   List highHand = [];
   late String outcome;
   List playerHand = [];
+  List? cardValues;
 
   Hand(this.seatIdx);
 

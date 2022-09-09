@@ -1,20 +1,14 @@
 import 'package:test/test.dart';
-import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/round.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
-void main() {
-  final deck = Deck();
-  final cards = deck.cards;
+import 'package:flutpoke/utils/cards.dart';
 
+void main() {
   final player1 = Player('Loi', 0);
   final player2 = Player('Bob', 1);
   final player3 = Player('John', 2);
-
-  card(code) {
-    return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
-  }
 
   test('2 players if begun with 2 players', () {
     final players = [player1, player2];
@@ -173,11 +167,11 @@ void main() {
     final players = [player1, player2, player3];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, card('ah'));
-    round.dealPlayerBySeat(0, card('jh'));
+    round.dealPlayerBySeat(0, card('kh'));
+    round.dealPlayerBySeat(0, card('qh'));
 
-    round.dealPlayerBySeat(1, card('kh'));
-    round.dealPlayerBySeat(1, card('qh'));
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('jh'));
 
     round.dealPlayerBySeat(2, card('6d'));
     round.dealPlayerBySeat(2, card('8c'));
@@ -186,12 +180,31 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
-
-    expect(round.winner().seat, player1.seat);
+    expect(round.winner().seat, player2.seat);
   });
 
-  // TODO Same top pair high card
-  test('Shared pair with high card wins', () {
+  test('Top pair wins when its not highest cards', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kh'));
+    round.dealPlayerBySeat(0, card('9d'));
+
+    round.dealPlayerBySeat(1, card('jh'));
+    round.dealPlayerBySeat(1, card('10h'));
+
+    round.dealPlayerBySeat(2, card('2c'));
+    round.dealPlayerBySeat(2, card('8c'));
+
+    board.addAll([card('jd'), card('9d'), card('2h'), card('3h'), card('7c')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Shared pair results in high card winning', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -213,4 +226,59 @@ void main() {
 
     expect(round.winner().seat, player2.seat);
   });
+
+  test('Two pair beats one pair', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('2c'));
+    round.dealPlayerBySeat(0, card('3c'));
+
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('qd'));
+
+    round.dealPlayerBySeat(2, card('ks'));
+    round.dealPlayerBySeat(2, card('3s'));
+
+    board.addAll([card('kh'), card('qh'), card('2d'), card('4d'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest two pairs win', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('2c'));
+    round.dealPlayerBySeat(0, card('3c'));
+
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('qd'));
+
+    round.dealPlayerBySeat(2, card('ks'));
+    round.dealPlayerBySeat(2, card('3s'));
+
+    board.addAll([card('kh'), card('qh'), card('2d'), card('3d'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    print(player1.hand.highHand);
+    print(player2.hand.highHand);
+    print(player3.hand.highHand);
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  // TODO Same top pair higher lower pair wins
+  // TODO Same top pair higher lower pair
+  // TODO Same two pairs with high card in player hand wins
+  // TODO Same two pairs with high card on board pushes
 }
