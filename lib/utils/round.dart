@@ -53,6 +53,11 @@ getWinningPlayerFromType(players, matrix, handType) {
   }
 }
 
+setMatrixAndValues(players, matrix, rankings, i) {
+  matrix[i].addAll(rankings);
+  players[i].hand.cardValues = rankings;
+}
+
 getCardValues(cards) {
   return groupBy(cards, (dynamic c) => c.rank)
       .values
@@ -70,20 +75,10 @@ setPairOrTripleValues(players, matrix, i, which) {
 
   final rankings = [pairValue, ...singleValues];
 
-  matrix[i].addAll(rankings);
-  players[i].hand.cardValues = rankings;
+  setMatrixAndValues(players, matrix, rankings, i);
 }
 
-setHighCardValues(players, matrix, i) {
-  final rankings = [];
-  for (var j = 0; j < 5; j++) {
-    rankings.add(players[i].hand.highHand[j].value);
-  }
-  matrix[i].addAll(rankings);
-  players[i].hand.cardValues = rankings;
-}
-
-setTwoPairValues(players, matrix, i) {
+setTwoPairValues(players, matrix, i, which) {
   final pairs = getPairedOrTriples(players[i].hand.highHand, 1);
   final firstPairValue = pairs.first.toList().first.value;
   final secondPairValue = pairs.last.toList().first.value;
@@ -91,8 +86,15 @@ setTwoPairValues(players, matrix, i) {
 
   final rankings = [firstPairValue, secondPairValue, ...singleValues];
 
-  matrix[i].addAll(rankings);
-  players[i].hand.cardValues = rankings;
+  setMatrixAndValues(players, matrix, rankings, i);
+}
+
+setHighCardValues(players, matrix, i) {
+  final rankings = [];
+  for (var j = 0; j < 5; j++) {
+    rankings.add(players[i].hand.highHand[j].value);
+  }
+  setMatrixAndValues(players, matrix, rankings, i);
 }
 
 getMatrix(players, which, type) {
@@ -104,7 +106,7 @@ getMatrix(players, which, type) {
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
     } else if (type == 'two pair') {
-      setTwoPairValues(players, matrix, i);
+      setTwoPairValues(players, matrix, i, which);
     }
   }
   return matrix;
@@ -129,34 +131,24 @@ findPlayerWithBestTwoPairHand(players) {
 }
 
 findPlayerWithBestPairHand(players) {
-  // Flatten pairs
-  // [[12, 5, 4, 2], [12, 11, 10, 5], [12, 5, 4, 2]]
-  // [[7, 11, 9, 5], [9, 8, 7, 5], [0, 9, 7, 6]]
   final matrix = getMatrix(players, 1, 'pair');
 
   final player = getWinningPlayerFromType(players, matrix, 'pair');
   if (player != null) {
     return player;
   }
-
-  // If here board played
-  print('If here board played');
 }
 
 // A 2d matrix makes identifying highest card easier.
 // We move left to right in each row until one column has a higher card
 // than the other rows/hands in the same column
+// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
 
 findPlayerWithBestHighCardHand(players) {
-  // Create matrix from players and their hands
-  // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
-  final matrix = getMatrix(players, null, 'high card');
+  final matrix = getMatrix(players, 1, 'high card');
 
   final player = getWinningPlayerFromType(players, matrix, 'high hand');
   if (player != null) {
     return player;
   }
-
-  // If here board played
-  print('If here board played');
 }

@@ -1,9 +1,8 @@
 import 'package:flutpoke/classes/deck.dart';
-import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/hand.dart';
+import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
-import 'package:flutpoke/utils/cards.dart';
 import 'package:flutpoke/utils/round.dart';
 
 class Round {

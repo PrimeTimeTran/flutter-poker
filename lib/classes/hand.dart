@@ -97,6 +97,17 @@ class Hand {
       trips.addAll(List.from(newCards.take(2).toList()));
       highHand = trips;
     }
+    if (outcome == 'straight') {
+      var newCards = List.from(cards);
+    }
+
+    if (outcome == 'flush') {}
+    if (outcome == 'full house') {}
+    if (outcome == 'four of a kind') {}
+    if (outcome == 'straight flush') {}
+    if (outcome == 'royal flush') {
+    
+    }
   }
 
   pair() {

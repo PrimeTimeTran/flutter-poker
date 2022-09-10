@@ -1,5 +1,4 @@
 import 'package:flutpoke/classes/hand.dart';
-import 'package:flutpoke/classes/playing_card.dart';
 
 class Player {
   int seat;

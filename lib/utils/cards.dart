@@ -56,6 +56,8 @@ getPairedOrTriples(cards, which) {
       .toList();
 }
 
+getStraight(cards) {}
+
 checkStraight(cards) {
   var dp = [1, 1, 1, 1, 1, 1, 1];
   var ranks = cards.map((c) => c.value);

@@ -8,7 +8,7 @@ import 'package:flutpoke/utils/round.dart';
 
 void main() {
   final player1 = Player('Loi', 0);
-  final player2 = Player('Bob', 1);
+  final player2 = Player('Joe', 1);
   final player3 = Player('John', 2);
 
   test('2 players if begun with 2 players', () {
@@ -159,8 +159,7 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    // TODO board played
-    expect(round.winner(), null);
+    expect(round.winner(), 'push');
   });
 
   test('Top pair wins', () {
@@ -342,8 +341,7 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    // TODO board played
-    expect(round.winner(), null);
+    expect(round.winner(), 'push');
   });
 
   test('Three of a kind beats two pairs', () {
@@ -415,4 +413,358 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
+  test('Straight defeats three of a kind', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('ks'));
+
+    round.dealPlayerBySeat(1, card('as'));
+    round.dealPlayerBySeat(1, card('kc'));
+
+    round.dealPlayerBySeat(2, card('6d'));
+    round.dealPlayerBySeat(2, card('6c'));
+
+    board.addAll([card('kh'), card('qs'), card('jd'), card('10d'), card('6h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Higher of two straights wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('9d'));
+    round.dealPlayerBySeat(0, card('8d'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('kh'));
+
+    round.dealPlayerBySeat(2, card('9c'));
+    round.dealPlayerBySeat(2, card('8c'));
+
+    board.addAll([card('qh'), card('jh'), card('10d'), card('2c'), card('3c')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest of three straights wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('9d'));
+    round.dealPlayerBySeat(0, card('8d'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('kh'));
+
+    round.dealPlayerBySeat(2, card('9c'));
+    round.dealPlayerBySeat(2, card('8c'));
+
+    board.addAll([card('qh'), card('jh'), card('10d'), card('2c'), card('3c')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Board straight wins if higher than player hand straight', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('7c'));
+    round.dealPlayerBySeat(0, card('6c'));
+
+    round.dealPlayerBySeat(1, card('7d'));
+    round.dealPlayerBySeat(1, card('6d'));
+
+    round.dealPlayerBySeat(2, card('7s'));
+    round.dealPlayerBySeat(2, card('6s'));
+
+    board.addAll([card('qh'), card('jh'), card('10d'), card('9h'), card('8h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
+  });
+
+  test('Ace low straight can win', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('2c'));
+
+    round.dealPlayerBySeat(1, card('kc'));
+    round.dealPlayerBySeat(1, card('ac'));
+
+    round.dealPlayerBySeat(2, card('qs'));
+    round.dealPlayerBySeat(2, card('5h'));
+
+    board.addAll([card('2h'), card('3h'), card('4d'), card('5d'), card('kh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Flush beats straight', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('7d'));
+    round.dealPlayerBySeat(0, card('6d'));
+
+    round.dealPlayerBySeat(1, card('qh'));
+    round.dealPlayerBySeat(1, card('jh'));
+
+    round.dealPlayerBySeat(2, card('ah'));
+    round.dealPlayerBySeat(2, card('5c'));
+
+    board.addAll([card('2h'), card('3h'), card('4d'), card('5d'), card('kh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Higher of two flushes wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('7d'));
+    round.dealPlayerBySeat(0, card('6d'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('kh'));
+
+    round.dealPlayerBySeat(2, card('qh'));
+    round.dealPlayerBySeat(2, card('jh'));
+
+    board.addAll([card('2h'), card('3h'), card('4d'), card('5d'), card('10h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest of three or more flushes wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('jh'));
+    round.dealPlayerBySeat(0, card('10h'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('qh'));
+
+    round.dealPlayerBySeat(2, card('6h'));
+    round.dealPlayerBySeat(2, card('7h'));
+
+    board.addAll([card('2h'), card('3h'), card('4d'), card('5d'), card('kh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Board flush wins if stronger than player cards', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('ac'));
+    round.dealPlayerBySeat(0, card('kc'));
+
+    round.dealPlayerBySeat(1, card('as'));
+    round.dealPlayerBySeat(1, card('ks'));
+
+    round.dealPlayerBySeat(2, card('ad'));
+    round.dealPlayerBySeat(2, card('kd'));
+
+    board.addAll([card('2h'), card('3h'), card('4h'), card('6h'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
+  });
+
+  test('Board flush wins if stronger than player flush cards', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('8h'));
+    round.dealPlayerBySeat(0, card('7h'));
+
+    round.dealPlayerBySeat(1, card('6h'));
+    round.dealPlayerBySeat(1, card('5h'));
+
+    round.dealPlayerBySeat(2, card('4h'));
+    round.dealPlayerBySeat(2, card('3h'));
+
+    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('9h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
+  });
+
+  test('Full house beats flush', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('8h'));
+    round.dealPlayerBySeat(0, card('7h'));
+
+    round.dealPlayerBySeat(1, card('ad'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('4h'));
+    round.dealPlayerBySeat(2, card('3h'));
+
+    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('ac')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Higher triplets of full houses wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kc'));
+    round.dealPlayerBySeat(0, card('ks'));
+
+    round.dealPlayerBySeat(1, card('ad'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('qc'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('ac')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Higher of doubles of full houses wins when triplets tied', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('as'));
+    round.dealPlayerBySeat(0, card('qc'));
+
+    round.dealPlayerBySeat(1, card('ad'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('qd'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest of three or more full houses wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('as'));
+    round.dealPlayerBySeat(0, card('qc'));
+
+    round.dealPlayerBySeat(1, card('ad'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('qd'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Board full house plays if its larger than player hands', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('2h'));
+    round.dealPlayerBySeat(0, card('2d'));
+
+    round.dealPlayerBySeat(1, card('4h'));
+    round.dealPlayerBySeat(1, card('4d'));
+
+    round.dealPlayerBySeat(2, card('5h'));
+    round.dealPlayerBySeat(2, card('5d'));
+
+    board.addAll([card('ah'), card('ac'), card('as'), card('kh'), card('ks')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
+  });
+
+  // TODO Four of a kind defeats full house
+  // TODO Higher four of a kind wins
+  // TODO Four of a kind on board delegates to high card
+
+  // TODO Straight flush beats four of a kind
+  // TODO Highest straight flush of two wins
+  // TODO Highest straight flush of three wins
+
+  // TODO Royal flush beats straight flush
 }
