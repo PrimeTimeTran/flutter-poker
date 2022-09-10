@@ -5,7 +5,6 @@ import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/utils/cards.dart';
 
 void main() {
-  // Test hands recognized
   test('Royal flush to be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
@@ -145,10 +144,8 @@ void main() {
   });
 
   // Test played hands
-  test(
-      '''Board cards to be highHand if outcome is high 
-      card and every board card is higher than dealt cards''',
-      () {
+  test('''Board cards to be highHand if outcome is high 
+      card and every board card is higher than dealt cards''', () {
     final Hand hand = Hand(0);
     final List board = [];
 
@@ -159,7 +156,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    List winningHand = [
+    var winningHand = [
       card('ad'),
       card('kd'),
       card('qd'),
@@ -181,12 +178,12 @@ void main() {
 
     hand.evaluateHand(board);
 
-    List winningHand = [
+    var winningHand = [
       card('ah'),
       card('ad'),
       card('kh'),
       card('7d'),
-      card('5h'),
+      card('5h')
     ];
 
     expect(hand.highHand, winningHand);
@@ -203,12 +200,12 @@ void main() {
 
     hand.evaluateHand(board);
 
-    List winningHand = [
+    var winningHand = [
       card('ah'),
       card('ad'),
       card('kh'),
       card('7d'),
-      card('5h'),
+      card('5h')
     ];
 
     expect(hand.highHand, winningHand);

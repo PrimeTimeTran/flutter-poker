@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 
 import 'package:flutpoke/classes/deck.dart';
 
-Map handRankings = {
+Map<String, int> handRankings = <String, int>{
   'royal flush': 10,
   'straight flush': 9,
   'four of a kind': 8,
@@ -56,6 +56,32 @@ getPairedOrTriples(cards, which) {
       .toList();
 }
 
+getFullHouse(cards) {
+  final map = rankMap(cards);
+
+  var rank = map.keys.firstWhere((v) => map[v] == 3);
+
+  final triplets = [];
+  for (var card in cards) {
+    if (card.rank == rank) {
+      triplets.add(card);
+    }
+  }
+
+  rank = map.keys.firstWhere((v) => map[v] == 2);
+
+  final pair = [];
+  for (var card in cards) {
+    if (card.rank == rank) {
+      pair.add(card);
+    }
+  }
+
+  triplets.addAll(pair);
+
+  return triplets;
+}
+
 getFlush(cards) {
   final map = suitMap(cards);
   final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
@@ -73,7 +99,7 @@ getStraight(cards) {
   var ranks = uniquelist.map((c) => c.value);
   var nums = ranks.toSet().toList();
 
-  if (ranks.contains(11)) {
+  if (ranks.contains(12)) {
     nums.add(-1);
     dp.add(1);
   }

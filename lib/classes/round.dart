@@ -72,7 +72,7 @@ class Round {
 
   getPlayersWithBestHands() {
     players.sort(sortDesc);
-    final handValues = [];
+    List handValues = [];
     for (var p in players) {
       handValues.add(handRankings[p.hand.outcome]);
     }
@@ -100,6 +100,9 @@ class Round {
     }
     if (outcome == 'straight flush') {
       return players.first;
+    }
+    if (outcome == 'full house') {
+      return findBestFullHouse(players);
     }
     if (outcome == 'flush') {
       return findBestFlushHand(players);

@@ -479,8 +479,6 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
-
     expect(round.winner(), 'push');
   });
 
@@ -504,8 +502,6 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
-
     expect(round.winner().seat, player2.seat);
   });
 
@@ -528,8 +524,6 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
-
-    printOutcome(round);
 
     expect(round.winner().seat, player2.seat);
   });
@@ -741,13 +735,141 @@ void main() {
     expect(round.winner(), 'push');
   });
 
-  // TODO Four of a kind defeats full house
-  // TODO Higher four of a kind wins
-  // TODO Four of a kind on board delegates to high card
+  test('Four of a kind defeats full house', () {
+    final board = <PlayingCard>[];
 
-  // TODO Straight flush beats four of a kind
-  // TODO Highest straight flush of two wins
-  // TODO Highest straight flush of three wins
+    final players = [player1, player2, player3];
+    final round = Round(players);
 
-  // TODO Royal flush beats straight flush
+    round.dealPlayerBySeat(0, card('ah'));
+    round.dealPlayerBySeat(0, card('2h'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('as'));
+    round.dealPlayerBySeat(2, card('2s'));
+
+    board.addAll([card('ah'), card('ac'), card('kc'), card('ks'), card('qd')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest four of a kind wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kh'));
+    round.dealPlayerBySeat(0, card('kd'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('as'));
+
+    round.dealPlayerBySeat(2, card('qh'));
+    round.dealPlayerBySeat(2, card('qd'));
+
+    board.addAll([card('ah'), card('ac'), card('kc'), card('ks'), card('qc')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Four of a kind on board delegates to high card', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('qh'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('qc'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ad'), card('ac'), card('as'), card('2h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Straight flush beats four of a kind', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('ah'));
+    round.dealPlayerBySeat(0, card('ad'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('qh'));
+
+    round.dealPlayerBySeat(2, card('qc'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('jh'), card('10h'), card('9h'), card('ac'), card('as')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Highest straight flush of two wins', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('8h'));
+    round.dealPlayerBySeat(0, card('7h'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('qh'));
+
+    round.dealPlayerBySeat(2, card('ah'));
+    round.dealPlayerBySeat(2, card('ad'));
+
+    board.addAll([card('jh'), card('10h'), card('9h'), card('ac'), card('as')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Royal flush beats straight flush', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('9h'));
+    round.dealPlayerBySeat(0, card('8h'));
+
+    round.dealPlayerBySeat(1, card('ah'));
+    round.dealPlayerBySeat(1, card('kh'));
+
+    round.dealPlayerBySeat(2, card('9h'));
+    round.dealPlayerBySeat(2, card('9d'));
+
+    board.addAll([card('qh'), card('jh'), card('10h'), card('9c'), card('9s')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
 }

@@ -104,7 +104,9 @@ class Hand {
     if (outcome == 'flush') {
       highHand = getFlush(cards);
     }
-    if (outcome == 'full house') {}
+    if (outcome == 'full house') {
+      highHand = getFullHouse(cards);
+    }
     if (outcome == 'four of a kind') {}
     if (outcome == 'straight flush') {}
     if (outcome == 'royal flush') {}

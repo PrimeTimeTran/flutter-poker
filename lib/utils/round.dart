@@ -51,7 +51,7 @@ getWinningPlayerFromType(players, matrix, handType) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'trips' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
-    } else if (handType == 'straight' && values.length < matrix.length) {
+    } else if (handType == 'straight') {
       if (values.length == 1) {
         return null;
       }
@@ -59,6 +59,14 @@ getWinningPlayerFromType(players, matrix, handType) {
     } else if (handType == 'flush') {
       if (values.length == 1) {
         return null;
+      }
+      return getPlayerFromValues(values, players, i);
+    } else if (handType == 'full house') {
+      if (values.length == 1) {
+        return null;
+      }
+      if (values.length < matrix.length) {
+        
       }
       return getPlayerFromValues(values, players, i);
     }
@@ -77,15 +85,14 @@ setMatrixAndValues(players, matrix, rankings, i) {
   players[i].hand.cardValues = rankings;
 }
 
-setPairOrTripleValues(players, matrix, i, which) {
-  final pairValue = getPairedOrTriples(players[i].hand.highHand, which)
-      .first
-      .toList()
-      .first
-      .value;
-  final singleValues = getCardValues(players[i].hand.highHand);
+setFullHouseValues(players, matrix, i, which) {
+  final triples = getPairedOrTriples(players[i].hand.highHand, 2);
+  final pairs = getPairedOrTriples(players[i].hand.highHand, 1);
 
-  final rankings = [pairValue, ...singleValues];
+  final tripletValue = triples.first.toList().first.value;
+  final pairValue = pairs.last.toList().last.value;
+
+  final rankings = [tripletValue, pairValue];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
@@ -97,6 +104,19 @@ setTwoPairValues(players, matrix, i, which) {
   final singleValues = getCardValues(players[i].hand.highHand);
 
   final rankings = [firstPairValue, secondPairValue, ...singleValues];
+
+  setMatrixAndValues(players, matrix, rankings, i);
+}
+
+setPairOrTripleValues(players, matrix, i, which) {
+  final pairValue = getPairedOrTriples(players[i].hand.highHand, which)
+      .first
+      .toList()
+      .first
+      .value;
+  final singleValues = getCardValues(players[i].hand.highHand);
+
+  final rankings = [pairValue, ...singleValues];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
@@ -119,9 +139,21 @@ getMatrix(players, which, type) {
       setPairOrTripleValues(players, matrix, i, which);
     } else if (type == 'two pair') {
       setTwoPairValues(players, matrix, i, which);
+    } else if (type == 'full house') {
+      setFullHouseValues(players, matrix, i, which);
     }
   }
   return matrix;
+}
+
+findBestFullHouse(players) {
+  final matrix = getMatrix(players, 2, 'full house');
+
+  final player = getWinningPlayerFromType(players, matrix, 'full house');
+  if (player != null) {
+    return player;
+  }
+  return 'push';
 }
 
 findBestFlushHand(players) {
