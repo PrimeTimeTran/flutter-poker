@@ -23,8 +23,6 @@ card(code) {
   return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
 }
 
-int sortDesc(a, b) => b.hand.ranking.compareTo(a.hand.ranking);
-
 Map rankMap(cards) {
   final ranks = cards.map((c) => c.rank);
   var map = {};
@@ -51,17 +49,10 @@ Map suitMap(cards) {
   return map;
 }
 
-getTripsFromCards(cards) {
+getPairedOrTriples(cards, which) {
   return groupBy(cards, (dynamic c) => c.rank)
       .values
-      .where((g) => g.length > 2)
-      .toList();
-}
-
-getPairFromCards(cards) {
-  return groupBy(cards, (dynamic c) => c.rank)
-      .values
-      .where((g) => g.length > 1)
+      .where((g) => g.length > which)
       .toList();
 }
 
@@ -92,4 +83,3 @@ checkStraight(cards) {
 
   return res > 4;
 }
-

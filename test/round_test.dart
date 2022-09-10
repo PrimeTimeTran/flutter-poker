@@ -369,31 +369,6 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Same three of a kind delegates to high card', () {
-    final board = <PlayingCard>[];
-
-    final players = [player1, player2, player3];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('kd'));
-    round.dealPlayerBySeat(0, card('2d'));
-
-    round.dealPlayerBySeat(1, card('ks'));
-    round.dealPlayerBySeat(1, card('ac'));
-
-    round.dealPlayerBySeat(2, card('qs'));
-    round.dealPlayerBySeat(2, card('as'));
-
-    board.addAll([card('kh'), card('kc'), card('10d'), card('3d'), card('4d')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    printOutcome(round);
-
-    expect(round.winner().seat, player2.seat);
-  });
-
   test('Highest three of a kind wins', () {
     final board = <PlayingCard>[];
 
@@ -406,18 +381,38 @@ void main() {
     round.dealPlayerBySeat(1, card('ks'));
     round.dealPlayerBySeat(1, card('kh'));
 
-    round.dealPlayerBySeat(2, card('qs'));
-    round.dealPlayerBySeat(2, card('as'));
+    round.dealPlayerBySeat(2, card('4s'));
+    round.dealPlayerBySeat(2, card('4c'));
 
     board.addAll([card('ah'), card('kc'), card('qd'), card('5s'), card('4d')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Same three of a kind delegates to high card', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('2c'));
+
+    round.dealPlayerBySeat(1, card('ks'));
+    round.dealPlayerBySeat(1, card('ac'));
+
+    round.dealPlayerBySeat(2, card('qs'));
+    round.dealPlayerBySeat(2, card('as'));
+
+    board.addAll([card('kh'), card('kc'), card('10d'), card('3d'), card('4d')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
   });
 
-  // TODO Top three of a kind beats low three of a kind
 }

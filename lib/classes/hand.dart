@@ -1,5 +1,3 @@
-import 'dart:math';
-// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 import 'package:flutpoke/utils/cards.dart';
@@ -70,7 +68,7 @@ class Hand {
     }
     if (outcome == 'pair') {
       var newCards = List.from(cards);
-      var pair = getPairFromCards(cards).first.toList();
+      var pair = getPairedOrTriples(cards, 1).first.toList();
 
       newCards.removeWhere((c) => c.rank == pair.first.rank);
 
@@ -80,9 +78,9 @@ class Hand {
     }
     if (outcome == 'two pair') {
       var newCards = List.from(cards);
-      var firstPair = getPairFromCards(cards).first.toList();
+      var firstPair = getPairedOrTriples(cards, 1).first.toList();
 
-      var secondPair = getPairFromCards(cards)[1].toList();
+      var secondPair = getPairedOrTriples(cards, 1)[1].toList();
 
       newCards.removeWhere((c) => c.rank == firstPair.first.rank);
       newCards.removeWhere((c) => c.rank == secondPair.first.rank);
@@ -94,8 +92,7 @@ class Hand {
     }
     if (outcome == 'three of a kind') {
       var newCards = List.from(cards);
-      var trips = getTripsFromCards(cards).first.toList();
-      print(trips);
+      var trips = getPairedOrTriples(cards, 2).first.toList();
       newCards.removeWhere((c) => c.rank == trips.first.rank);
       trips.addAll(List.from(newCards.take(2).toList()));
       highHand = trips;
