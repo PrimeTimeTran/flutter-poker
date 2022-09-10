@@ -515,19 +515,21 @@ void main() {
     final players = [player1, player2, player3];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, card('7d'));
+    round.dealPlayerBySeat(0, card('as'));
     round.dealPlayerBySeat(0, card('6d'));
 
-    round.dealPlayerBySeat(1, card('qh'));
-    round.dealPlayerBySeat(1, card('jh'));
+    round.dealPlayerBySeat(1, card('3h'));
+    round.dealPlayerBySeat(1, card('2h'));
 
-    round.dealPlayerBySeat(2, card('ah'));
+    round.dealPlayerBySeat(2, card('ac'));
     round.dealPlayerBySeat(2, card('5c'));
 
-    board.addAll([card('2h'), card('3h'), card('4d'), card('5d'), card('kh')]);
+    board.addAll([card('kh'), card('qh'), card('jh'), card('10h'), card('5d')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
+
+    printOutcome(round);
 
     expect(round.winner().seat, player2.seat);
   });

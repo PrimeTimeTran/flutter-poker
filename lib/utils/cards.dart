@@ -3,17 +3,17 @@ import 'package:collection/collection.dart';
 
 import 'package:flutpoke/classes/deck.dart';
 
-const handRankings = <String, int>{
+Map handRankings = {
   'royal flush': 10,
   'straight flush': 9,
   'four of a kind': 8,
   'full house': 7,
   'flush': 6,
-  'straight': 6,
-  'three of a kind': 5,
-  'two pair': 4,
-  'pair': 3,
-  'high card': 2,
+  'straight': 5,
+  'three of a kind': 4,
+  'two pair': 3,
+  'pair': 2,
+  'high card': 1,
 };
 
 final deck = Deck();
@@ -54,6 +54,15 @@ getPairedOrTriples(cards, which) {
       .values
       .where((g) => g.length > which)
       .toList();
+}
+
+getFlush(cards) {
+  final map = suitMap(cards);
+  final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
+  if (suit == null) return false;
+  var suitedCards = List.from(cards.where((element) => element.suit == suit));
+
+  return suitedCards.take(5).toList();
 }
 
 getStraight(cards) {

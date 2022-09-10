@@ -56,6 +56,11 @@ getWinningPlayerFromType(players, matrix, handType) {
         return null;
       }
       return getPlayerFromValues(values, players, i);
+    } else if (handType == 'flush') {
+      if (values.length == 1) {
+        return null;
+      }
+      return getPlayerFromValues(values, players, i);
     }
   }
 }
@@ -108,7 +113,7 @@ getMatrix(players, which, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (type == 'high card' || type == 'straight') {
+    if (type == 'high card' || type == 'straight' || type == 'flush') {
       setHighCardValues(players, matrix, i);
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
@@ -117,6 +122,16 @@ getMatrix(players, which, type) {
     }
   }
   return matrix;
+}
+
+findBestFlushHand(players) {
+  final matrix = getMatrix(players, 2, 'flush');
+
+  final player = getWinningPlayerFromType(players, matrix, 'flush');
+  if (player != null) {
+    return player;
+  }
+  return 'push';
 }
 
 findBestStraightHand(players) {

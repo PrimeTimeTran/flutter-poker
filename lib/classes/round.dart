@@ -1,9 +1,11 @@
+import 'dart:math';
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 import 'package:flutpoke/utils/round.dart';
+import 'package:flutpoke/utils/cards.dart';
 
 class Round {
   int blind = 100;
@@ -70,7 +72,15 @@ class Round {
 
   getPlayersWithBestHands() {
     players.sort(sortDesc);
-    final highestRanking = players.first.hand.ranking;
+    final handValues = [];
+    for (var p in players) {
+      handValues.add(handRankings[p.hand.outcome]);
+    }
+
+    // why don't I work?
+    // final highestRanking = handValues.max;
+    final highestRanking =
+        handValues.reduce((curr, next) => curr > next ? curr : next);
 
     final bestPlayers = [];
 
@@ -90,6 +100,9 @@ class Round {
     }
     if (outcome == 'straight flush') {
       return players.first;
+    }
+    if (outcome == 'flush') {
+      return findBestFlushHand(players);
     }
     if (outcome == 'straight') {
       return findBestStraightHand(players);
