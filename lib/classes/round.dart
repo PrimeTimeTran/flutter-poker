@@ -4,6 +4,7 @@ import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/playing_card.dart';
 
 import 'package:flutpoke/utils/cards.dart';
+import 'package:flutpoke/utils/round.dart';
 
 class Round {
   int blind = 100;
@@ -84,7 +85,6 @@ class Round {
   }
 
   identifyHighest(players) {
-    print(players);
     final outcome = players.first.hand.outcome;
     if (outcome == 'royal flush') {
       return players.first;
@@ -93,17 +93,17 @@ class Round {
       return players.first;
     }
     if (outcome == 'three of a kind') {
-      return getBestThreeOfAKind(players);
+      return findBestThreeOfKindHand(players);
     }
     if (outcome == 'two pair') {
-      return findPlayerWithHighestTwoPairs(players);
+      return findPlayerWithBestTwoPairHand(players);
     }
     if (outcome == 'pair') {
-      return findPlayerWithHighestPairedHand(players);
+      return findPlayerWithBestPairHand(players);
     }
 
     if (outcome == 'high card') {
-      return findPlayerWithHighestHighCardHand(players);
+      return findPlayerWithBestHighCardHand(players);
     }
   }
 }
