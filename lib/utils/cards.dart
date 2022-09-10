@@ -56,14 +56,49 @@ getPairedOrTriples(cards, which) {
       .toList();
 }
 
-getStraight(cards) {}
+getStraight(cards) {
+  var seen = Set();
+  List uniquelist = cards.where((c) => seen.add(c.value)).toList();
+
+  var dp = [1, 1, 1, 1, 1, 1, 1];
+  var ranks = uniquelist.map((c) => c.value);
+  var nums = ranks.toSet().toList();
+
+  if (ranks.contains(11)) {
+    nums.add(-1);
+    dp.add(1);
+  }
+
+  for (var i = 0; i < nums.length; i++) {
+    for (var j = 0; j < nums.length; j++) {
+      if (nums[i] == nums[j] - 1) {
+        dp[i] = max(dp[i], dp[j] + 1);
+      }
+    }
+  }
+
+  var res = 1;
+  for (var i = 0; i < nums.length; i++) {
+    if (res < dp[i]) {
+      res = dp[i];
+    }
+  }
+
+  final endOfStraight = dp.indexOf(5);
+
+  if (ranks.contains(12)) {
+    uniquelist.add(cards.first);
+  }
+
+  return uniquelist.sublist(endOfStraight - 4, endOfStraight + 1);
+}
 
 checkStraight(cards) {
   var dp = [1, 1, 1, 1, 1, 1, 1];
   var ranks = cards.map((c) => c.value);
   var nums = ranks.toSet().toList();
 
-  if (ranks.contains(11)) {
+  if (ranks.contains(12)) {
     nums.add(-1);
     dp.add(1);
   }

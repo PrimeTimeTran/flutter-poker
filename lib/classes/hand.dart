@@ -98,16 +98,14 @@ class Hand {
       highHand = trips;
     }
     if (outcome == 'straight') {
-      var newCards = List.from(cards);
+      highHand = getStraight(cards);
     }
 
     if (outcome == 'flush') {}
     if (outcome == 'full house') {}
     if (outcome == 'four of a kind') {}
     if (outcome == 'straight flush') {}
-    if (outcome == 'royal flush') {
-    
-    }
+    if (outcome == 'royal flush') {}
   }
 
   pair() {

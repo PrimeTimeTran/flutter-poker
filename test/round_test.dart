@@ -154,7 +154,7 @@ void main() {
     round.dealPlayerBySeat(2, card('2d'));
     round.dealPlayerBySeat(2, card('3d'));
 
-    board.addAll([card('9h'), card('10h'), card('4d'), card('6h'), card('7h')]);
+    board.addAll([card('10h'), card('9h'), card('7h'), card('6h'), card('5d')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
@@ -436,29 +436,6 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Higher of two straights wins', () {
-    final board = <PlayingCard>[];
-
-    final players = [player1, player2, player3];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('9d'));
-    round.dealPlayerBySeat(0, card('8d'));
-
-    round.dealPlayerBySeat(1, card('ah'));
-    round.dealPlayerBySeat(1, card('kh'));
-
-    round.dealPlayerBySeat(2, card('9c'));
-    round.dealPlayerBySeat(2, card('8c'));
-
-    board.addAll([card('qh'), card('jh'), card('10d'), card('2c'), card('3c')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    expect(round.winner().seat, player2.seat);
-  });
-
   test('Highest of three straights wins', () {
     final board = <PlayingCard>[];
 
@@ -482,7 +459,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Board straight wins if higher than player hand straight', () {
+  test('Push if board straight plays', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -502,6 +479,8 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
+    printOutcome(round);
+
     expect(round.winner(), 'push');
   });
 
@@ -514,8 +493,8 @@ void main() {
     round.dealPlayerBySeat(0, card('kd'));
     round.dealPlayerBySeat(0, card('2c'));
 
-    round.dealPlayerBySeat(1, card('kc'));
     round.dealPlayerBySeat(1, card('ac'));
+    round.dealPlayerBySeat(1, card('kc'));
 
     round.dealPlayerBySeat(2, card('qs'));
     round.dealPlayerBySeat(2, card('5h'));
@@ -524,6 +503,8 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
+
+    printOutcome(round);
 
     expect(round.winner().seat, player2.seat);
   });
@@ -658,7 +639,7 @@ void main() {
     round.dealPlayerBySeat(2, card('4h'));
     round.dealPlayerBySeat(2, card('3h'));
 
-    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('ac')]);
+    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
@@ -681,7 +662,7 @@ void main() {
     round.dealPlayerBySeat(2, card('qc'));
     round.dealPlayerBySeat(2, card('qs'));
 
-    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('ac')]);
+    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();

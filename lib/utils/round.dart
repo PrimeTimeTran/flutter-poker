@@ -6,13 +6,13 @@ import 'package:flutpoke/utils/cards.dart';
 printOutcome(round) {
   Colorize string = Colorize("\n------------------");
   string.green();
-  print(string);
 
+  print(string);
+  print(string);
   print(round.board);
   print('\n');
   for (var player in round.players) {
     print(player.hand.outcome);
-    print(player.hand.playerHand);
     print(player.hand.highHand);
     print(player.hand.cardValues);
   }
@@ -27,11 +27,13 @@ setValuesFromColOfMatrix(matrix, i) {
   for (var j = 0; j < matrix.length; j++) {
     values.add(matrix[j][i]);
   }
+
   return values;
 }
 
 getPlayerFromValues(values, players, i) {
   final highestValue = values.reduce((c, n) => c > n ? c : n);
+
   for (var p in players) {
     if (p.hand.cardValues[i] == highestValue) {
       return p;
@@ -43,19 +45,19 @@ getWinningPlayerFromType(players, matrix, handType) {
   for (var i = 0; i < matrix.first.length; i++) {
     final values = setValuesFromColOfMatrix(matrix, i);
 
-    if (handType == 'pair' && values.length > 1) {
+    if (handType == 'high hand' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
-    } else if (handType == 'high hand' && values.length == matrix.length) {
+    } else if (handType == 'pair' && values.length > 1) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'trips' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
+    } else if (handType == 'straight' && values.length < matrix.length) {
+      if (values.length == 1) {
+        return null;
+      }
+      return getPlayerFromValues(values, players, i);
     }
   }
-}
-
-setMatrixAndValues(players, matrix, rankings, i) {
-  matrix[i].addAll(rankings);
-  players[i].hand.cardValues = rankings;
 }
 
 getCardValues(cards) {
@@ -63,6 +65,11 @@ getCardValues(cards) {
       .values
       .where((g) => g.length == 1)
       .map((c) => c.first.value);
+}
+
+setMatrixAndValues(players, matrix, rankings, i) {
+  matrix[i].addAll(rankings);
+  players[i].hand.cardValues = rankings;
 }
 
 setPairOrTripleValues(players, matrix, i, which) {
@@ -101,7 +108,7 @@ getMatrix(players, which, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (type == 'high card') {
+    if (type == 'high card' || type == 'straight') {
       setHighCardValues(players, matrix, i);
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
@@ -112,6 +119,16 @@ getMatrix(players, which, type) {
   return matrix;
 }
 
+findBestStraightHand(players) {
+  final matrix = getMatrix(players, 2, 'straight');
+
+  final player = getWinningPlayerFromType(players, matrix, 'straight');
+  if (player != null) {
+    return player;
+  }
+  return 'push';
+}
+
 findBestThreeOfKindHand(players) {
   final matrix = getMatrix(players, 2, 'triples');
 
@@ -119,6 +136,7 @@ findBestThreeOfKindHand(players) {
   if (player != null) {
     return player;
   }
+  return 'push';
 }
 
 findPlayerWithBestTwoPairHand(players) {
@@ -128,6 +146,7 @@ findPlayerWithBestTwoPairHand(players) {
   if (player != null) {
     return player;
   }
+  return 'push';
 }
 
 findPlayerWithBestPairHand(players) {
@@ -137,6 +156,7 @@ findPlayerWithBestPairHand(players) {
   if (player != null) {
     return player;
   }
+  return 'push';
 }
 
 // A 2d matrix makes identifying highest card easier.
@@ -151,4 +171,5 @@ findPlayerWithBestHighCardHand(players) {
   if (player != null) {
     return player;
   }
+  return 'push';
 }

@@ -91,6 +91,9 @@ class Round {
     if (outcome == 'straight flush') {
       return players.first;
     }
+    if (outcome == 'straight') {
+      return findBestStraightHand(players);
+    }
     if (outcome == 'three of a kind') {
       return findBestThreeOfKindHand(players);
     }
@@ -100,7 +103,6 @@ class Round {
     if (outcome == 'pair') {
       return findPlayerWithBestPairHand(players);
     }
-
     if (outcome == 'high card') {
       return findPlayerWithBestHighCardHand(players);
     }
