@@ -67,35 +67,13 @@ class Hand {
       highHand = List.from(cards.take(5));
     }
     if (outcome == 'pair') {
-      var newCards = List.from(cards);
-      var pair = getOfKind(cards, 'two').first.toList();
-
-      newCards.removeWhere((c) => c.rank == pair.first.rank);
-
-      pair.addAll(List.from(newCards.take(3).toList()));
-
-      highHand = pair;
+      highHand = getPaired(cards);
     }
     if (outcome == 'two pair') {
-      var newCards = List.from(cards);
-      var firstPair = getOfKind(cards, 'two').first.toList();
-
-      var secondPair = getOfKind(cards, 'two')[1].toList();
-
-      newCards.removeWhere((c) => c.rank == firstPair.first.rank);
-      newCards.removeWhere((c) => c.rank == secondPair.first.rank);
-
-      firstPair.addAll(List.from(secondPair));
-      firstPair.addAll(List.from(newCards.take(1).toList()));
-
-      highHand = firstPair;
+      highHand = getTwoPaired(cards);
     }
     if (outcome == 'three of a kind') {
-      var newCards = List.from(cards);
-      var trips = getOfKind(cards, 'three').first.toList();
-      newCards.removeWhere((c) => c.rank == trips.first.rank);
-      trips.addAll(List.from(newCards.take(2).toList()));
-      highHand = trips;
+      highHand = getThreeOfAKind(cards);
     }
     if (outcome == 'straight') {
       highHand = getStraight(cards);
@@ -107,7 +85,9 @@ class Hand {
     if (outcome == 'full house') {
       highHand = getFullHouse(cards);
     }
-    if (outcome == 'four of a kind') {}
+    if (outcome == 'four of a kind') {
+      highHand = getFourOfAKind(cards);
+    }
     if (outcome == 'straight flush') {}
     if (outcome == 'royal flush') {}
   }

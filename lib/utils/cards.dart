@@ -58,12 +58,15 @@ getOfKind(cards, which) {
   } else {
     limit = 3;
   }
-  ;
 
   return groupBy(cards, (dynamic c) => c.rank)
       .values
       .where((g) => g.length > limit)
       .toList();
+}
+
+getFourOfAKind(cards) {
+  return getOfKind(cards, 'four').first.toList();
 }
 
 getFullHouse(cards) {
@@ -136,6 +139,39 @@ getStraight(cards) {
   }
 
   return uniquelist.sublist(endOfStraight - 4, endOfStraight + 1);
+}
+
+getThreeOfAKind(cards) {
+  var newCards = List.from(cards);
+  var trips = getOfKind(cards, 'three').first.toList();
+  newCards.removeWhere((c) => c.rank == trips.first.rank);
+  trips.addAll(List.from(newCards.take(2).toList()));
+  return trips;
+}
+
+getTwoPaired(cards) {
+  var newCards = List.from(cards);
+  var firstPair = getOfKind(cards, 'two').first.toList();
+
+  var secondPair = getOfKind(cards, 'two')[1].toList();
+
+  newCards.removeWhere((c) => c.rank == firstPair.first.rank);
+  newCards.removeWhere((c) => c.rank == secondPair.first.rank);
+
+  firstPair.addAll(List.from(secondPair));
+  firstPair.addAll(List.from(newCards.take(1).toList()));
+  return firstPair;
+}
+
+getPaired(cards) {
+  var newCards = List.from(cards);
+  var pair = getOfKind(cards, 'two').first.toList();
+
+  newCards.removeWhere((c) => c.rank == pair.first.rank);
+
+  pair.addAll(List.from(newCards.take(3).toList()));
+
+  return pair;
 }
 
 checkStraight(cards) {
