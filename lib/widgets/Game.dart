@@ -33,7 +33,7 @@ class _GameState extends State<Game> {
     deck = Deck();
     deck.shuffle();
     setState(() {
-      // cards = deck.deal(10);
+      cards = deck.deal(10);
       status = 'started';
     });
   }

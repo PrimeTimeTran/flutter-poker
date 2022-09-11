@@ -55,63 +55,54 @@ Map suitMap(cards) {
 }
 
 getOfKind(which, cards) {
-  int limit = 3;
-  if (which == 'pair') {
-    limit = 1;
-  } else if (which == 'trips') {
-    limit = 2;
+  int min = 3;
+  if (which == 'trips') {
+    min = 2;
+  } else if (which == 'pair') {
+    min = 1;
   }
 
   return groupBy(cards, (dynamic c) => c.rank)
       .values
-      .where((g) => g.length > limit)
+      .where((g) => g.length > min)
       .toList();
 }
 
 getRoyalFlush(cards) {
-  return [];
-}
-
-getStraightFlush(cards) {
+  cards = getFlush(cards);
   return getStraight(cards, true);
 }
 
-getFourOfAKind(cards) {
-  var newCards = cards;
-  var quads = getOfKind('quads', cards).first.toList();
-  newCards.removeWhere((c) => c.rank == quads.first.rank);
-
-  quads.addAll(newCards.take(1));
-
-  return quads;
+getStraightFlush(cards) {
+  cards = getFlush(cards);
+  return getStraight(cards, true);
 }
 
 getFullHouse(cards) {
   final map = rankMap(cards);
 
   var rank = map.keys.firstWhere((v) => map[v] == 3);
+  var list = map.values.toList();
+  var twoTrips = list.where((e) => e == 3).length == 2;
 
   final triplets = [];
   for (var card in cards) {
-    if (card.rank == rank) {
-      triplets.add(card);
-    }
+    if (card.rank == rank) triplets.add(card);
   }
 
-  rank = map.keys.firstWhere((v) => map[v] == 2);
+  var secondRank = map.keys.firstWhereOrNull((v) => map[v] == 2);
+  secondRank ??= map.keys.where((v) => map[v] == 3).toList()[1];
 
   for (var card in cards) {
-    if (card.rank == rank) {
-      triplets.add(card);
-    }
+    if (card.rank == secondRank) triplets.add(card);
   }
+  if (twoTrips) triplets.removeLast();
 
   return triplets;
 }
 
 getFlush(cards) {
-  final map = suitMap(cards);
-  final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
+  final suit = getFlushSuit(cards);
   if (suit == null) return false;
   var suitedCards = cards.where((element) => element.suit == suit);
 
@@ -157,38 +148,30 @@ getStraight(cards, getCards) {
       : res > 4;
 }
 
-getThreeOfAKind(cards) {
-  var newCards = cards;
-  var trips = getOfKind('trips', cards).first;
-  newCards.removeWhere((c) => c.rank == trips.first.rank);
-  trips.addAll(newCards.take(2));
-  return trips;
-}
+getTwoPair(cards) {
+  var pairs = getOfKind('pair', cards);
+  var firstPair = pairs.first;
+  var secondPair = pairs[1];
 
-getTwoPaired(cards) {
-  var newCards = cards;
-  var firstPair = getOfKind('pair', cards).first;
-  var secondPair = getOfKind('pair', cards)[1];
-
-  newCards.removeWhere((c) => c.rank == firstPair.first.rank);
-  newCards.removeWhere((c) => c.rank == secondPair.first.rank);
+  cards.removeWhere((c) => c.rank == firstPair.first.rank);
+  cards.removeWhere((c) => c.rank == secondPair.first.rank);
 
   firstPair.addAll(secondPair);
-  firstPair.addAll(newCards.take(1));
+  firstPair.addAll(cards.take(1));
   return firstPair;
 }
 
-getPaired(cards) {
-  var newCards = cards;
-  var pair = getOfKind('pair', cards).first;
+getKindOf(cards, kind) {
+  int take = 1;
+  if (kind == 'trips') {
+    take = 2;
+  } else if (kind == 'pair') {
+    take = 3;
+  }
+  var permutation = getOfKind(kind, cards).first;
 
-  newCards.removeWhere((c) => c.rank == pair.first.rank);
+  cards.removeWhere((c) => c.rank == permutation.first.rank);
+  permutation.addAll(cards.take(take));
 
-  pair.addAll(newCards.take(3));
-
-  return pair;
-}
-
-checkStraight(cards) {
-  return getStraight(cards, false);
+  return permutation;
 }

@@ -31,12 +31,12 @@ setValuesFromColOfMatrix(matrix, i) {
   return values;
 }
 
-getHighestCardValueInColumn(values) {
+getColHighValue(values) {
   return values.reduce((c, n) => c > n ? c : n);
 }
 
-getPlayerFromValues(values, players, i) {
-  final highestValue = getHighestCardValueInColumn(values);
+getPlayerFromHighVal(values, players, i) {
+  final highestValue = getColHighValue(values);
 
   for (var p in players) {
     if (p.hand.cardValues[i] == highestValue) {
@@ -45,16 +45,19 @@ getPlayerFromValues(values, players, i) {
   }
 }
 
-getWinningPlayerFromFullHouse(players, values, matrix, i) {
-  final highestValue = getHighestCardValueInColumn(values);
+// Full house is tricky because the pair can come from either trips or pair.
+// Here we have 2 trips in the player hand dealt + board
+// [as, kc]
+// [ah, ad, ac, kh, kh, 5h]
+getFullHouseWinner(players, values, matrix, i) {
+  final highVal = getColHighValue(values);
 
-  players = players.where((p) => p.hand.cardValues[i] == highestValue);
+  players = players.where((p) => p.hand.cardValues[i] == highVal);
 
-  var secondColumnValues = setValuesFromColOfMatrix(matrix, i + 1);
-  secondColumnValues.remove(highestValue);
+  var nextColVals = setValuesFromColOfMatrix(matrix, i + 1);
+  nextColVals.remove(highVal);
 
-  final secondColumnHighestValue =
-      getHighestCardValueInColumn(secondColumnValues);
+  final nextColHighVal = getColHighValue(nextColVals);
 
   var play1PairVal = players.first.hand.cardValues[i + 1];
   var play2PairVal = players.last.hand.cardValues[i + 1];
@@ -63,40 +66,27 @@ getWinningPlayerFromFullHouse(players, values, matrix, i) {
     return null;
   }
 
-  final player = players
-      .firstWhere((p) => p.hand.cardValues[i + 1] == secondColumnHighestValue);
+  final player =
+      players.firstWhere((p) => p.hand.cardValues[i + 1] == nextColHighVal);
   return player;
 }
 
-// Matrix will look different depending on how many players and which
-// type of winning hand
+const slidingWindow = ['high card', 'pair', 'trips', 'quads'];
+const sameValColPush = ['straight', 'flush', 'straight flush'];
 
-getWinningPlayerFromType(players, matrix, handType) {
+getWinningPlayerFromType(players, matrix, type) {
   for (var i = 0; i < matrix.first.length; i++) {
     var values = setValuesFromColOfMatrix(matrix, i);
-
-    if (values.length == matrix.length &&
-        (handType == 'high card' || handType == 'trips')) {
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'pair' && values.length > 1) {
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'straight' ||
-        handType == 'flush' ||
-        handType == 'straight flush') {
+    if (values.length > 1 && slidingWindow.contains(type)) {
+      return getPlayerFromHighVal(values, players, i);
+    } else if (sameValColPush.contains(type)) {
       if (values.length == 1) return null;
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'full house') {
-      if (values.length == 1) return null;
+      return getPlayerFromHighVal(values, players, i);
+    } else if (type == 'full house') {
       if (values.length < matrix.length) {
-        return getWinningPlayerFromFullHouse(players, values, matrix, i);
+        return getFullHouseWinner(players, values, matrix, i);
       }
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'quads') {
-      final highestValue = getHighestCardValueInColumn(values);
-      if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
-        continue;
-      }
-      return getPlayerFromValues(values, players, i);
+      return getPlayerFromHighVal(values, players, i);
     }
   }
 }
@@ -115,13 +105,10 @@ setMatrixAndValues(players, matrix, rankings, i) {
 
 setFullHouseValues(players, matrix, i) {
   final hand = players[i].hand.bestHand;
-  final trips = getOfKind('trips', hand);
-  final pairs = getOfKind('pair', hand);
+  final trips = getOfKind('trips', hand).first.toList().first.value;
+  final pairs = getOfKind('pair', hand).last.toList().first.value;
 
-  final tripValue = trips.first.toList().first.value;
-  final pairValue = pairs.last.toList().last.value;
-
-  final rankings = [tripValue, pairValue];
+  final rankings = [trips, pairs];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
@@ -149,17 +136,23 @@ setCardValues(players, matrix, i) {
 // than the other rows/hands in the same column
 // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
 
+const singleSlidingWindow = [
+  'high card',
+  'two pair',
+  'straight',
+  'flush',
+  'straight flush'
+];
+
+const kindOfWindow = ['pair', 'trips', 'quads'];
+
 getMatrix(players, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (type == 'high card' ||
-        type == 'two pair' ||
-        type == 'straight' ||
-        type == 'flush' ||
-        type == 'straight flush') {
+    if (singleSlidingWindow.contains(type)) {
       setCardValues(players, matrix, i);
-    } else if (type == 'pair' || type == 'trips' || type == 'quads') {
+    } else if (kindOfWindow.contains(type)) {
       setKindOfValues(players, matrix, i, type);
     } else if (type == 'full house') {
       setFullHouseValues(players, matrix, i);

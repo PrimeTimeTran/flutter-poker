@@ -67,4 +67,27 @@ class Deck {
     cards.removeAt(0);
     return cards.removeAt(0);
   }
+
+  deal(numOfHands) {
+    List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
+    cards.removeAt(0);
+
+    var handIdx = 0;
+
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
+    handIdx = 0;
+
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
+    return handsDealt;
+  }
 }

@@ -1,36 +1,23 @@
 import 'package:flutpoke/utils/cards.dart';
 
 getHighCards(outcome, cards) {
-  var bestHand;
-  if (outcome == 'high card') {
-    bestHand = cards.take(5).toList();
-  }
-  if (outcome == 'pair') {
-    bestHand = getPaired(cards);
-  }
-  if (outcome == 'two pair') {
-    bestHand = getTwoPaired(cards);
-  }
-  if (outcome == 'trips') {
-    bestHand = getThreeOfAKind(cards);
-  }
-  if (outcome == 'straight') {
-    bestHand = getStraight(cards, true);
-  }
-  if (outcome == 'flush') {
-    bestHand = getFlush(cards);
-  }
-  if (outcome == 'full house') {
-    bestHand = getFullHouse(cards);
-  }
-  if (outcome == 'quads') {
-    bestHand = getFourOfAKind(cards);
-  }
-  if (outcome == 'straight flush') {
-    bestHand = getStraightFlush(cards);
-  }
+  List bestHand;
   if (outcome == 'royal flush') {
     bestHand = getRoyalFlush(cards);
+  } else if (outcome == 'straight flush') {
+    bestHand = getStraightFlush(cards);
+  } else if (outcome == 'full house') {
+    bestHand = getFullHouse(cards);
+  } else if (outcome == 'flush') {
+    bestHand = getFlush(cards);
+  } else if (outcome == 'straight') {
+    bestHand = getStraight(cards, true);
+  } else if (outcome == 'two pair') {
+    bestHand = getTwoPair(cards);
+  } else if (outcome == 'high card') {
+    bestHand = cards.take(5).toList();
+  } else {
+    bestHand = getKindOf(cards, outcome);
   }
   return bestHand;
 }
@@ -42,7 +29,7 @@ getOutcome(cards) {
     res = 'royal flush';
   } else if (straightFlush(cards)) {
     res = 'straight flush';
-  } else if (fourOfAKind(cards)) {
+  } else if (quads(cards)) {
     res = 'quads';
   } else if (fullHouse(cards)) {
     res = 'full house';
@@ -50,7 +37,7 @@ getOutcome(cards) {
     res = 'flush';
   } else if (straight(cards)) {
     res = 'straight';
-  } else if (threeOfAKind(cards)) {
+  } else if (trips(cards)) {
     res = 'trips';
   } else if (twoPair(cards)) {
     res = 'two pair';
@@ -72,13 +59,13 @@ twoPair(cards) {
   return map.values.where((value) => value == 2).length > 1;
 }
 
-threeOfAKind(cards) {
+trips(cards) {
   final map = rankMap(cards);
   return map.values.any((e) => e == 3);
 }
 
 straight(cards) {
-  return checkStraight(cards);
+  return getStraight(cards, false);
 }
 
 flush(cards) {
@@ -88,10 +75,19 @@ flush(cards) {
 
 fullHouse(cards) {
   final map = rankMap(cards);
-  return map.values.any((e) => e == 3) && map.values.any((e) => e == 2);
+  final oneTrips =
+      map.values.any((e) => e == 3) && map.values.any((e) => e == 2);
+
+  var twoTrips = false;
+  if (!oneTrips) {
+    var list = map.values.toList();
+    twoTrips = list.where((e) => e == 3).length == 2;
+  }
+
+  return oneTrips || twoTrips;
 }
 
-fourOfAKind(cards) {
+quads(cards) {
   final map = rankMap(cards);
   return map.values.any((e) => e == 4);
 }
@@ -99,17 +95,17 @@ fourOfAKind(cards) {
 straightFlush(cards) {
   final suit = getFlushSuit(cards);
   if (suit == null) return false;
-  final playingCards = cards.where((element) => element.suit == suit);
-  return checkStraight(playingCards);
+  cards = cards.where((element) => element.suit == suit);
+  return getStraight(cards, false);
 }
 
 royalFlush(cards) {
   final suit = getFlushSuit(cards);
   if (suit == null) return false;
-  final kards = cards.toSet().toList();
-  return kards.first.suit == suit &&
-      kards.first.rank == 'a' &&
-      kards[4].suit == suit &&
-      kards[4].rank == '10' &&
-      straightFlush(cards);
+  cards = cards.toSet().toList();
+  return cards.first.suit == suit &&
+      cards.first.rank == 'a' &&
+      cards[4].suit == suit &&
+      cards[4].rank == '10' &&
+      getStraight(cards, false);
 }

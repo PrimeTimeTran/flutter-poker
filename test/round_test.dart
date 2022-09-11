@@ -100,6 +100,35 @@ void main() {
 
     expect(round.winner().seat, player2.seat);
   });
+  test('Highest card wins delegating down from highest of high cards', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('7s'));
+    round.dealPlayerBySeat(0, card('8s'));
+
+    round.dealPlayerBySeat(1, card('9d'));
+    round.dealPlayerBySeat(1, card('8d'));
+
+    round.dealPlayerBySeat(2, card('7c'));
+    round.dealPlayerBySeat(2, card('8c'));
+
+    board.addAll([card('ah'), card('kh'), card('qh'), card('jh'), card('2d')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    var winningHand = [
+      card('ah'),
+      card('kh'),
+      card('qh'),
+      card('jh'),
+      card('9d'),
+    ];
+
+    expect(round.winner().hand.bestHand, winningHand);
+  });
 
   test('Highest cards board plays draws', () {
     final board = <PlayingCard>[];
@@ -327,7 +356,7 @@ void main() {
     expect(round.winner(), 'push');
   });
 
-  test('trips beats two pairs', () {
+  test('Trips beats two pairs', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -656,25 +685,70 @@ void main() {
     final round = Round(players);
 
     round.dealPlayerBySeat(0, card('as'));
-    round.dealPlayerBySeat(0, card('qc'));
+    round.dealPlayerBySeat(0, card('qh'));
 
     round.dealPlayerBySeat(1, card('ad'));
-    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('kh'));
 
     round.dealPlayerBySeat(2, card('qd'));
     round.dealPlayerBySeat(2, card('qs'));
 
-    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
+    board.addAll([card('ah'), card('ac'), card('kd'), card('qc'), card('jh')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
+    expect(round.winner().seat, player2.seat);
+  });
+
+  test('Full house same trips delegates to pocket pairs', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('qh'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('jh'));
+    round.dealPlayerBySeat(2, card('jd'));
+
+    board.addAll([card('ah'), card('ad'), card('ac'), card('qc'), card('jc')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Push if there is a push', () {
+  test('Full house same trips delegates to pocket pairs regardless of seat',
+      () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('qh'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('jh'));
+    round.dealPlayerBySeat(1, card('jd'));
+
+    round.dealPlayerBySeat(2, card('kh'));
+    round.dealPlayerBySeat(2, card('kd'));
+
+    board.addAll([card('ah'), card('ad'), card('ac'), card('qc'), card('jc')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player3.seat);
+  });
+
+  test('Full house push if there is a push', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -694,13 +768,35 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    print('hi');
-    printOutcome(round);
+    expect(round.winner(), 'push');
+  });
+
+  test(
+      'Full house push if there is a push regardless of where trips and pairs come from',
+      () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('as'));
+    round.dealPlayerBySeat(0, card('qc'));
+
+    round.dealPlayerBySeat(1, card('jd'));
+    round.dealPlayerBySeat(1, card('jc'));
+
+    round.dealPlayerBySeat(2, card('ad'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ac'), card('kc'), card('kh'), card('jh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
 
     expect(round.winner(), 'push');
   });
 
-  test('quads beats full house', () {
+  test('Quads beats full house', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -746,7 +842,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('quads on board delegates to high card', () {
+  test('Quads on board delegates to high card', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -767,6 +863,29 @@ void main() {
     round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
+  });
+
+  test('Quads push if there is a push', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('ks'));
+    round.dealPlayerBySeat(0, card('qh'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('kc'));
+
+    round.dealPlayerBySeat(2, card('kd'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ad'), card('ac'), card('as'), card('2h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
   });
 
   test('Straight flush beats quads', () {
@@ -792,7 +911,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Straight flush beats quads', () {
+  test('Straight flush beats quads regardless of seat', () {
     final board = <PlayingCard>[];
     final players = [player1, player2];
     final round = Round(players);
@@ -811,7 +930,7 @@ void main() {
     expect(round.winner().seat, player1.seat);
   });
 
-  test('Higher straight flush beats lower straight flush', () {
+  test('Highest straight flush', () {
     final board = <PlayingCard>[];
     final players = [player1, player2];
     final round = Round(players);
@@ -830,7 +949,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Highest straight flush', () {
+  test('Highest straight flush regardless of seat', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -851,6 +970,37 @@ void main() {
     round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
+  });
+
+  test('Straight flush cards taken if higher straight on board', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('6h'));
+    round.dealPlayerBySeat(0, card('5h'));
+
+    round.dealPlayerBySeat(1, card('8h'));
+    round.dealPlayerBySeat(1, card('7h'));
+
+    round.dealPlayerBySeat(2, card('ah'));
+    round.dealPlayerBySeat(2, card('ad'));
+
+    board.addAll([card('qs'), card('jh'), card('10h'), card('9h'), card('as')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    var winningHand = [
+      card('jh'),
+      card('10h'),
+      card('9h'),
+      card('8h'),
+      card('7h'),
+    ];
+    expect(round.winner().seat, player2.seat);
+    expect(player2.hand.bestHand, winningHand);
   });
 
   test('Royal flush beats straight flush', () {
