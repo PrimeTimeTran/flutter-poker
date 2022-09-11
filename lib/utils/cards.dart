@@ -100,14 +100,11 @@ getFullHouse(cards) {
 
   rank = map.keys.firstWhere((v) => map[v] == 2);
 
-  final pair = [];
   for (var card in cards) {
     if (card.rank == rank) {
-      pair.add(card);
+      triplets.add(card);
     }
   }
-
-  triplets.addAll(pair);
 
   return triplets;
 }

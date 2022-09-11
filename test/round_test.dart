@@ -7,9 +7,9 @@ import 'package:flutpoke/utils/cards.dart';
 import 'package:flutpoke/utils/round.dart';
 
 void main() {
-  final player1 = Player('Loi', 0);
-  final player2 = Player('Joe', 1);
-  final player3 = Player('John', 2);
+  final player1 = Player('Ace', 0);
+  final player2 = Player('Bill', 1);
+  final player3 = Player('Cal', 2);
 
   test('2 players if begun with 2 players', () {
     final players = [player1, player2];

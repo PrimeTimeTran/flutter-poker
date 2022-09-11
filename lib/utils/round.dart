@@ -47,34 +47,39 @@ getPlayerFromValues(values, players, i) {
 
 getWinningPlayerFromType(players, matrix, handType) {
   for (var i = 0; i < matrix.first.length; i++) {
-    final values = setValuesFromColOfMatrix(matrix, i);
+    var values = setValuesFromColOfMatrix(matrix, i);
 
-    if (handType == 'high hand' && values.length == matrix.length) {
+    if (handType == 'high card' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'pair' && values.length > 1) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'trips' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
-    } else if (handType == 'straight') {
-      if (values.length == 1) return null;
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'flush') {
+    } else if (handType == 'straight' ||
+        handType == 'flush' ||
+        handType == 'straight flush') {
       if (values.length == 1) return null;
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'full house') {
       if (values.length == 1) return null;
+      if (values.length < matrix.length) {
+        final highestValue = getHighestCardValueInColumn(values);
+        players = players.where((p) => p.hand.cardValues[i] == highestValue);
+        var secondColumnValues = setValuesFromColOfMatrix(matrix, i);
+        final secondColumnHighestValue =
+            getHighestCardValueInColumn(secondColumnValues);
+        final go = players.firstWhere(
+            (p) => p.hand.cardValues[i] == secondColumnHighestValue);
+        return go;
+      }
+      ;
+
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'four of a kind') {
       final highestValue = getHighestCardValueInColumn(values);
       if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
         continue;
       }
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'straight flush') {
-      // final highestValue = getHighestCardValueInColumn(values);
-      // if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
-      //   continue;
-      // }
       return getPlayerFromValues(values, players, i);
     }
   }
@@ -151,12 +156,11 @@ getMatrix(players, which, type) {
     if (type == 'high card' ||
         type == 'straight' ||
         type == 'flush' ||
-        type == 'straight flush') {
+        type == 'straight flush' ||
+        type == 'two pair') {
       setHighCardValues(players, matrix, i);
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
-    } else if (type == 'two pair') {
-      setTwoPairValues(players, matrix, i);
     } else if (type == 'full house') {
       setFullHouseValues(players, matrix, i);
     } else if (type == 'four of a kind') {
@@ -167,56 +171,6 @@ getMatrix(players, which, type) {
 }
 
 findRoyalFlush(players) {}
-
-findBestStraightFlush(players) {
-  final matrix = getMatrix(players, null, 'straight flush');
-
-  final player = getWinningPlayerFromType(players, matrix, 'straight flush');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
-findBestFourOfKind(players) {
-  final matrix = getMatrix(players, null, 'four of a kind');
-
-  final player = getWinningPlayerFromType(players, matrix, 'four of a kind');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
-findBestFullHouse(players) {
-  final matrix = getMatrix(players, null, 'full house');
-
-  final player = getWinningPlayerFromType(players, matrix, 'full house');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
-findBestFlushHand(players) {
-  final matrix = getMatrix(players, null, 'flush');
-
-  final player = getWinningPlayerFromType(players, matrix, 'flush');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
-findBestStraightHand(players) {
-  final matrix = getMatrix(players, null, 'straight');
-
-  final player = getWinningPlayerFromType(players, matrix, 'straight');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
 
 findBestThreeOfKindHand(players) {
   final matrix = getMatrix(players, 'three of a kind', 'triples');
@@ -253,10 +207,10 @@ findPlayerWithBestPairHand(players) {
 // than the other rows/hands in the same column
 // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
 
-findPlayerWithBestHighCardHand(players) {
-  final matrix = getMatrix(players, null, 'high card');
+findBestHandFrom(players, type) {
+  final matrix = getMatrix(players, null, type);
 
-  final player = getWinningPlayerFromType(players, matrix, 'high hand');
+  final player = getWinningPlayerFromType(players, matrix, type);
   if (player != null) {
     return player;
   }

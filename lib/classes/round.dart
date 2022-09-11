@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutpoke/classes/deck.dart';
 import 'package:flutpoke/classes/hand.dart';
 import 'package:flutpoke/classes/player.dart';
@@ -95,24 +94,7 @@ class Round {
 
   identifyHighest(players) {
     final outcome = players.first.hand.outcome;
-    if (outcome == 'royal flush') {
-      return findRoyalFlush(players);
-    }
-    if (outcome == 'straight flush') {
-      return findBestStraightFlush(players);
-    }
-    if (outcome == 'four of a kind') {
-      return findBestFourOfKind(players);
-    }
-    if (outcome == 'full house') {
-      return findBestFullHouse(players);
-    }
-    if (outcome == 'flush') {
-      return findBestFlushHand(players);
-    }
-    if (outcome == 'straight') {
-      return findBestStraightHand(players);
-    }
+
     if (outcome == 'three of a kind') {
       return findBestThreeOfKindHand(players);
     }
@@ -122,8 +104,7 @@ class Round {
     if (outcome == 'pair') {
       return findPlayerWithBestPairHand(players);
     }
-    if (outcome == 'high card') {
-      return findPlayerWithBestHighCardHand(players);
-    }
+
+    return findBestHandFrom(players, outcome);
   }
 }
