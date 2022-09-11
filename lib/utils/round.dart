@@ -13,7 +13,7 @@ printOutcome(round) {
   print('\n');
   for (var player in round.players) {
     print(player.hand.outcome);
-    print(player.hand.highHand);
+    print(player.hand.bestHand);
     print(player.hand.cardValues);
   }
   print(string);
@@ -31,8 +31,12 @@ setValuesFromColOfMatrix(matrix, i) {
   return values;
 }
 
+getHighestCardValueInColumn(values) {
+  return values.reduce((c, n) => c > n ? c : n);
+}
+
 getPlayerFromValues(values, players, i) {
-  final highestValue = values.reduce((c, n) => c > n ? c : n);
+  final highestValue = getHighestCardValueInColumn(values);
 
   for (var p in players) {
     if (p.hand.cardValues[i] == highestValue) {
@@ -61,6 +65,16 @@ getWinningPlayerFromType(players, matrix, handType) {
       if (values.length == 1) return null;
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'four of a kind') {
+      final highestValue = getHighestCardValueInColumn(values);
+      if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
+        continue;
+      }
+      return getPlayerFromValues(values, players, i);
+    } else if (handType == 'straight flush') {
+      // final highestValue = getHighestCardValueInColumn(values);
+      // if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
+      //   continue;
+      // }
       return getPlayerFromValues(values, players, i);
     }
   }
@@ -79,19 +93,19 @@ setMatrixAndValues(players, matrix, rankings, i) {
 }
 
 setFourOfAKindValues(players, matrix, i) {
-  final quads = getOfKind('four of a kind', players[i].hand.highHand).first;
+  final quads = getOfKind('four of a kind', players[i].hand.bestHand).first;
 
-  final quadValues = quads.first.value;
-  final singleValues = getCardValues(players[i].hand.highHand);
+  final quadValue = quads.first.value;
+  final singleValue = getCardValues(players[i].hand.bestHand).toList().first;
 
-  final rankings = [quadValues, singleValues];
+  final rankings = [quadValue, singleValue];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
 setFullHouseValues(players, matrix, i) {
-  final triples = getOfKind('three of a kind', players[i].hand.highHand);
-  final pairs = getOfKind('pair', players[i].hand.highHand);
+  final triples = getOfKind('three of a kind', players[i].hand.bestHand);
+  final pairs = getOfKind('pair', players[i].hand.bestHand);
 
   final tripletValue = triples.first.toList().first.value;
   final pairValue = pairs.last.toList().last.value;
@@ -102,10 +116,10 @@ setFullHouseValues(players, matrix, i) {
 }
 
 setTwoPairValues(players, matrix, i) {
-  final pairs = getOfKind('pair', players[i].hand.highHand);
+  final pairs = getOfKind('pair', players[i].hand.bestHand);
   final firstPairValue = pairs.first.toList().first.value;
   final secondPairValue = pairs.last.toList().first.value;
-  final singleValues = getCardValues(players[i].hand.highHand);
+  final singleValues = getCardValues(players[i].hand.bestHand);
 
   final rankings = [firstPairValue, secondPairValue, ...singleValues];
 
@@ -114,8 +128,8 @@ setTwoPairValues(players, matrix, i) {
 
 setPairOrTripleValues(players, matrix, i, which) {
   final pairValue =
-      getOfKind(which, players[i].hand.highHand).first.toList().first.value;
-  final singleValues = getCardValues(players[i].hand.highHand);
+      getOfKind(which, players[i].hand.bestHand).first.toList().first.value;
+  final singleValues = getCardValues(players[i].hand.bestHand);
 
   final rankings = [pairValue, ...singleValues];
 
@@ -125,7 +139,7 @@ setPairOrTripleValues(players, matrix, i, which) {
 setHighCardValues(players, matrix, i) {
   final rankings = [];
   for (var j = 0; j < 5; j++) {
-    rankings.add(players[i].hand.highHand[j].value);
+    rankings.add(players[i].hand.bestHand[j].value);
   }
   setMatrixAndValues(players, matrix, rankings, i);
 }
@@ -134,7 +148,10 @@ getMatrix(players, which, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (type == 'high card' || type == 'straight' || type == 'flush') {
+    if (type == 'high card' ||
+        type == 'straight' ||
+        type == 'flush' ||
+        type == 'straight flush') {
       setHighCardValues(players, matrix, i);
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
@@ -147,6 +164,18 @@ getMatrix(players, which, type) {
     }
   }
   return matrix;
+}
+
+findRoyalFlush(players) {}
+
+findBestStraightFlush(players) {
+  final matrix = getMatrix(players, null, 'straight flush');
+
+  final player = getWinningPlayerFromType(players, matrix, 'straight flush');
+  if (player != null) {
+    return player;
+  }
+  return 'push';
 }
 
 findBestFourOfKind(players) {

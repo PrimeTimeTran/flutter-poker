@@ -5,7 +5,7 @@ class Hand {
   int seatIdx;
   List cards = [];
   late int ranking;
-  List highHand = [];
+  List bestHand = [];
   late String outcome;
   List playerHand = [];
   List? cardValues;
@@ -26,7 +26,7 @@ class Hand {
     cards.sort((a, b) => b.value.compareTo(a.value));
     setOutcome();
     setHandRanking();
-    setPlayedCards();
+    setBestHand();
     return cards;
   }
 
@@ -38,7 +38,7 @@ class Hand {
     ranking = handRankings[outcome] as int;
   }
 
-  setPlayedCards() {
-    highHand = getHighCards(outcome, cards);
+  setBestHand() {
+    bestHand = getHighCards(outcome, cards);
   }
 }

@@ -1,38 +1,38 @@
 import 'package:flutpoke/utils/cards.dart';
 
 getHighCards(outcome, cards) {
-  var highHand;
+  var bestHand;
   if (outcome == 'high card') {
-    highHand = cards.take(5).toList();
+    bestHand = cards.take(5).toList();
   }
   if (outcome == 'pair') {
-    highHand = getPaired(cards);
+    bestHand = getPaired(cards);
   }
   if (outcome == 'two pair') {
-    highHand = getTwoPaired(cards);
+    bestHand = getTwoPaired(cards);
   }
   if (outcome == 'three of a kind') {
-    highHand = getThreeOfAKind(cards);
+    bestHand = getThreeOfAKind(cards);
   }
   if (outcome == 'straight') {
-    highHand = getStraight(cards, true);
+    bestHand = getStraight(cards, true);
   }
   if (outcome == 'flush') {
-    highHand = getFlush(cards);
+    bestHand = getFlush(cards);
   }
   if (outcome == 'full house') {
-    highHand = getFullHouse(cards);
+    bestHand = getFullHouse(cards);
   }
   if (outcome == 'four of a kind') {
-    highHand = getFourOfAKind(cards);
+    bestHand = getFourOfAKind(cards);
   }
   if (outcome == 'straight flush') {
-    highHand = getStraightFlush(cards);
+    bestHand = getStraightFlush(cards);
   }
   if (outcome == 'royal flush') {
-    highHand = getRoyalFlush(cards);
+    bestHand = getRoyalFlush(cards);
   }
-  return highHand;
+  return bestHand;
 }
 
 getOutcome(cards) {

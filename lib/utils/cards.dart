@@ -73,7 +73,7 @@ getRoyalFlush(cards) {
 }
 
 getStraightFlush(cards) {
-  return [];
+  return getStraight(cards, true);
 }
 
 getFourOfAKind(cards) {

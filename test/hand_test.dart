@@ -144,7 +144,7 @@ void main() {
   });
 
   // Test played hands
-  test('''Board cards to be highHand if outcome is high 
+  test('''Board cards to be bestHand if outcome is high 
       card and every board card is higher than dealt cards''', () {
     final Hand hand = Hand(0);
     final List board = [];
@@ -164,7 +164,7 @@ void main() {
       card('9c')
     ];
 
-    expect(hand.highHand, winningHand);
+    expect(hand.bestHand, winningHand);
   });
 
   test('Pair in high hand and 3 highest cards', () {
@@ -186,7 +186,7 @@ void main() {
       card('5h')
     ];
 
-    expect(hand.highHand, winningHand);
+    expect(hand.bestHand, winningHand);
   });
 
   test('Pair in high hand and 3 highest cards', () {
@@ -208,6 +208,6 @@ void main() {
       card('5h')
     ];
 
-    expect(hand.highHand, winningHand);
+    expect(hand.bestHand, winningHand);
   });
 }

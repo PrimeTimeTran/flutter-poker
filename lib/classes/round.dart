@@ -96,10 +96,10 @@ class Round {
   identifyHighest(players) {
     final outcome = players.first.hand.outcome;
     if (outcome == 'royal flush') {
-      return players.first;
+      return findRoyalFlush(players);
     }
     if (outcome == 'straight flush') {
-      return players.first;
+      return findBestStraightFlush(players);
     }
     if (outcome == 'four of a kind') {
       return findBestFourOfKind(players);

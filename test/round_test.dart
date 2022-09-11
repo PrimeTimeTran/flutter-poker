@@ -144,6 +144,28 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
+  test('Top pair wins even with over high card', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('ah'));
+    round.dealPlayerBySeat(0, card('qh'));
+
+    round.dealPlayerBySeat(1, card('qh'));
+    round.dealPlayerBySeat(1, card('kh'));
+
+    round.dealPlayerBySeat(2, card('6d'));
+    round.dealPlayerBySeat(2, card('8c'));
+
+    board.addAll([card('kd'), card('js'), card('4d'), card('6h'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+    expect(round.winner().seat, player2.seat);
+    expect(round.winner().hand.outcome, 'pair');
+  });
+
   test('Top pair wins when its not highest cards', () {
     final board = <PlayingCard>[];
     final players = [player1, player2, player3];
@@ -741,6 +763,8 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
+    printOutcome(round);
+
     expect(round.winner().seat, player2.seat);
   });
 
@@ -786,24 +810,25 @@ void main() {
     expect(round.winner().seat, player1.seat);
   });
 
-  // TODO order matters
   test('Higher straight flush beats lower straight flush', () {
     final board = <PlayingCard>[];
     final players = [player1, player2];
     final round = Round(players);
 
-    round.dealPlayerBySeat(0, card('kd'));
-    round.dealPlayerBySeat(0, card('qd'));
+    round.dealPlayerBySeat(0, card('8d'));
+    round.dealPlayerBySeat(0, card('7d'));
 
-    round.dealPlayerBySeat(1, card('8d'));
-    round.dealPlayerBySeat(1, card('7d'));
+    round.dealPlayerBySeat(1, card('kd'));
+    round.dealPlayerBySeat(1, card('qd'));
 
     board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    expect(round.winner().seat, player1.seat);
+    printOutcome(round);
+
+    expect(round.winner().seat, player2.seat);
   });
 
   test('Highest straight flush', () {
