@@ -49,10 +49,20 @@ Map suitMap(cards) {
   return map;
 }
 
-getPairedOrTriples(cards, which) {
+getOfKind(cards, which) {
+  int limit;
+  if (which == 'two') {
+    limit = 1;
+  } else if (which == 'three') {
+    limit = 2;
+  } else {
+    limit = 3;
+  }
+  ;
+
   return groupBy(cards, (dynamic c) => c.rank)
       .values
-      .where((g) => g.length > which)
+      .where((g) => g.length > limit)
       .toList();
 }
 

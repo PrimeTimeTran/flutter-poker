@@ -68,7 +68,7 @@ class Hand {
     }
     if (outcome == 'pair') {
       var newCards = List.from(cards);
-      var pair = getPairedOrTriples(cards, 1).first.toList();
+      var pair = getOfKind(cards, 'two').first.toList();
 
       newCards.removeWhere((c) => c.rank == pair.first.rank);
 
@@ -78,9 +78,9 @@ class Hand {
     }
     if (outcome == 'two pair') {
       var newCards = List.from(cards);
-      var firstPair = getPairedOrTriples(cards, 1).first.toList();
+      var firstPair = getOfKind(cards, 'two').first.toList();
 
-      var secondPair = getPairedOrTriples(cards, 1)[1].toList();
+      var secondPair = getOfKind(cards, 'two')[1].toList();
 
       newCards.removeWhere((c) => c.rank == firstPair.first.rank);
       newCards.removeWhere((c) => c.rank == secondPair.first.rank);
@@ -92,7 +92,7 @@ class Hand {
     }
     if (outcome == 'three of a kind') {
       var newCards = List.from(cards);
-      var trips = getPairedOrTriples(cards, 2).first.toList();
+      var trips = getOfKind(cards, 'three').first.toList();
       newCards.removeWhere((c) => c.rank == trips.first.rank);
       trips.addAll(List.from(newCards.take(2).toList()));
       highHand = trips;

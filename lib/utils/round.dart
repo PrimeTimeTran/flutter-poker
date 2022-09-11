@@ -85,9 +85,9 @@ setMatrixAndValues(players, matrix, rankings, i) {
   players[i].hand.cardValues = rankings;
 }
 
-setFullHouseValues(players, matrix, i, which) {
-  final triples = getPairedOrTriples(players[i].hand.highHand, 2);
-  final pairs = getPairedOrTriples(players[i].hand.highHand, 1);
+setFullHouseValues(players, matrix, i) {
+  final triples = getOfKind(players[i].hand.highHand, 'three');
+  final pairs = getOfKind(players[i].hand.highHand, 'two');
 
   final tripletValue = triples.first.toList().first.value;
   final pairValue = pairs.last.toList().last.value;
@@ -97,8 +97,8 @@ setFullHouseValues(players, matrix, i, which) {
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-setTwoPairValues(players, matrix, i, which) {
-  final pairs = getPairedOrTriples(players[i].hand.highHand, 1);
+setTwoPairValues(players, matrix, i) {
+  final pairs = getOfKind(players[i].hand.highHand, 'two');
   final firstPairValue = pairs.first.toList().first.value;
   final secondPairValue = pairs.last.toList().first.value;
   final singleValues = getCardValues(players[i].hand.highHand);
@@ -109,7 +109,8 @@ setTwoPairValues(players, matrix, i, which) {
 }
 
 setPairOrTripleValues(players, matrix, i, which) {
-  final pairValue = getPairedOrTriples(players[i].hand.highHand, which)
+  final pairValue =
+      getOfKind(players[i].hand.highHand, which)
       .first
       .toList()
       .first
@@ -138,16 +139,16 @@ getMatrix(players, which, type) {
     } else if (type == 'pair' || type == 'triples') {
       setPairOrTripleValues(players, matrix, i, which);
     } else if (type == 'two pair') {
-      setTwoPairValues(players, matrix, i, which);
+      setTwoPairValues(players, matrix, i);
     } else if (type == 'full house') {
-      setFullHouseValues(players, matrix, i, which);
+      setFullHouseValues(players, matrix, i);
     }
   }
   return matrix;
 }
 
 findBestFullHouse(players) {
-  final matrix = getMatrix(players, 2, 'full house');
+  final matrix = getMatrix(players, null, 'full house');
 
   final player = getWinningPlayerFromType(players, matrix, 'full house');
   if (player != null) {
@@ -157,7 +158,7 @@ findBestFullHouse(players) {
 }
 
 findBestFlushHand(players) {
-  final matrix = getMatrix(players, 2, 'flush');
+  final matrix = getMatrix(players, null, 'flush');
 
   final player = getWinningPlayerFromType(players, matrix, 'flush');
   if (player != null) {
@@ -167,7 +168,7 @@ findBestFlushHand(players) {
 }
 
 findBestStraightHand(players) {
-  final matrix = getMatrix(players, 2, 'straight');
+  final matrix = getMatrix(players, null, 'straight');
 
   final player = getWinningPlayerFromType(players, matrix, 'straight');
   if (player != null) {
@@ -177,7 +178,7 @@ findBestStraightHand(players) {
 }
 
 findBestThreeOfKindHand(players) {
-  final matrix = getMatrix(players, 2, 'triples');
+  final matrix = getMatrix(players, 'three', 'triples');
 
   final player = getWinningPlayerFromType(players, matrix, 'trips');
   if (player != null) {
@@ -197,7 +198,7 @@ findPlayerWithBestTwoPairHand(players) {
 }
 
 findPlayerWithBestPairHand(players) {
-  final matrix = getMatrix(players, 1, 'pair');
+  final matrix = getMatrix(players, 'two', 'pair');
 
   final player = getWinningPlayerFromType(players, matrix, 'pair');
   if (player != null) {
