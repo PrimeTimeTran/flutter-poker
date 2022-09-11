@@ -41,25 +41,6 @@ void main() {
     expect(round.deck.remainingCards().length, 39);
   });
 
-  test('Straight flush beats four of a kind', () {
-    final board = <PlayingCard>[];
-    final players = [player1, player2];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('kd'));
-    round.dealPlayerBySeat(0, card('qd'));
-
-    round.dealPlayerBySeat(1, card('2h'));
-    round.dealPlayerBySeat(1, card('2d'));
-
-    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    expect(round.winner().seat, player1.seat);
-  });
-
   test('Royal flush beats straight flush', () {
     final board = <PlayingCard>[];
     final players = [player2, player1];
@@ -72,26 +53,6 @@ void main() {
     round.dealPlayerBySeat(1, card('8d'));
 
     board.addAll([card('qd'), card('jd'), card('10d'), card('2c'), card('2s')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    expect(round.winner().seat, player1.seat);
-  });
-
-  // TODO order matters
-  test('Higher straight flush beats lower straight flush', () {
-    final board = <PlayingCard>[];
-    final players = [player1, player2];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('kd'));
-    round.dealPlayerBySeat(0, card('qd'));
-
-    round.dealPlayerBySeat(1, card('8d'));
-    round.dealPlayerBySeat(1, card('7d'));
-
-    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
@@ -666,30 +627,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Higher of pairs of full houses wins when trips the same', () {
-    final board = <PlayingCard>[];
-
-    final players = [player1, player2, player3];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('as'));
-    round.dealPlayerBySeat(0, card('qc'));
-
-    round.dealPlayerBySeat(1, card('ad'));
-    round.dealPlayerBySeat(1, card('kd'));
-
-    round.dealPlayerBySeat(2, card('qd'));
-    round.dealPlayerBySeat(2, card('qs'));
-
-    board.addAll([card('ah'), card('ac'), card('kh'), card('qh'), card('jh')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    expect(round.winner().seat, player2.seat);
-  });
-
-  test('Highest of three or more full houses wins', () {
+  test('Same trips delegates to higher pair', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -825,6 +763,45 @@ void main() {
     round.evaluateHands();
 
     expect(round.winner().seat, player2.seat);
+  });
+
+  test('Straight flush beats four of a kind', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('2h'));
+    round.dealPlayerBySeat(1, card('2d'));
+
+    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player1.seat);
+  });
+
+  // TODO order matters
+  test('Higher straight flush beats lower straight flush', () {
+    final board = <PlayingCard>[];
+    final players = [player1, player2];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('kd'));
+    round.dealPlayerBySeat(0, card('qd'));
+
+    round.dealPlayerBySeat(1, card('8d'));
+    round.dealPlayerBySeat(1, card('7d'));
+
+    board.addAll([card('jd'), card('10d'), card('9d'), card('2c'), card('2s')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player1.seat);
   });
 
   test('Highest straight flush', () {

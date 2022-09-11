@@ -65,9 +65,8 @@ getWinningPlayerFromType(players, matrix, handType) {
       if (values.length == 1) {
         return null;
       }
-      if (values.length < matrix.length) {
-        
-      }
+      return getPlayerFromValues(values, players, i);
+    } else if (handType == 'four of a kind') {
       return getPlayerFromValues(values, players, i);
     }
   }
@@ -83,6 +82,17 @@ getCardValues(cards) {
 setMatrixAndValues(players, matrix, rankings, i) {
   matrix[i].addAll(rankings);
   players[i].hand.cardValues = rankings;
+}
+
+setFourOfAKindValues(players, matrix, i) {
+  final quads = getOfKind('four of a kind', players[i].hand.highHand);
+
+  final tripletValue = quads.first.toList().first.value;
+  final singleValues = getCardValues(players[i].hand.highHand);
+
+  final rankings = [tripletValue, singleValues];
+
+  setMatrixAndValues(players, matrix, rankings, i);
 }
 
 setFullHouseValues(players, matrix, i) {
@@ -142,9 +152,21 @@ getMatrix(players, which, type) {
       setTwoPairValues(players, matrix, i);
     } else if (type == 'full house') {
       setFullHouseValues(players, matrix, i);
+    } else if (type == 'four of a kind') {
+      setFourOfAKindValues(players, matrix, i);
     }
   }
   return matrix;
+}
+
+findBestFourOfKind(players) {
+  final matrix = getMatrix(players, null, 'four of a kind');
+
+  final player = getWinningPlayerFromType(players, matrix, 'four of a kind');
+  if (player != null) {
+    return player;
+  }
+  return 'push';
 }
 
 findBestFullHouse(players) {

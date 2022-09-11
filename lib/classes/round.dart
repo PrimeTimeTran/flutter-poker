@@ -102,7 +102,7 @@ class Round {
       return players.first;
     }
     if (outcome == 'four of a kind') {
-      return players.first;
+      return findBestFourOfKind(players);
     }
     if (outcome == 'full house') {
       return findBestFullHouse(players);

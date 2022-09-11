@@ -63,6 +63,10 @@ getOfKind(which, cards) {
       .toList();
 }
 
+getRoyalFlush(cards) {}
+
+getStraightFlush(cards) {}
+
 getFourOfAKind(cards) {
   return getOfKind('four of a kind', cards);
 }

@@ -88,8 +88,12 @@ class Hand {
     if (outcome == 'four of a kind') {
       highHand = getFourOfAKind(cards);
     }
-    if (outcome == 'straight flush') {}
-    if (outcome == 'royal flush') {}
+    if (outcome == 'straight flush') {
+      highHand = getStraightFlush(cards);
+    }
+    if (outcome == 'royal flush') {
+      highHand = getRoyalFlush(cards);
+    }
   }
 
   pair() {
