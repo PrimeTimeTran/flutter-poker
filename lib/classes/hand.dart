@@ -76,7 +76,7 @@ class Hand {
       highHand = getThreeOfAKind(cards);
     }
     if (outcome == 'straight') {
-      highHand = getStraight(cards);
+      highHand = getStraight(cards, true);
     }
 
     if (outcome == 'flush') {

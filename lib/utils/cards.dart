@@ -104,7 +104,7 @@ getFlush(cards) {
   return suitedCards.take(5).toList();
 }
 
-getStraight(cards) {
+getStraight(cards, getCards) {
   var seen = Set();
   List uniquelist = cards.where((c) => seen.add(c.value)).toList();
 
@@ -138,7 +138,9 @@ getStraight(cards) {
     uniquelist.add(cards.first);
   }
 
-  return uniquelist.sublist(endOfStraight - 4, endOfStraight + 1);
+  return getCards
+      ? uniquelist.sublist(endOfStraight - 4, endOfStraight + 1)
+      : res > 4;
 }
 
 getThreeOfAKind(cards) {
@@ -175,29 +177,5 @@ getPaired(cards) {
 }
 
 checkStraight(cards) {
-  var dp = [1, 1, 1, 1, 1, 1, 1];
-  var ranks = cards.map((c) => c.value);
-  var nums = ranks.toSet().toList();
-
-  if (ranks.contains(12)) {
-    nums.add(-1);
-    dp.add(1);
-  }
-
-  for (var i = 0; i < nums.length; i++) {
-    for (var j = 0; j < nums.length; j++) {
-      if (nums[i] == nums[j] - 1) {
-        dp[i] = max(dp[i], dp[j] + 1);
-      }
-    }
-  }
-
-  var res = 1;
-  for (var i = 0; i < nums.length; i++) {
-    if (res < dp[i]) {
-      res = dp[i];
-    }
-  }
-
-  return res > 4;
+  return getStraight(cards, false);
 }
