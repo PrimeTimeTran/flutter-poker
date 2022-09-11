@@ -31,7 +31,7 @@ void main() {
     expect(hand.outcome, 'straight flush');
   });
 
-  test('Four of a kind be recognized', () {
+  test('quads be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
 
@@ -42,7 +42,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'four of a kind');
+    expect(hand.outcome, 'quads');
   });
 
   test('Full house to be recognized', () {
@@ -101,7 +101,7 @@ void main() {
     expect(hand.outcome, 'straight');
   });
 
-  test('Three of a kind be recognized', () {
+  test('trips be recognized', () {
     final Hand hand = Hand(0);
     final List board = [];
 
@@ -112,7 +112,7 @@ void main() {
 
     hand.evaluateHand(board);
 
-    expect(hand.outcome, 'three of a kind');
+    expect(hand.outcome, 'trips');
   });
 
   test('Two pairs to be recognized', () {

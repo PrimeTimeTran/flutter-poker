@@ -56,15 +56,17 @@ getWinningPlayerFromFullHouse(players, values, matrix, i) {
   final secondColumnHighestValue =
       getHighestCardValueInColumn(secondColumnValues);
 
-  final go = players
-      .firstWhere((p) => p.hand.cardValues[i + 1] == secondColumnHighestValue);
-  return go;
-}
+  var play1PairVal = players.first.hand.cardValues[i + 1];
+  var play2PairVal = players.last.hand.cardValues[i + 1];
 
-// A 2d matrix makes identifying highest card easier.
-// We move left to right in each row until one column has a higher card
-// than the other rows/hands in the same column
-// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
+  if (play1PairVal == play2PairVal) {
+    return null;
+  }
+
+  final player = players
+      .firstWhere((p) => p.hand.cardValues[i + 1] == secondColumnHighestValue);
+  return player;
+}
 
 // Matrix will look different depending on how many players and which
 // type of winning hand
@@ -89,7 +91,7 @@ getWinningPlayerFromType(players, matrix, handType) {
         return getWinningPlayerFromFullHouse(players, values, matrix, i);
       }
       return getPlayerFromValues(values, players, i);
-    } else if (handType == 'four of a kind') {
+    } else if (handType == 'quads') {
       final highestValue = getHighestCardValueInColumn(values);
       if (players.every((p) => p.hand.cardValues[i] == highestValue)) {
         continue;
@@ -111,51 +113,30 @@ setMatrixAndValues(players, matrix, rankings, i) {
   players[i].hand.cardValues = rankings;
 }
 
-setFourOfAKindValues(players, matrix, i) {
-  final quads = getOfKind('four of a kind', players[i].hand.bestHand).first;
-
-  final quadValue = quads.first.value;
-  final singleValue = getCardValues(players[i].hand.bestHand).toList().first;
-
-  final rankings = [quadValue, singleValue];
-
-  setMatrixAndValues(players, matrix, rankings, i);
-}
-
 setFullHouseValues(players, matrix, i) {
-  final triples = getOfKind('three of a kind', players[i].hand.bestHand);
-  final pairs = getOfKind('pair', players[i].hand.bestHand);
+  final hand = players[i].hand.bestHand;
+  final trips = getOfKind('trips', hand);
+  final pairs = getOfKind('pair', hand);
 
-  final tripletValue = triples.first.toList().first.value;
+  final tripValue = trips.first.toList().first.value;
   final pairValue = pairs.last.toList().last.value;
 
-  final rankings = [tripletValue, pairValue];
+  final rankings = [tripValue, pairValue];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-setTwoPairValues(players, matrix, i) {
-  final pairs = getOfKind('pair', players[i].hand.bestHand);
-  final firstPairValue = pairs.first.toList().first.value;
-  final secondPairValue = pairs.last.toList().first.value;
-  final singleValues = getCardValues(players[i].hand.bestHand);
+setKindOfValues(players, matrix, i, which) {
+  final hand = players[i].hand.bestHand;
+  final val = getOfKind(which, hand).first.toList().first.value;
+  final remainingValues = getCardValues(hand);
 
-  final rankings = [firstPairValue, secondPairValue, ...singleValues];
-
-  setMatrixAndValues(players, matrix, rankings, i);
-}
-
-setPairOrTripleValues(players, matrix, i, which) {
-  final pairValue =
-      getOfKind(which, players[i].hand.bestHand).first.toList().first.value;
-  final singleValues = getCardValues(players[i].hand.bestHand);
-
-  final rankings = [pairValue, ...singleValues];
+  final rankings = [val, ...remainingValues];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-setHighCardValues(players, matrix, i) {
+setCardValues(players, matrix, i) {
   final rankings = [];
   for (var j = 0; j < 5; j++) {
     rankings.add(players[i].hand.bestHand[j].value);
@@ -163,51 +144,32 @@ setHighCardValues(players, matrix, i) {
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-getMatrix(players, which, type) {
+// A 2d matrix makes identifying highest card easier.
+// We move left to right in each row until one column has a higher card
+// than the other rows/hands in the same column
+// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
+
+getMatrix(players, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
     if (type == 'high card' ||
+        type == 'two pair' ||
         type == 'straight' ||
         type == 'flush' ||
-        type == 'straight flush' ||
-        type == 'two pair') {
-      setHighCardValues(players, matrix, i);
-    } else if (type == 'pair' || type == 'triples') {
-      setPairOrTripleValues(players, matrix, i, which);
+        type == 'straight flush') {
+      setCardValues(players, matrix, i);
+    } else if (type == 'pair' || type == 'trips' || type == 'quads') {
+      setKindOfValues(players, matrix, i, type);
     } else if (type == 'full house') {
       setFullHouseValues(players, matrix, i);
-    } else if (type == 'four of a kind') {
-      setFourOfAKindValues(players, matrix, i);
     }
   }
   return matrix;
 }
 
-findRoyalFlush(players) {}
-
-findBestThreeOfKindHand(players) {
-  final matrix = getMatrix(players, 'three of a kind', 'triples');
-
-  final player = getWinningPlayerFromType(players, matrix, 'trips');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
 findPlayerWithBestTwoPairHand(players) {
-  final matrix = getMatrix(players, null, 'two pair');
-
-  final player = getWinningPlayerFromType(players, matrix, 'pair');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
-}
-
-findPlayerWithBestPairHand(players) {
-  final matrix = getMatrix(players, 'pair', 'pair');
+  final matrix = getMatrix(players, 'two pair');
 
   final player = getWinningPlayerFromType(players, matrix, 'pair');
   if (player != null) {
@@ -217,7 +179,7 @@ findPlayerWithBestPairHand(players) {
 }
 
 findBestHandFrom(players, type) {
-  final matrix = getMatrix(players, null, type);
+  final matrix = getMatrix(players, type);
 
   final player = getWinningPlayerFromType(players, matrix, type);
   if (player != null) {

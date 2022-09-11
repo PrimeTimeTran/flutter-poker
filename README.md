@@ -58,7 +58,7 @@ final state = {
 
 - Find winning hand from multiple two pairs.
 
-- Find winning hand from multiple three of a kinds.
+- Find winning hand from multiple tripss.
 
 - Find winning hand from multiple straights.
 
@@ -66,7 +66,7 @@ final state = {
 
 - Find winning hand from multiple full houses.
 
-- Find winning hand from multiple four of a kinds.
+- Find winning hand from multiple quadss.
 
 - Find winning hand from multiple straight flushes.
 

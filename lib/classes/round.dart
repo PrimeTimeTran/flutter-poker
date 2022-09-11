@@ -95,14 +95,8 @@ class Round {
   identifyHighest(players) {
     final outcome = players.first.hand.outcome;
 
-    if (outcome == 'three of a kind') {
-      return findBestThreeOfKindHand(players);
-    }
     if (outcome == 'two pair') {
       return findPlayerWithBestTwoPairHand(players);
-    }
-    if (outcome == 'pair') {
-      return findPlayerWithBestPairHand(players);
     }
 
     return findBestHandFrom(players, outcome);

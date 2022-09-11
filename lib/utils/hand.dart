@@ -11,7 +11,7 @@ getHighCards(outcome, cards) {
   if (outcome == 'two pair') {
     bestHand = getTwoPaired(cards);
   }
-  if (outcome == 'three of a kind') {
+  if (outcome == 'trips') {
     bestHand = getThreeOfAKind(cards);
   }
   if (outcome == 'straight') {
@@ -23,7 +23,7 @@ getHighCards(outcome, cards) {
   if (outcome == 'full house') {
     bestHand = getFullHouse(cards);
   }
-  if (outcome == 'four of a kind') {
+  if (outcome == 'quads') {
     bestHand = getFourOfAKind(cards);
   }
   if (outcome == 'straight flush') {
@@ -43,7 +43,7 @@ getOutcome(cards) {
   } else if (straightFlush(cards)) {
     res = 'straight flush';
   } else if (fourOfAKind(cards)) {
-    res = 'four of a kind';
+    res = 'quads';
   } else if (fullHouse(cards)) {
     res = 'full house';
   } else if (flush(cards)) {
@@ -51,7 +51,7 @@ getOutcome(cards) {
   } else if (straight(cards)) {
     res = 'straight';
   } else if (threeOfAKind(cards)) {
-    res = 'three of a kind';
+    res = 'trips';
   } else if (twoPair(cards)) {
     res = 'two pair';
   } else if (pair(cards)) {

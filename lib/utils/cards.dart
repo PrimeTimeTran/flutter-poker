@@ -6,11 +6,11 @@ import 'package:flutpoke/classes/deck.dart';
 Map<String, int> handRankings = <String, int>{
   'royal flush': 10,
   'straight flush': 9,
-  'four of a kind': 8,
+  'quads': 8,
   'full house': 7,
   'flush': 6,
   'straight': 5,
-  'three of a kind': 4,
+  'trips': 4,
   'two pair': 3,
   'pair': 2,
   'high card': 1,
@@ -58,7 +58,7 @@ getOfKind(which, cards) {
   int limit = 3;
   if (which == 'pair') {
     limit = 1;
-  } else if (which == 'three of a kind') {
+  } else if (which == 'trips') {
     limit = 2;
   }
 
@@ -78,7 +78,7 @@ getStraightFlush(cards) {
 
 getFourOfAKind(cards) {
   var newCards = cards;
-  var quads = getOfKind('four of a kind', cards).first.toList();
+  var quads = getOfKind('quads', cards).first.toList();
   newCards.removeWhere((c) => c.rank == quads.first.rank);
 
   quads.addAll(newCards.take(1));
@@ -159,7 +159,7 @@ getStraight(cards, getCards) {
 
 getThreeOfAKind(cards) {
   var newCards = cards;
-  var trips = getOfKind('three of a kind', cards).first;
+  var trips = getOfKind('trips', cards).first;
   newCards.removeWhere((c) => c.rank == trips.first.rank);
   trips.addAll(newCards.take(2));
   return trips;

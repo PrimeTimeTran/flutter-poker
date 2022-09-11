@@ -327,7 +327,7 @@ void main() {
     expect(round.winner(), 'push');
   });
 
-  test('Three of a kind beats two pairs', () {
+  test('trips beats two pairs', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -350,7 +350,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Highest three of a kind wins', () {
+  test('Highest trips wins', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -373,7 +373,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Same three of a kind delegates to high card', () {
+  test('Same trips delegates to high card', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -396,7 +396,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Straight defeats three of a kind', () {
+  test('Straight defeats trips', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -669,10 +669,38 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
+    printOutcome(round);
+
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Four of a kind beats full house', () {
+  test('Push if there is a push', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('as'));
+    round.dealPlayerBySeat(0, card('qc'));
+
+    round.dealPlayerBySeat(1, card('kh'));
+    round.dealPlayerBySeat(1, card('kd'));
+
+    round.dealPlayerBySeat(2, card('ad'));
+    round.dealPlayerBySeat(2, card('qs'));
+
+    board.addAll([card('ah'), card('ac'), card('kc'), card('jd'), card('jh')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    print('hi');
+    printOutcome(round);
+
+    expect(round.winner(), 'push');
+  });
+
+  test('quads beats full house', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -695,7 +723,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Highest four of a kind wins', () {
+  test('Highest quads wins', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -715,12 +743,10 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
-
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Four of a kind on board delegates to high card', () {
+  test('quads on board delegates to high card', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -740,12 +766,10 @@ void main() {
     round.dealCardsForTest(board);
     round.evaluateHands();
 
-    printOutcome(round);
-
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Straight flush beats four of a kind', () {
+  test('Straight flush beats quads', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -768,7 +792,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Straight flush beats four of a kind', () {
+  test('Straight flush beats quads', () {
     final board = <PlayingCard>[];
     final players = [player1, player2];
     final round = Round(players);
@@ -802,8 +826,6 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
-
-    printOutcome(round);
 
     expect(round.winner().seat, player2.seat);
   });
