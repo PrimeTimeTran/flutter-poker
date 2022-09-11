@@ -23,6 +23,11 @@ card(code) {
   return cards.firstWhere((c) => '${c.rank}${c.suit}' == code);
 }
 
+getFlushSuit(cards) {
+  final map = suitMap(cards);
+  return map.keys.firstWhereOrNull((k) => map[k] > 4);
+}
+
 Map rankMap(cards) {
   final ranks = cards.map((c) => c.rank);
   var map = {};
@@ -63,12 +68,22 @@ getOfKind(which, cards) {
       .toList();
 }
 
-getRoyalFlush(cards) {}
+getRoyalFlush(cards) {
+  return [];
+}
 
-getStraightFlush(cards) {}
+getStraightFlush(cards) {
+  return [];
+}
 
 getFourOfAKind(cards) {
-  return getOfKind('four of a kind', cards);
+  var newCards = cards;
+  var quads = getOfKind('four of a kind', cards).first.toList();
+  newCards.removeWhere((c) => c.rank == quads.first.rank);
+
+  quads.addAll(newCards.take(1));
+
+  return quads;
 }
 
 getFullHouse(cards) {

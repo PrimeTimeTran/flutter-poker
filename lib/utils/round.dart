@@ -52,19 +52,13 @@ getWinningPlayerFromType(players, matrix, handType) {
     } else if (handType == 'trips' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'straight') {
-      if (values.length == 1) {
-        return null;
-      }
+      if (values.length == 1) return null;
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'flush') {
-      if (values.length == 1) {
-        return null;
-      }
+      if (values.length == 1) return null;
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'full house') {
-      if (values.length == 1) {
-        return null;
-      }
+      if (values.length == 1) return null;
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'four of a kind') {
       return getPlayerFromValues(values, players, i);
@@ -85,12 +79,12 @@ setMatrixAndValues(players, matrix, rankings, i) {
 }
 
 setFourOfAKindValues(players, matrix, i) {
-  final quads = getOfKind('four of a kind', players[i].hand.highHand);
+  final quads = getOfKind('four of a kind', players[i].hand.highHand).first;
 
-  final tripletValue = quads.first.toList().first.value;
+  final quadValues = quads.first.value;
   final singleValues = getCardValues(players[i].hand.highHand);
 
-  final rankings = [tripletValue, singleValues];
+  final rankings = [quadValues, singleValues];
 
   setMatrixAndValues(players, matrix, rankings, i);
 }
@@ -120,11 +114,7 @@ setTwoPairValues(players, matrix, i) {
 
 setPairOrTripleValues(players, matrix, i, which) {
   final pairValue =
-      getOfKind(which, players[i].hand.highHand)
-      .first
-      .toList()
-      .first
-      .value;
+      getOfKind(which, players[i].hand.highHand).first.toList().first.value;
   final singleValues = getCardValues(players[i].hand.highHand);
 
   final rankings = [pairValue, ...singleValues];

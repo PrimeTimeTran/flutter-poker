@@ -1,6 +1,5 @@
-import 'package:collection/collection.dart';
-
 import 'package:flutpoke/utils/cards.dart';
+import 'package:flutpoke/utils/hand.dart';
 
 class Hand {
   int seatIdx;
@@ -32,30 +31,7 @@ class Hand {
   }
 
   setOutcome() {
-    String res;
-
-    if (royalFlush()) {
-      res = 'royal flush';
-    } else if (straightFlush()) {
-      res = 'straight flush';
-    } else if (fourOfAKind()) {
-      res = 'four of a kind';
-    } else if (fullHouse()) {
-      res = 'full house';
-    } else if (flush()) {
-      res = 'flush';
-    } else if (straight()) {
-      res = 'straight';
-    } else if (threeOfAKind()) {
-      res = 'three of a kind';
-    } else if (twoPair()) {
-      res = 'two pair';
-    } else if (pair()) {
-      res = 'pair';
-    } else {
-      res = 'high card';
-    }
-    outcome = res;
+    outcome = getOutcome(cards);
   }
 
   setHandRanking() {
@@ -63,90 +39,6 @@ class Hand {
   }
 
   setPlayedCards() {
-    if (outcome == 'high card') {
-      highHand = cards.take(5).toList();
-    }
-    if (outcome == 'pair') {
-      highHand = getPaired(cards);
-    }
-    if (outcome == 'two pair') {
-      highHand = getTwoPaired(cards);
-    }
-    if (outcome == 'three of a kind') {
-      highHand = getThreeOfAKind(cards);
-    }
-    if (outcome == 'straight') {
-      highHand = getStraight(cards, true);
-    }
-
-    if (outcome == 'flush') {
-      highHand = getFlush(cards);
-    }
-    if (outcome == 'full house') {
-      highHand = getFullHouse(cards);
-    }
-    if (outcome == 'four of a kind') {
-      highHand = getFourOfAKind(cards);
-    }
-    if (outcome == 'straight flush') {
-      highHand = getStraightFlush(cards);
-    }
-    if (outcome == 'royal flush') {
-      highHand = getRoyalFlush(cards);
-    }
-  }
-
-  pair() {
-    final map = rankMap(cards);
-    return map.values.any((e) => e == 2);
-  }
-
-  twoPair() {
-    final map = rankMap(cards);
-    return map.values.where((value) => value == 2).length > 1;
-  }
-
-  threeOfAKind() {
-    final map = rankMap(cards);
-    return map.values.any((e) => e == 3);
-  }
-
-  straight() {
-    return checkStraight(cards);
-  }
-
-  flush() {
-    final map = suitMap(cards);
-    return map.values.any((e) => e > 4);
-  }
-
-  fullHouse() {
-    final map = rankMap(cards);
-    return map.values.any((e) => e == 3) && map.values.any((e) => e == 2);
-  }
-
-  fourOfAKind() {
-    final map = rankMap(cards);
-    return map.values.any((e) => e == 4);
-  }
-
-  straightFlush() {
-    final map = suitMap(cards);
-    final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
-    if (suit == null) return false;
-    final playingCards = cards.where((element) => element.suit == suit);
-    return checkStraight(playingCards);
-  }
-
-  royalFlush() {
-    final map = suitMap(cards);
-    final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
-    if (suit == null) return false;
-    final kards = cards.toSet().toList();
-    return kards.first.suit == suit &&
-        kards.first.rank == 'a' &&
-        kards[4].suit == suit &&
-        kards[4].rank == '10' &&
-        straightFlush();
+    highHand = getHighCards(outcome, cards);
   }
 }

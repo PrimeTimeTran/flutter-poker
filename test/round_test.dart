@@ -604,7 +604,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Higher trips of full houses wins', () {
+  test('Full house higher trips wins', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -627,7 +627,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Same trips delegates to higher pair', () {
+  test('Full house same trips delegates to pair', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -715,6 +715,8 @@ void main() {
 
     round.dealCardsForTest(board);
     round.evaluateHands();
+
+    printOutcome(round);
 
     expect(round.winner().seat, player2.seat);
   });
