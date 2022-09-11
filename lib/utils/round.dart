@@ -45,15 +45,38 @@ getPlayerFromValues(values, players, i) {
   }
 }
 
+getWinningPlayerFromFullHouse(players, values, matrix, i) {
+  final highestValue = getHighestCardValueInColumn(values);
+
+  players = players.where((p) => p.hand.cardValues[i] == highestValue);
+
+  var secondColumnValues = setValuesFromColOfMatrix(matrix, i + 1);
+  secondColumnValues.remove(highestValue);
+
+  final secondColumnHighestValue =
+      getHighestCardValueInColumn(secondColumnValues);
+
+  final go = players
+      .firstWhere((p) => p.hand.cardValues[i + 1] == secondColumnHighestValue);
+  return go;
+}
+
+// A 2d matrix makes identifying highest card easier.
+// We move left to right in each row until one column has a higher card
+// than the other rows/hands in the same column
+// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
+
+// Matrix will look different depending on how many players and which
+// type of winning hand
+
 getWinningPlayerFromType(players, matrix, handType) {
   for (var i = 0; i < matrix.first.length; i++) {
     var values = setValuesFromColOfMatrix(matrix, i);
 
-    if (handType == 'high card' && values.length == matrix.length) {
+    if (values.length == matrix.length &&
+        (handType == 'high card' || handType == 'trips')) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'pair' && values.length > 1) {
-      return getPlayerFromValues(values, players, i);
-    } else if (handType == 'trips' && values.length == matrix.length) {
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'straight' ||
         handType == 'flush' ||
@@ -63,17 +86,8 @@ getWinningPlayerFromType(players, matrix, handType) {
     } else if (handType == 'full house') {
       if (values.length == 1) return null;
       if (values.length < matrix.length) {
-        final highestValue = getHighestCardValueInColumn(values);
-        players = players.where((p) => p.hand.cardValues[i] == highestValue);
-        var secondColumnValues = setValuesFromColOfMatrix(matrix, i);
-        final secondColumnHighestValue =
-            getHighestCardValueInColumn(secondColumnValues);
-        final go = players.firstWhere(
-            (p) => p.hand.cardValues[i] == secondColumnHighestValue);
-        return go;
+        return getWinningPlayerFromFullHouse(players, values, matrix, i);
       }
-      ;
-
       return getPlayerFromValues(values, players, i);
     } else if (handType == 'four of a kind') {
       final highestValue = getHighestCardValueInColumn(values);
@@ -201,11 +215,6 @@ findPlayerWithBestPairHand(players) {
   }
   return 'push';
 }
-
-// A 2d matrix makes identifying highest card easier.
-// We move left to right in each row until one column has a higher card
-// than the other rows/hands in the same column
-// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
 
 findBestHandFrom(players, type) {
   final matrix = getMatrix(players, null, type);

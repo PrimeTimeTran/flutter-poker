@@ -672,29 +672,6 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Board full house plays if larger than player full house', () {
-    final board = <PlayingCard>[];
-
-    final players = [player1, player2, player3];
-    final round = Round(players);
-
-    round.dealPlayerBySeat(0, card('2h'));
-    round.dealPlayerBySeat(0, card('2d'));
-
-    round.dealPlayerBySeat(1, card('4h'));
-    round.dealPlayerBySeat(1, card('4d'));
-
-    round.dealPlayerBySeat(2, card('5h'));
-    round.dealPlayerBySeat(2, card('5d'));
-
-    board.addAll([card('ah'), card('ac'), card('as'), card('kh'), card('ks')]);
-
-    round.dealCardsForTest(board);
-    round.evaluateHands();
-
-    expect(round.winner(), 'push');
-  });
-
   test('Four of a kind beats full house', () {
     final board = <PlayingCard>[];
 
