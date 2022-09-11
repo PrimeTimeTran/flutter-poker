@@ -49,14 +49,12 @@ Map suitMap(cards) {
   return map;
 }
 
-getOfKind(cards, which) {
-  int limit;
-  if (which == 'two') {
+getOfKind(which, cards) {
+  int limit = 3;
+  if (which == 'pair') {
     limit = 1;
-  } else if (which == 'three') {
+  } else if (which == 'three of a kind') {
     limit = 2;
-  } else {
-    limit = 3;
   }
 
   return groupBy(cards, (dynamic c) => c.rank)
@@ -66,7 +64,7 @@ getOfKind(cards, which) {
 }
 
 getFourOfAKind(cards) {
-  return getOfKind(cards, 'four').first;
+  return getOfKind('four of a kind', cards);
 }
 
 getFullHouse(cards) {
@@ -144,18 +142,17 @@ getStraight(cards, getCards) {
 }
 
 getThreeOfAKind(cards) {
-  var newCards = List.from(cards);
-  var trips = getOfKind(cards, 'three').first;
+  var newCards = cards;
+  var trips = getOfKind('three of a kind', cards).first;
   newCards.removeWhere((c) => c.rank == trips.first.rank);
   trips.addAll(newCards.take(2));
   return trips;
 }
 
 getTwoPaired(cards) {
-  var newCards = List.from(cards);
-  var firstPair = getOfKind(cards, 'two').first.toList();
-
-  var secondPair = getOfKind(cards, 'two')[1].toList();
+  var newCards = cards;
+  var firstPair = getOfKind('pair', cards).first;
+  var secondPair = getOfKind('pair', cards)[1];
 
   newCards.removeWhere((c) => c.rank == firstPair.first.rank);
   newCards.removeWhere((c) => c.rank == secondPair.first.rank);
@@ -166,8 +163,8 @@ getTwoPaired(cards) {
 }
 
 getPaired(cards) {
-  var newCards = List.from(cards);
-  var pair = getOfKind(cards, 'two').first.toList();
+  var newCards = cards;
+  var pair = getOfKind('pair', cards).first;
 
   newCards.removeWhere((c) => c.rank == pair.first.rank);
 

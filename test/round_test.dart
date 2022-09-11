@@ -574,7 +574,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Board flush wins if stronger than player cards', () {
+  test('Board flush plays if higher than players', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -584,12 +584,12 @@ void main() {
     round.dealPlayerBySeat(0, card('kc'));
 
     round.dealPlayerBySeat(1, card('as'));
-    round.dealPlayerBySeat(1, card('ks'));
+    round.dealPlayerBySeat(1, card('2h'));
 
     round.dealPlayerBySeat(2, card('ad'));
     round.dealPlayerBySeat(2, card('kd'));
 
-    board.addAll([card('2h'), card('3h'), card('4h'), card('6h'), card('7h')]);
+    board.addAll([card('8h'), card('3h'), card('4h'), card('6h'), card('7h')]);
 
     round.dealCardsForTest(board);
     round.evaluateHands();
@@ -597,7 +597,7 @@ void main() {
     expect(round.winner(), 'push');
   });
 
-  test('Board flush wins if stronger than player flush cards', () {
+  test('Board flush pushes', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -643,7 +643,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Higher triplets of full houses wins', () {
+  test('Higher trips of full houses wins', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -666,7 +666,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Higher of doubles of full houses wins when triplets tied', () {
+  test('Higher of pairs of full houses wins when trips the same', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -712,7 +712,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Board full house plays if its larger than player hands', () {
+  test('Board full house plays if larger than player full house', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -735,7 +735,7 @@ void main() {
     expect(round.winner(), 'push');
   });
 
-  test('Four of a kind defeats full house', () {
+  test('Four of a kind beats full house', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];
@@ -827,7 +827,7 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
-  test('Highest straight flush of two wins', () {
+  test('Highest straight flush', () {
     final board = <PlayingCard>[];
 
     final players = [player1, player2, player3];

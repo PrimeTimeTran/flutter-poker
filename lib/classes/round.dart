@@ -101,6 +101,9 @@ class Round {
     if (outcome == 'straight flush') {
       return players.first;
     }
+    if (outcome == 'four of a kind') {
+      return players.first;
+    }
     if (outcome == 'full house') {
       return findBestFullHouse(players);
     }

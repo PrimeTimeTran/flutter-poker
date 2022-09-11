@@ -86,8 +86,8 @@ setMatrixAndValues(players, matrix, rankings, i) {
 }
 
 setFullHouseValues(players, matrix, i) {
-  final triples = getOfKind(players[i].hand.highHand, 'three');
-  final pairs = getOfKind(players[i].hand.highHand, 'two');
+  final triples = getOfKind('three of a kind', players[i].hand.highHand);
+  final pairs = getOfKind('pair', players[i].hand.highHand);
 
   final tripletValue = triples.first.toList().first.value;
   final pairValue = pairs.last.toList().last.value;
@@ -98,7 +98,7 @@ setFullHouseValues(players, matrix, i) {
 }
 
 setTwoPairValues(players, matrix, i) {
-  final pairs = getOfKind(players[i].hand.highHand, 'two');
+  final pairs = getOfKind('pair', players[i].hand.highHand);
   final firstPairValue = pairs.first.toList().first.value;
   final secondPairValue = pairs.last.toList().first.value;
   final singleValues = getCardValues(players[i].hand.highHand);
@@ -110,7 +110,7 @@ setTwoPairValues(players, matrix, i) {
 
 setPairOrTripleValues(players, matrix, i, which) {
   final pairValue =
-      getOfKind(players[i].hand.highHand, which)
+      getOfKind(which, players[i].hand.highHand)
       .first
       .toList()
       .first
@@ -178,7 +178,7 @@ findBestStraightHand(players) {
 }
 
 findBestThreeOfKindHand(players) {
-  final matrix = getMatrix(players, 'three', 'triples');
+  final matrix = getMatrix(players, 'three of a kind', 'triples');
 
   final player = getWinningPlayerFromType(players, matrix, 'trips');
   if (player != null) {
@@ -198,7 +198,7 @@ findPlayerWithBestTwoPairHand(players) {
 }
 
 findPlayerWithBestPairHand(players) {
-  final matrix = getMatrix(players, 'two', 'pair');
+  final matrix = getMatrix(players, 'pair', 'pair');
 
   final player = getWinningPlayerFromType(players, matrix, 'pair');
   if (player != null) {
@@ -213,7 +213,7 @@ findPlayerWithBestPairHand(players) {
 // [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
 
 findPlayerWithBestHighCardHand(players) {
-  final matrix = getMatrix(players, 1, 'high card');
+  final matrix = getMatrix(players, null, 'high card');
 
   final player = getWinningPlayerFromType(players, matrix, 'high hand');
   if (player != null) {
