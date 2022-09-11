@@ -66,7 +66,7 @@ getOfKind(cards, which) {
 }
 
 getFourOfAKind(cards) {
-  return getOfKind(cards, 'four').first.toList();
+  return getOfKind(cards, 'four').first;
 }
 
 getFullHouse(cards) {
@@ -99,7 +99,7 @@ getFlush(cards) {
   final map = suitMap(cards);
   final suit = map.keys.firstWhereOrNull((k) => map[k] > 4);
   if (suit == null) return false;
-  var suitedCards = List.from(cards.where((element) => element.suit == suit));
+  var suitedCards = cards.where((element) => element.suit == suit);
 
   return suitedCards.take(5).toList();
 }
@@ -143,9 +143,9 @@ getStraight(cards) {
 
 getThreeOfAKind(cards) {
   var newCards = List.from(cards);
-  var trips = getOfKind(cards, 'three').first.toList();
+  var trips = getOfKind(cards, 'three').first;
   newCards.removeWhere((c) => c.rank == trips.first.rank);
-  trips.addAll(List.from(newCards.take(2).toList()));
+  trips.addAll(newCards.take(2));
   return trips;
 }
 
@@ -158,8 +158,8 @@ getTwoPaired(cards) {
   newCards.removeWhere((c) => c.rank == firstPair.first.rank);
   newCards.removeWhere((c) => c.rank == secondPair.first.rank);
 
-  firstPair.addAll(List.from(secondPair));
-  firstPair.addAll(List.from(newCards.take(1).toList()));
+  firstPair.addAll(secondPair);
+  firstPair.addAll(newCards.take(1));
   return firstPair;
 }
 
@@ -169,7 +169,7 @@ getPaired(cards) {
 
   newCards.removeWhere((c) => c.rank == pair.first.rank);
 
-  pair.addAll(List.from(newCards.take(3).toList()));
+  pair.addAll(newCards.take(3));
 
   return pair;
 }

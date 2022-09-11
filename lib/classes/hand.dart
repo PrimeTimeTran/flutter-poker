@@ -64,7 +64,7 @@ class Hand {
 
   setPlayedCards() {
     if (outcome == 'high card') {
-      highHand = List.from(cards.take(5));
+      highHand = cards.take(5).toList();
     }
     if (outcome == 'pair') {
       highHand = getPaired(cards);
