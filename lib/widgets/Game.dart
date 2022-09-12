@@ -43,21 +43,21 @@ class _GameState extends State<Game> {
   flop() {
     round.flop();
     setState(() {
-      status = 'flopped';
+      status = round.step;
     });
   }
 
   turn() {
     round.turn();
     setState(() {
-      status = 'turn';
+      status = round.step;
     });
   }
 
   river() {
     round.river();
     setState(() {
-      status = 'river';
+      status = round.step;
     });
   }
 

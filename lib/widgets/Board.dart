@@ -16,9 +16,9 @@ class _BoardState extends State<Board> {
   Widget build(BuildContext context) {
     return Container(
       width: 250,
-      height: 250,
+      height: 150,
       child: Row(
-        // mainAxisAlignment: widget.align,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ListView.builder(
               itemCount: widget.cards.length,

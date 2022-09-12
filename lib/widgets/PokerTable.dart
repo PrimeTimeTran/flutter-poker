@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/Board.dart';
+import 'package:flutpoke/classes/Round.dart';
 import 'package:flutpoke/widgets/PlayerHand.dart';
 import 'package:flutpoke/widgets/PokerTableRow.dart';
 
@@ -22,7 +23,7 @@ class PokerTable extends StatefulWidget {
   final Function turn;
   final Function river;
   final List<List> cards;
-  var round;
+  final Round round;
 
   @override
   State<PokerTable> createState() => _PokerTableState();
@@ -46,26 +47,27 @@ class _PokerTableState extends State<PokerTable> {
             child: Container(
               color: Colors.blue,
               child: Column(
-                children: const [
-                  Text('Hello'),
-                ],
-              ),
-            ),
-          ),
-          Positioned.fill(
-            top: 300,
-            left: 150,
-            right: 150,
-            bottom: 100,
-            child: Container(
-              color: Colors.blue,
-              child: Column(
                 children: [
-                  Board(cards: widget.round.board),
+                  Text(widget.round.step),
                 ],
               ),
             ),
           ),
+          // Positioned.fill(
+          //   top: 350,
+          //   left: 150,
+          //   right: 150,
+          //   bottom: 100,
+          //   child: Container(
+          //     color: Colors.blue,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         Board(cards: widget.round.board),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Column(
             children: <Widget>[
               PokerTableRow(
@@ -78,6 +80,14 @@ class _PokerTableState extends State<PokerTable> {
                   seats: const [7, 1],
                   cards: widget.cards,
                   alignment: MainAxisAlignment.spaceBetween),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Board(cards: widget.round.board),
+                  ],
+                ),
+              ),
               PokerTableRow(
                   status: 'hi',
                   seats: const [6, 2],

@@ -46,14 +46,17 @@ class Round {
   }
 
   flop() {
+    step = 'flopped';
     board = deck.flop();
   }
 
   turn() {
+    step = 'turn';
     board.add(deck.turn());
   }
 
   river() {
+    step = 'river';
     board.add(deck.river());
   }
 
