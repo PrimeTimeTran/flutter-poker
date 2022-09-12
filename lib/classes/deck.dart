@@ -64,6 +64,7 @@ class Deck {
   }
 
   flop() {
+    print('Flop');
     cards.removeAt(0);
     var card1 = cards.removeAt(0);
     var card2 = cards.removeAt(0);
@@ -72,11 +73,13 @@ class Deck {
   }
 
   turn() {
+    print('Turn');
     cards.removeAt(0);
     return cards.removeAt(0);
   }
 
   river() {
+    print('River');
     cards.removeAt(0);
     return cards.removeAt(0);
   }

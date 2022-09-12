@@ -5,12 +5,17 @@ import 'package:flutpoke/classes/Deck.dart';
 
 class PlayerHand extends StatefulWidget {
   PlayerHand(
-      {Key? key, required this.idx, required this.cards, required this.status})
+      {Key? key,
+      required this.idx,
+      required this.cards,
+      required this.status,
+      required this.align})
       : super(key: key);
 
   final int idx;
   String status;
   final List<dynamic> cards;
+  final MainAxisAlignment align;
 
   @override
   State<PlayerHand> createState() => _PlayerHandState();
@@ -41,6 +46,7 @@ class _PlayerHandState extends State<PlayerHand> {
       width: 250,
       height: 250,
       child: Row(
+        mainAxisAlignment: widget.align,
         children: [
           Text(widget.idx.toString()),
           ListView.builder(

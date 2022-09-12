@@ -27,6 +27,7 @@ class PokerTableRow extends StatelessWidget {
         idx: seats[2],
         cards: getPlayerCards(seats[2]),
         status: status,
+        align: MainAxisAlignment.center,
       );
     } else {
       return Container();
@@ -36,24 +37,24 @@ class PokerTableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 2,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: alignment,
-          children: [
-            PlayerHand(
-              idx: seats[0],
-              status: status,
-              cards: getPlayerCards(seats[0]),
-            ),
-            getCenterPlayer(),
-            PlayerHand(
+      flex: 4,
+      child: Row(
+        mainAxisAlignment: alignment,
+        children: [
+          PlayerHand(
+            idx: seats[0],
+            status: status,
+            cards: getPlayerCards(seats[0]),
+            align: MainAxisAlignment.end,
+          ),
+          getCenterPlayer(),
+          PlayerHand(
               idx: seats[1],
               status: status,
               cards: getPlayerCards(seats[1]),
-            ),
-          ],
-        ),
+              align: MainAxisAlignment.start
+          ),
+        ],
       ),
     );
   }

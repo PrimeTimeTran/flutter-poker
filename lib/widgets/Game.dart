@@ -13,7 +13,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  late Round round;
+  late Round round = Round(getPlayers());
   // preround, ante, preflop, flop, turn, river,
   var status = 'ante';
   late List<List> cards = [
@@ -34,26 +34,43 @@ class _GameState extends State<Game> {
   }
 
   dealCards() {
-    final round = Round(getPlayers());
-
     setState(() {
       cards = round.deck.deal(10);
       status = 'started';
     });
   }
 
-  flop() {}
+  flop() {
+    round.flop();
+    setState(() {
+      status = 'flopped';
+    });
+  }
 
-  turn() {}
+  turn() {
+    round.turn();
+    setState(() {
+      status = 'turn';
+    });
+  }
 
-  river() {}
+  river() {
+    round.river();
+    setState(() {
+      status = 'river';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return PokerTable(
+      round: round,
       cards: cards,
       status: status,
       dealCards: dealCards,
+      flop: flop,
+      turn: turn,
+      river: river,
     );
   }
 }
