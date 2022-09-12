@@ -33,17 +33,30 @@ class Deck {
     return cards.toString();
   }
 
-  shuffle() {
+  deal(numOfHands) {
     cards.shuffle();
-    return cards;
-  }
+    List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
+    cards.removeAt(0);
 
-  cardsWithSuit(String suit) {
-    return cards.where((card) => card.suit == suit);
-  }
+    var handIdx = 0;
 
-  getCards() {
-    return cards;
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
+    handIdx = 0;
+
+    while (handIdx < numOfHands) {
+      var card = cards.removeAt(0);
+      handsDealt[handIdx].add(card);
+      handIdx++;
+    }
+
+    print(handsDealt);
+
+    return handsDealt;
   }
 
   remainingCards() {
@@ -66,28 +79,5 @@ class Deck {
   river() {
     cards.removeAt(0);
     return cards.removeAt(0);
-  }
-
-  deal(numOfHands) {
-    List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
-    cards.removeAt(0);
-
-    var handIdx = 0;
-
-    while (handIdx < numOfHands) {
-      var card = cards.removeAt(0);
-      handsDealt[handIdx].add(card);
-      handIdx++;
-    }
-
-    handIdx = 0;
-
-    while (handIdx < numOfHands) {
-      var card = cards.removeAt(0);
-      handsDealt[handIdx].add(card);
-      handIdx++;
-    }
-
-    return handsDealt;
   }
 }

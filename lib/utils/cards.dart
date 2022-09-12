@@ -168,6 +168,7 @@ getKindOf(cards, kind) {
   } else if (kind == 'pair') {
     take = 3;
   }
+
   var permutation = getOfKind(kind, cards).first;
 
   cards.removeWhere((c) => c.rank == permutation.first.rank);

@@ -9,12 +9,13 @@ import 'package:flutpoke/utils/cards.dart';
 class Round {
   int blind = 100;
   int buttonIdx = 0;
-  Deck deck = Deck();
+  late Deck deck;
   String step = 'ante';
   List<PlayingCard> board = [];
-  List<Player> players = [];
+  List players = [];
 
-  Round(List<Player> currentPlayers) {
+  Round(currentPlayers) {
+    deck = Deck();
     players = currentPlayers;
     prepareHands();
   }
@@ -76,8 +77,6 @@ class Round {
       handValues.add(handRankings[p.hand.outcome]);
     }
 
-    // why don't I work?
-    // final highestRanking = handValues.max;
     final highestRanking =
         handValues.reduce((curr, next) => curr > next ? curr : next);
 

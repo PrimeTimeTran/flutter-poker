@@ -39,8 +39,6 @@ class _PokerTableState extends State<PokerTable> {
               child: Column(
                 children: [
                   Text('Hello'),
-                  Text('Hello'),
-                  Text('Hello'),
                 ],
               ),
             ),
@@ -58,11 +56,11 @@ class _PokerTableState extends State<PokerTable> {
                         status: widget.status,
                         cards: getPlayerCards(4),
                       ),
-                      PlayerHand(
-                        idx: 5,
-                        cards: getPlayerCards(5),
-                        status: widget.status,
-                      ),
+                      // PlayerHand(
+                      //   idx: 5,
+                      //   cards: getPlayerCards(5),
+                      //   status: widget.status,
+                      // ),
                       PlayerHand(
                         idx: 6,
                         status: widget.status,

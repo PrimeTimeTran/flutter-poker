@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
 
-import 'package:flutpoke/classes/Deck.dart';
+import 'package:flutpoke/classes/Round.dart';
+import 'package:flutpoke/classes/Player.dart';
 
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
@@ -12,8 +13,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  late Deck deck;
-
+  late Round round;
   // preround, ante, preflop, flop, turn, river,
   var status = 'ante';
   late List<List> cards = [
@@ -29,14 +29,24 @@ class _GameState extends State<Game> {
     [],
   ];
 
+  getPlayers() {
+    return [Player('Ace', 0), Player('Bill', 1)];
+  }
+
   dealCards() {
-    deck = Deck();
-    deck.shuffle();
+    final round = Round(getPlayers());
+
     setState(() {
-      cards = deck.deal(10);
+      cards = round.deck.deal(9);
       status = 'started';
     });
   }
+
+  flop() {}
+
+  turn() {}
+
+  river() {}
 
   @override
   Widget build(BuildContext context) {
