@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Game(),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.pink,
     );
   }
 }
