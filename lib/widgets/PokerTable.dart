@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PlayerHand.dart';
-import 'package:flutpoke/classes/Deck.dart';
+import 'package:flutpoke/widgets/PokerTableRow.dart';
 
 class PokerTable extends StatefulWidget {
   PokerTable(
@@ -37,7 +37,7 @@ class _PokerTableState extends State<PokerTable> {
             child: Container(
               color: Colors.red,
               child: Column(
-                children: [
+                children: const [
                   Text('Hello'),
                 ],
               ),
@@ -45,101 +45,27 @@ class _PokerTableState extends State<PokerTable> {
           ),
           Column(
             children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      PlayerHand(
-                        idx: 4,
-                        status: widget.status,
-                        cards: getPlayerCards(4),
-                      ),
-                      // PlayerHand(
-                      //   idx: 5,
-                      //   cards: getPlayerCards(5),
-                      //   status: widget.status,
-                      // ),
-                      PlayerHand(
-                        idx: 6,
-                        status: widget.status,
-                        cards: getPlayerCards(6),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        PlayerHand(
-                          idx: 3,
-                          status: widget.status,
-                          cards: getPlayerCards(3),
-                        ),
-                        PlayerHand(
-                          idx: 7,
-                          status: widget.status,
-                          cards: getPlayerCards(7),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        PlayerHand(
-                          idx: 2,
-                          status: widget.status,
-                          cards: getPlayerCards(2),
-                        ),
-                        PlayerHand(
-                          idx: 8,
-                          status: widget.status,
-                          cards: getPlayerCards(8),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      PlayerHand(
-                        idx: 1,
-                        status: widget.status,
-                        cards: getPlayerCards(1),
-                      ),
-                      PlayerHand(
-                        idx: 0,
-                        status: widget.status,
-                        cards: getPlayerCards(0),
-                      ),
-                      PlayerHand(
-                        idx: 9,
-                        status: widget.status,
-                        cards: getPlayerCards(9),
-                      ),
-                    ],
-                  ),
-                ),
+              PokerTableRow(
+                  status: 'hi',
+                  seats: const [8, 0],
+                  cards: widget.cards,
+                  alignment: MainAxisAlignment.spaceAround),
+              PokerTableRow(
+                  status: 'hi',
+                  seats: const [7, 1],
+                  cards: widget.cards,
+                  alignment: MainAxisAlignment.spaceBetween),
+              PokerTableRow(
+                  status: 'hi',
+                  seats: const [6, 2],
+                  cards: widget.cards,
+                  alignment: MainAxisAlignment.spaceBetween),
+              PokerTableRow(
+                status: 'hi',
+                seats: const [5, 3, 4],
+                cards: widget.cards,
+                alignment: MainAxisAlignment.spaceAround,
+                centerPlayer: true,
               ),
               Expanded(
                 flex: 1,

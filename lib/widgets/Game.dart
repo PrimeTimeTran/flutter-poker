@@ -37,7 +37,7 @@ class _GameState extends State<Game> {
     final round = Round(getPlayers());
 
     setState(() {
-      cards = round.deck.deal(9);
+      cards = round.deck.deal(10);
       status = 'started';
     });
   }

@@ -38,8 +38,8 @@ class _PlayerHandState extends State<PlayerHand> {
       );
     }
     return Container(
-      width: 100,
-      height: 100,
+      width: 250,
+      height: 250,
       child: Row(
         children: [
           Text(widget.idx.toString()),
@@ -49,7 +49,7 @@ class _PlayerHandState extends State<PlayerHand> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (ctx, idx) {
                 return SizedBox(
-                  height: 75,
+                  height: 250,
                   child: SvgPicture.asset(widget.cards[idx].path),
                 );
               }),
