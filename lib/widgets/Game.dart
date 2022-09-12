@@ -15,7 +15,7 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   late Round round = Round(getPlayers());
   // preround, ante, preflop, flop, turn, river,
-  var status = 'ante';
+  var status = 'preflop';
   late List<List> cards = [
     [],
     [],
