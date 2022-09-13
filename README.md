@@ -52,6 +52,7 @@ final state = {
   Action moves left until button closes round with their action
 
 - Back to ante.
+- Back to again.
 
 
 [x] Find high card winning hand.
