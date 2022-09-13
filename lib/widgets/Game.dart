@@ -47,14 +47,14 @@ class _GameState extends State<Game> {
     return players;
   }
 
-  // dealCards() {
-  //   round.dealPlayers();
-  //   setState(() {
-  //     status = 'preFlop';
-  //   });
-  // }
-
   dealCards() {
+    round.dealPlayers();
+    setState(() {
+      status = 'preFlop';
+    });
+  }
+
+  completeRound() {
     round = Round(getPlayers());
     round.dealPlayers();
     setState(() {
@@ -83,10 +83,6 @@ class _GameState extends State<Game> {
 
   river() {
     var player = round.river();
-    print('WINNER!');
-    print(player?.name);
-    print(player?.seat);
-    print(player?.hand.bestHand);
     setState(() {
       status = round.step;
       winningPlayer = player;
@@ -97,27 +93,22 @@ class _GameState extends State<Game> {
   endRound() {
     history.add(round);
     setState(() {
-      round = Round(getPlayers());
-      // seatIdx = seatIdx + 1;
-      winningPlayer = null;
       status = 'ante';
+      winningPlayer = null;
+      round = Round(getPlayers());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Shortcuts(
-      shortcuts: {
-        LogicalKeySet(LogicalKeyboardKey.keyD): DealIntent(),
-        LogicalKeySet(LogicalKeyboardKey.keyR): ResetIntent()
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.keyC): completeRound,
+        const SingleActivator(LogicalKeyboardKey.keyD): dealCards,
+        const SingleActivator(LogicalKeyboardKey.keyR): completeRound,
       },
-      child: Actions(
-        actions: {
-          DealIntent:
-              CallbackAction<DealIntent>(onInvoke: (intent) => dealCards()),
-          ResetIntent:
-              CallbackAction<ResetIntent>(onInvoke: (intent) => endRound()),
-        },
+      child: Focus(
+        autofocus: true,
         child: PokerTable(
           flop: flop,
           turn: turn,
@@ -126,10 +117,36 @@ class _GameState extends State<Game> {
           status: status,
           endRound: endRound,
           dealCards: dealCards,
+          completeRound: completeRound,
           winningPlayer: winningPlayer,
         ),
       ),
     );
+    // return Shortcuts(
+    //   shortcuts: {
+    //     LogicalKeySet(LogicalKeyboardKey.keyD): DealIntent(),
+    //     LogicalKeySet(LogicalKeyboardKey.keyR): ResetIntent()
+    //   },
+    //   child: Actions(
+    //     actions: {
+    //       DealIntent:
+    //           CallbackAction<DealIntent>(onInvoke: (intent) => dealCards()),
+    //       ResetIntent:
+    //           CallbackAction<ResetIntent>(onInvoke: (intent) => endRound()),
+    //     },
+    // child: PokerTable(
+    //   flop: flop,
+    //   turn: turn,
+    //   river: river,
+    //   round: round,
+    //   status: status,
+    //   endRound: endRound,
+    //   dealCards: dealCards,
+    //   completeRound: completeRound,
+    //   winningPlayer: winningPlayer,
+    // ),
+    //   ),
+    // );
     // return PokerTable(
     //   flop: flop,
     //   turn: turn,

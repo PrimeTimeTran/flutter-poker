@@ -15,11 +15,13 @@ class PokerTable extends StatefulWidget {
       required this.river,
       required this.winningPlayer,
       required this.endRound,
+      required this.completeRound,
       required this.round})
       : super(key: key);
 
   String status;
   final Round round;
+  final Function completeRound;
   final Function dealCards;
   final Function flop;
   final Function turn;
@@ -37,10 +39,6 @@ class _PokerTableState extends State<PokerTable> {
     final status = widget.status;
     final players = widget.round.players;
     final winningPlayer = widget.winningPlayer;
-
-    print('Poker Table');
-    print(players[0]);
-    print(players[8]);
 
     players.sort((a, b) => a.seat.compareTo(b.seat));
 
@@ -105,6 +103,13 @@ class _PokerTableState extends State<PokerTable> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      GestureDetector(
+                        onTap: () {
+                          widget.completeRound();
+                        },
+                        child:
+                            Container(color: Colors.grey, child: Text('Round')),
+                      ),
                       GestureDetector(
                         onTap: () {
                           widget.dealCards();

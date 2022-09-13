@@ -51,6 +51,7 @@ final state = {
 
 - Back to ante.
 
+
 [x] Find high card winning hand.
 [x] Find pair winning hand.
 [x] Find two pair winning hand.
@@ -61,3 +62,21 @@ final state = {
 [x] Find quads winning hand.
 [x] Find straight flush winning hand.
 [x] Find royal flush winning hand.
+[x] Find pushes in the winning hands.
+
+
+[ ] Take ante from each player.
+[ ] Add raise.
+[ ] Add call.
+[ ] Add fold.
+[ ] Split pot between winning hands.
+[ ] Split pot between pushed hands.
+[ ] Split pot between all in players.
+
+[ ] Add button.
+[ ] Move button after round.
+
+
+
+[ ] Prompt winning hands when push.
+[ ] Show probability of winning hands on each round.

@@ -51,7 +51,11 @@ class _PlayerHandState extends State<PlayerHand> {
 
   @override
   Widget build(BuildContext context) {
-    var winner = widget.winningPlayer?.seat == widget.seatNumber;
+    var winner = false;
+
+    if (widget.winningPlayer != 'push') {
+      winner = widget.winningPlayer?.seat == widget.seatNumber;
+    }
 
     return Container(
       width: 250,

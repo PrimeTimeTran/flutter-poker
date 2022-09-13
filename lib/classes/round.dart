@@ -22,7 +22,7 @@ class Round {
 
   prepareHands() {
     for (var p in players) {
-      p.hand = Hand(p.seat);
+      p.hand = Hand();
     }
   }
 
