@@ -43,38 +43,23 @@ class _PlayerHandState extends State<PlayerHand> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.status == 'preround') {
-      return Row(
-        children: [
-          Text(widget.idx.toString()),
-          SizedBox(
-            height: 75,
-            child: SvgPicture.asset("assets/cards/hk.svg", color: Colors.grey),
-          ),
-          SizedBox(
-            height: 75,
-            child: SvgPicture.asset(
-              "assets/cards/hk.svg",
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      );
-    }
 
     return Container(
       width: 250,
       height: 250,
-      color: Colors.orange,
-      child: Column(
-        children: [
-          Text(widget.idx.toString()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: getCards(),
-          ),
-          getOutcome(),
-        ],
+      // color: Colors.orange,
+      alignment: Alignment.center,
+      child: Center(
+        child: Column(
+          children: [
+            Text(widget.idx.toString()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getCards(),
+            ),
+            getOutcome(),
+          ],
+        ),
       ),
     );
   }

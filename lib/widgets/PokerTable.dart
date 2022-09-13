@@ -9,7 +9,6 @@ import 'package:flutpoke/widgets/PokerTableRow.dart';
 class PokerTable extends StatefulWidget {
   PokerTable(
       {Key? key,
-      required this.cards,
       required this.status,
       required this.dealCards,
       required this.flop,
@@ -24,7 +23,6 @@ class PokerTable extends StatefulWidget {
   final Function flop;
   final Function turn;
   final Function river;
-  final List<List> cards;
 
   @override
   State<PokerTable> createState() => _PokerTableState();

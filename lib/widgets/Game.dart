@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
@@ -14,21 +15,9 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   late Round round = Round(getPlayers());
-  // preround, ante, preflop, flop, turn, river,
-  var status = 'preflop';
+  var status = 'ante';
   var seatIdx = 0;
-  late List<List> cards = [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ];
+  var timer = null;
 
   getPlayers() {
     var seats = [
@@ -55,9 +44,7 @@ class _GameState extends State<Game> {
   dealCards() {
     round.dealPlayers();
     setState(() {
-      // cards = round.deck.deal(10);
-      status = 'started';
-      seatIdx = seatIdx + 1;
+      status = 'preFlop';
     });
   }
 
@@ -80,18 +67,26 @@ class _GameState extends State<Game> {
     setState(() {
       status = round.step;
     });
+    var timer = Timer(const Duration(seconds: 10), () => endRound());
+  }
+
+  endRound() {
+    setState(() {
+      round = Round(getPlayers());
+      seatIdx = seatIdx + 1;
+      status = status = 'ante';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return PokerTable(
-      round: round,
-      cards: cards,
-      status: status,
-      dealCards: dealCards,
       flop: flop,
       turn: turn,
       river: river,
+      round: round,
+      status: status,
+      dealCards: dealCards,
     );
   }
 }
