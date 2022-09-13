@@ -99,10 +99,6 @@ class Round {
   identifyHighest(players) {
     final outcome = players.first.hand.outcome;
 
-    if (outcome == 'two pair') {
-      return findPlayerWithBestTwoPairHand(players);
-    }
-
     return findBestHandFrom(players, outcome);
   }
 }

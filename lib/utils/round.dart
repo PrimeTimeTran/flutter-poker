@@ -61,14 +61,10 @@ getWinningPlayerFromType(players, matrix, type) {
     var values = setValuesFromColOfMatrix(matrix, i);
     if (values.length == 1) continue;
 
-    if (type == 'full house') {
-      if (values.length < matrix.length) {
-        return getFullHouseWinner(players, values, matrix, i);
-      }
-      return getPlayerFromHighVal(values, players, i);
-    } else {
-      return getPlayerFromHighVal(values, players, i);
+    if (values.length < matrix.length && type == 'full house') {
+      return getFullHouseWinner(players, values, matrix, i);
     }
+    return getPlayerFromHighVal(values, players, i);
   }
 }
 
@@ -140,16 +136,6 @@ getMatrix(players, type) {
     }
   }
   return matrix;
-}
-
-findPlayerWithBestTwoPairHand(players) {
-  final matrix = getMatrix(players, 'two pair');
-
-  final player = getWinningPlayerFromType(players, matrix, 'pair');
-  if (player != null) {
-    return player;
-  }
-  return 'push';
 }
 
 findBestHandFrom(players, type) {
