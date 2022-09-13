@@ -32,7 +32,7 @@ class Round {
 
   dealPlayers() {
     final numOfHands = players.length;
-
+    deck.cards.shuffle();
     deck.cards.removeAt(0);
 
     for (var i = 0; i < 2; i++) {
@@ -58,6 +58,7 @@ class Round {
   river() {
     step = 'river';
     board.add(deck.river());
+    evaluateHands();
   }
 
   evaluateHands() {

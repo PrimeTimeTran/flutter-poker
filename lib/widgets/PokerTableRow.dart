@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutpoke/classes/Player.dart';
 import 'package:flutpoke/widgets/PlayerHand.dart';
 
 class PokerTableRow extends StatelessWidget {
   final String status;
-  final List<dynamic> cards;
   final MainAxisAlignment alignment;
   final List seats;
+  final List players;
   final bool centerPlayer;
 
   const PokerTableRow(
       {Key? key,
-      required this.status,
-      required this.cards,
-      required this.alignment,
       required this.seats,
+      required this.status,
+      required this.players,
+      required this.alignment,
       this.centerPlayer = false})
       : super(key: key);
-
-  getPlayerCards(idx) {
-    return cards[idx];
-  }
 
   getCenterPlayer() {
     if (centerPlayer) {
       return PlayerHand(
         idx: seats[2],
-        cards: getPlayerCards(seats[2]),
+        cards: players[2].hand.playerHand,
         status: status,
-        align: MainAxisAlignment.center,
+        player: players[2],
       );
     } else {
       return Container();
@@ -37,23 +35,22 @@ class PokerTableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 4,
       child: Row(
         mainAxisAlignment: alignment,
         children: [
           PlayerHand(
             idx: seats[0],
             status: status,
-            cards: getPlayerCards(seats[0]),
-            align: MainAxisAlignment.end,
+            player: players[0],
+            cards: players[0].hand.playerHand,
           ),
           getCenterPlayer(),
           PlayerHand(
               idx: seats[1],
               status: status,
-              cards: getPlayerCards(seats[1]),
-              align: MainAxisAlignment.start
-          ),
+            player: players[1],
+            cards: players[1].hand.playerHand,
+          )
         ],
       ),
     );

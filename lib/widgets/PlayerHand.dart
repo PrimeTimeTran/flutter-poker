@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:flutpoke/classes/Deck.dart';
+import 'package:flutpoke/classes/Player.dart';
 
 class PlayerHand extends StatefulWidget {
   PlayerHand(
@@ -9,19 +9,38 @@ class PlayerHand extends StatefulWidget {
       required this.idx,
       required this.cards,
       required this.status,
-      required this.align})
+      required this.player})
       : super(key: key);
 
   final int idx;
+  final Player player;
   String status;
   final List<dynamic> cards;
-  final MainAxisAlignment align;
 
   @override
   State<PlayerHand> createState() => _PlayerHandState();
 }
 
 class _PlayerHandState extends State<PlayerHand> {
+  getOutcome() {
+    if (widget.status == 'river') {
+      return Text(widget.player.hand.outcome);
+    } else {
+      return Container();
+    }
+  }
+
+  getCards() {
+    if (widget.player.hand.playerHand.length == 2) {
+      return <Widget>[
+        SvgPicture.asset(widget.player.hand.playerHand[0].path),
+        SvgPicture.asset(widget.player.hand.playerHand[1].path)
+      ];
+    } else {
+      return <Widget>[];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.status == 'preround') {
@@ -42,23 +61,19 @@ class _PlayerHandState extends State<PlayerHand> {
         ],
       );
     }
+
     return Container(
       width: 250,
       height: 250,
-      child: Row(
-        mainAxisAlignment: widget.align,
+      color: Colors.orange,
+      child: Column(
         children: [
           Text(widget.idx.toString()),
-          ListView.builder(
-              itemCount: widget.cards.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (ctx, idx) {
-                return SizedBox(
-                  height: 250,
-                  child: SvgPicture.asset(widget.cards[idx].path),
-                );
-              }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: getCards(),
+          ),
+          getOutcome(),
         ],
       ),
     );

@@ -6,4 +6,9 @@ class Player {
   late Hand hand;
   int money = 1000;
   Player(this.name, this.seat);
+
+  @override
+  String toString() {
+    return name;
+  }
 }
