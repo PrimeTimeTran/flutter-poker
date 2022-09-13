@@ -49,26 +49,11 @@ getPlayerFromHighVal(values, players, i) {
 // Here we have 2 trips in the player hand dealt + board
 // [as, kc]
 // [ah, ad, ac, kh, kh, 5h]
-getFullHouseWinner(players, values, matrix, i) {
-  final highVal = getColHighValue(values);
-
-  players = players.where((p) => p.hand.cardValues[i] == highVal);
-
-  var nextColVals = setValuesFromColOfMatrix(matrix, i + 1);
-  nextColVals.remove(highVal);
-
-  final nextColHighVal = getColHighValue(nextColVals);
-
-  var play1PairVal = players.first.hand.cardValues[i + 1];
-  var play2PairVal = players.last.hand.cardValues[i + 1];
-
-  if (play1PairVal == play2PairVal) {
-    return null;
-  }
-
-  final player =
-      players.firstWhere((p) => p.hand.cardValues[i + 1] == nextColHighVal);
-  return player;
+getFullHouseWinner(players, vals, matrix, i) {
+  final highVal = getColHighValue(vals);
+  players = players.where((p) => p.hand.cardValues[i] == highVal).toList();
+  final matrix = getMatrix(players, 'full house');
+  return getWinningPlayerFromType(players, matrix, 'full house');
 }
 
 getWinningPlayerFromType(players, matrix, type) {
@@ -154,7 +139,7 @@ getMatrix(players, type) {
       setFullHouseValues(players, matrix, i);
     }
   }
-return matrix;
+  return matrix;
 }
 
 findPlayerWithBestTwoPairHand(players) {
