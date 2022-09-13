@@ -5,6 +5,11 @@ import 'package:flutpoke/widgets/PokerTable.dart';
 
 import 'package:flutpoke/classes/Round.dart';
 import 'package:flutpoke/classes/Player.dart';
+import 'package:flutter/services.dart';
+
+class DealIntent extends Intent {}
+
+class ResetIntent extends Intent {}
 
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
@@ -101,15 +106,39 @@ class _GameState extends State<Game> {
 
   @override
   Widget build(BuildContext context) {
-    return PokerTable(
-      flop: flop,
-      turn: turn,
-      river: river,
-      round: round,
-      status: status,
-      endRound: endRound,
-      dealCards: dealCards,
-      winningPlayer: winningPlayer,
+    return Shortcuts(
+      shortcuts: {
+        LogicalKeySet(LogicalKeyboardKey.keyD): DealIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyR): ResetIntent()
+      },
+      child: Actions(
+        actions: {
+          DealIntent:
+              CallbackAction<DealIntent>(onInvoke: (intent) => dealCards()),
+          ResetIntent:
+              CallbackAction<ResetIntent>(onInvoke: (intent) => endRound()),
+        },
+        child: PokerTable(
+          flop: flop,
+          turn: turn,
+          river: river,
+          round: round,
+          status: status,
+          endRound: endRound,
+          dealCards: dealCards,
+          winningPlayer: winningPlayer,
+        ),
+      ),
     );
+    // return PokerTable(
+    //   flop: flop,
+    //   turn: turn,
+    //   river: river,
+    //   round: round,
+    //   status: status,
+    //   endRound: endRound,
+    //   dealCards: dealCards,
+    //   winningPlayer: winningPlayer,
+    // );
   }
 }

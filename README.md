@@ -49,25 +49,15 @@ final state = {
 - Small blind action
   Action moves left until button closes round with their action
 
-- Back to antie
+- Back to ante.
 
-- Find winning hand from multiple high cards.
-- Find winning hand from high cards board.
-
-- Find winning hand from multiple pairs.
-
-- Find winning hand from multiple two pairs.
-
-- Find winning hand from multiple tripss.
-
-- Find winning hand from multiple straights.
-
-- Find winning hand from multiple flushes.
-
-- Find winning hand from multiple full houses.
-
-- Find winning hand from multiple quadss.
-
-- Find winning hand from multiple straight flushes.
-
-- Find winning hand from multiple royal flushes.
+[x] Find high card winning hand.
+[x] Find pair winning hand.
+[x] Find two pair winning hand.
+[x] Find trips winning hand.
+[x] Find straight winning hand.
+[x] Find flush winning hand.
+[x] Find full house winning hand.
+[x] Find quads winning hand.
+[x] Find straight flush winning hand.
+[x] Find royal flush winning hand.

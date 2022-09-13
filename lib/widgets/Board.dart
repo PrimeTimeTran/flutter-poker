@@ -15,7 +15,7 @@ class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 250,
+      width: 1000,
       height: 150,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -25,10 +25,13 @@ class _BoardState extends State<Board> {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (ctx, idx) {
-                return SizedBox(
-                  height: 250,
+                return Container(
+                  height: 100,
+                  width: 100,
                   child: SvgPicture.asset(widget.cards[idx].path),
                 );
+
+                
               }),
         ],
       ),

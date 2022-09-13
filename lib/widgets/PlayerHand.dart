@@ -33,8 +33,16 @@ class _PlayerHandState extends State<PlayerHand> {
   getCards() {
     if (widget.player.hand.playerHand.length == 2) {
       return <Widget>[
-        SvgPicture.asset(widget.player.hand.playerHand[0].path),
-        SvgPicture.asset(widget.player.hand.playerHand[1].path)
+        Container(
+          height: 100,
+          width: 100,
+          child: SvgPicture.asset(widget.player.hand.playerHand[0].path),
+        ),
+        Container(
+          height: 100,
+          width: 100,
+          child: SvgPicture.asset(widget.player.hand.playerHand[1].path),
+        ),
       ];
     } else {
       return <Widget>[];
