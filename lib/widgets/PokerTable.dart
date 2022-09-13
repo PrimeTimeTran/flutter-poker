@@ -7,27 +7,29 @@ import 'package:flutpoke/widgets/PokerTableRow.dart';
 
 class PokerTable extends StatefulWidget {
   PokerTable(
-      {Key? key,
-      required this.status,
-      required this.dealCards,
-      required this.flop,
-      required this.turn,
-      required this.river,
-      required this.winningPlayer,
-      required this.endRound,
-      required this.completeRound,
-      required this.round})
+      {
+    Key? key,
+    required this.flop,
+    required this.turn,
+    required this.round,
+    required this.river,
+    required this.status,
+    required this.endRound,
+    required this.dealCards,
+    required this.completeRound,
+    required this.winningPlayer,
+  })
       : super(key: key);
 
   String status;
   final Round round;
-  final Function completeRound;
-  final Function dealCards;
   final Function flop;
   final Function turn;
   final Function river;
+  Player? winningPlayer;
   final Function endRound;
-  var winningPlayer;
+  final Function dealCards;
+  final Function completeRound;
 
   @override
   State<PokerTable> createState() => _PokerTableState();

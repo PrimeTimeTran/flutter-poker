@@ -110,7 +110,7 @@ getFlush(cards) {
 }
 
 getStraight(cards, getCards) {
-  var seen = Set();
+  var seen = <dynamic>{};
   List uniquelist = cards.where((c) => seen.add(c.value)).toList();
 
   var dp = [1, 1, 1, 1, 1, 1, 1];

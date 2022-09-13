@@ -7,7 +7,7 @@ import 'package:flutpoke/utils/cards.dart';
 
 void main() {
   test('Royal flush to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
     hand.add(card('ah'));
     hand.add(card('kh'));
@@ -20,7 +20,7 @@ void main() {
   });
 
   test('Straight flush to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('kh'));
@@ -33,7 +33,7 @@ void main() {
   });
 
   test('quads be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('kh'));
@@ -47,7 +47,7 @@ void main() {
   });
 
   test('Full house to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -61,7 +61,7 @@ void main() {
   });
 
   test('Flush to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -75,7 +75,7 @@ void main() {
   });
 
   test('Straight to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ad'));
@@ -89,7 +89,7 @@ void main() {
   });
 
   test('Ace low straight to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -103,7 +103,7 @@ void main() {
   });
 
   test('trips be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -117,7 +117,7 @@ void main() {
   });
 
   test('Two pairs to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -131,7 +131,7 @@ void main() {
   });
 
   test('A pair to be recognized', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -146,7 +146,7 @@ void main() {
 
   // Test best hand
   test('Board cards be best hand if board cards higher than dealt hand', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('2h'));
@@ -168,7 +168,7 @@ void main() {
   });
 
   test('Two pairs to take highest possible high card', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -190,7 +190,7 @@ void main() {
   });
 
   test('Pair in best hand and 3 highest cards', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -212,7 +212,7 @@ void main() {
   });
 
   test('2 pairs to find best high card available even if in 3rd pair', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('2h'));
@@ -236,7 +236,7 @@ void main() {
 
   test('2 pairs to find best high card available even if not in another pair',
       () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -264,7 +264,7 @@ void main() {
   });
 
   test('Straight to be the highest possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('3h'));
@@ -286,7 +286,7 @@ void main() {
   });
 
   test('Flush to be highest possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('3h'));
@@ -308,7 +308,7 @@ void main() {
   });
 
   test('Full house to be highest trips possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -331,7 +331,7 @@ void main() {
   });
 
   test('Full house to be highest trips and pairs possible even if board', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('jh'));
@@ -354,7 +354,7 @@ void main() {
   });
 
   test('Straight flush to be highest possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('3h'));
@@ -376,7 +376,7 @@ void main() {
   });
 
   test('Royal flush to be possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('ah'));
@@ -399,7 +399,7 @@ void main() {
   });
 
   test('Royal flush to contain highest cards possible', () {
-    final Hand hand = Hand(0);
+    final Hand hand = Hand();
     final List board = [];
 
     hand.add(card('10h'));

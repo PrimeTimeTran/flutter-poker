@@ -20,10 +20,9 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   var seatIdx = 0;
-  var timer = null;
   var history = [];
   var status = 'ante';
-  var winningPlayer = null;
+  Player? winningPlayer;
   late Round round = Round(getPlayers());
 
   getPlayers() {
@@ -122,40 +121,5 @@ class _GameState extends State<Game> {
         ),
       ),
     );
-    // return Shortcuts(
-    //   shortcuts: {
-    //     LogicalKeySet(LogicalKeyboardKey.keyD): DealIntent(),
-    //     LogicalKeySet(LogicalKeyboardKey.keyR): ResetIntent()
-    //   },
-    //   child: Actions(
-    //     actions: {
-    //       DealIntent:
-    //           CallbackAction<DealIntent>(onInvoke: (intent) => dealCards()),
-    //       ResetIntent:
-    //           CallbackAction<ResetIntent>(onInvoke: (intent) => endRound()),
-    //     },
-    // child: PokerTable(
-    //   flop: flop,
-    //   turn: turn,
-    //   river: river,
-    //   round: round,
-    //   status: status,
-    //   endRound: endRound,
-    //   dealCards: dealCards,
-    //   completeRound: completeRound,
-    //   winningPlayer: winningPlayer,
-    // ),
-    //   ),
-    // );
-    // return PokerTable(
-    //   flop: flop,
-    //   turn: turn,
-    //   river: river,
-    //   round: round,
-    //   status: status,
-    //   endRound: endRound,
-    //   dealCards: dealCards,
-    //   winningPlayer: winningPlayer,
-    // );
   }
 }

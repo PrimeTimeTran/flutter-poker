@@ -54,9 +54,11 @@ class Deck {
       handIdx++;
     }
 
-    print(handsDealt);
-
     return handsDealt;
+  }
+
+  shuffle() {
+    cards.shuffle();
   }
 
   remainingCards() {
