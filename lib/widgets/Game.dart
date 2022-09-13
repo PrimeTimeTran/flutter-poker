@@ -19,7 +19,7 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  var seatIdx = 0;
+  var buttonSeatNumber = 0;
   var history = [];
   var status = 'ante';
   Player? winningPlayer;
@@ -56,15 +56,30 @@ class _GameState extends State<Game> {
   completeRound() {
     round = Round(getPlayers());
     round.dealPlayers();
+    final newSeatNumber = buttonSeatNumber + 1 == 9 ? 0 : buttonSeatNumber + 1;
     setState(() {
       round = round;
-      status = 'preFlop';
+      status = round.step;
+      buttonSeatNumber = newSeatNumber;
     });
 
     flop();
     turn();
     river();
     history.add(round);
+
+    print('Result!');
+    if (round.winner() == 'push') {
+      setState(() {
+        winningPlayer = null;
+      });
+      print('Push!');
+    } else {
+      print('Winner!');
+      print(round);
+      print(round.winner().name);
+      print(round.winner().seat);
+    }
   }
 
   flop() {
@@ -83,10 +98,17 @@ class _GameState extends State<Game> {
 
   river() {
     var player = round.river();
-    setState(() {
-      status = round.step;
-      winningPlayer = player;
-    });
+    if (player != 'push') {
+      setState(() {
+        status = round.step;
+        winningPlayer = player;
+      });
+    } else {
+      setState(() {
+        status = round.step;
+        winningPlayer = null;
+      });
+    }
     // var timer = Timer(const Duration(seconds: 20), () => endRound());
   }
 
@@ -101,9 +123,6 @@ class _GameState extends State<Game> {
 
   back() {
     round = history[history.length - 2];
-    print(round);
-    print(round.winner().name);
-    print(round.winner().seat);
     setState(() {
       round = round;
       status = 'river';
@@ -131,6 +150,7 @@ class _GameState extends State<Game> {
           dealCards: dealCards,
           completeRound: completeRound,
           winningPlayer: winningPlayer,
+          buttonSeatNumber: buttonSeatNumber,
         ),
       ),
     );

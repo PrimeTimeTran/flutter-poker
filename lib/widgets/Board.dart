@@ -14,22 +14,22 @@ class Board extends StatefulWidget {
 class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 1000,
       height: 150,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ListView.builder(
-              itemCount: widget.cards.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (ctx, idx) {
-                return Container(
-                  height: 100,
-                  width: 100,
-                  child: SvgPicture.asset(widget.cards[idx].path),
-                );
+            shrinkWrap: true,
+            itemCount: widget.cards.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (ctx, idx) {
+              return SizedBox(
+                height: 100,
+                width: 100,
+                child: SvgPicture.asset(widget.cards[idx].path),
+              );
             },
           ),
         ],

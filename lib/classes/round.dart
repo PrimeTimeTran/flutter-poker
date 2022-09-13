@@ -43,10 +43,11 @@ class Round {
         handIdx++;
       }
     }
+    step = 'preFlop';
   }
 
   flop() {
-    step = 'flopped';
+    step = 'flop';
     board = deck.flop();
   }
 

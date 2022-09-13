@@ -18,6 +18,7 @@ class PokerTable extends StatefulWidget {
     required this.dealCards,
     required this.completeRound,
     required this.winningPlayer,
+    required this.buttonSeatNumber,
   })
       : super(key: key);
 
@@ -27,6 +28,7 @@ class PokerTable extends StatefulWidget {
   final Function turn;
   final Function river;
   Player? winningPlayer;
+  final buttonSeatNumber;
   final Function endRound;
   final Function dealCards;
   final Function completeRound;
@@ -41,6 +43,7 @@ class _PokerTableState extends State<PokerTable> {
     final status = widget.status;
     final players = widget.round.players;
     final winningPlayer = widget.winningPlayer;
+    final buttonSeatNumber = widget.buttonSeatNumber;
 
     players.sort((a, b) => a.seat.compareTo(b.seat));
 
@@ -68,6 +71,7 @@ class _PokerTableState extends State<PokerTable> {
                 seatNumbers: const [8, 0],
                 winningPlayer: winningPlayer,
                 players: [players[8], players[0]],
+                buttonSeatNumber: buttonSeatNumber,
                 alignment: MainAxisAlignment.spaceAround,
               ),
               PokerTableRow(
@@ -75,6 +79,7 @@ class _PokerTableState extends State<PokerTable> {
                 seatNumbers: const [7, 1],
                 winningPlayer: winningPlayer,
                 players: [players[7], players[1]],
+                buttonSeatNumber: buttonSeatNumber,
                 alignment: MainAxisAlignment.spaceBetween,
               ),
               Center(
@@ -90,6 +95,7 @@ class _PokerTableState extends State<PokerTable> {
                 seatNumbers: const [6, 2],
                 winningPlayer: winningPlayer,
                 players: [players[6], players[2]],
+                buttonSeatNumber: buttonSeatNumber,
                 alignment: MainAxisAlignment.spaceBetween,
               ),
               PokerTableRow(
@@ -97,6 +103,7 @@ class _PokerTableState extends State<PokerTable> {
                 centerPlayer: true,
                 seatNumbers: const [5, 3, 4],
                 winningPlayer: winningPlayer,
+                buttonSeatNumber: buttonSeatNumber,
                 alignment: MainAxisAlignment.spaceAround,
                 players: [players[5], players[3], players[4]],
               ),

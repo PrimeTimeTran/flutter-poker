@@ -4,15 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutpoke/classes/Player.dart';
 
 class PlayerHand extends StatefulWidget {
-  PlayerHand(
-      {Key? key,
-      required this.seatNumber,
-      required this.status,
-      required this.winningPlayer,
-      required this.player})
+  PlayerHand({
+    Key? key,
+    required this.player,
+    required this.status,
+    required this.seatNumber,
+    required this.winningPlayer,
+    required this.buttonSeatNumber,
+  })
       : super(key: key);
 
   final int seatNumber;
+  final int buttonSeatNumber;
   final Player player;
   Player? winningPlayer;
   String status;
@@ -51,6 +54,7 @@ class _PlayerHandState extends State<PlayerHand> {
 
   @override
   Widget build(BuildContext context) {
+    final button = widget.seatNumber == widget.buttonSeatNumber;
     var winner = false;
 
     if (widget.winningPlayer is Player) {
@@ -66,7 +70,10 @@ class _PlayerHandState extends State<PlayerHand> {
         child: Column(
           children: [
             Text(widget.seatNumber.toString()),
-            Text(widget.player.name),
+            Text(
+              widget.player.name,
+              style: TextStyle(color: button ? Colors.red : Colors.black),
+            ),
             Row(
               children: getCards(),
               mainAxisAlignment: MainAxisAlignment.center,

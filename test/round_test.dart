@@ -471,6 +471,29 @@ void main() {
     expect(round.winner().seat, player2.seat);
   });
 
+  test('Push if straight from multiple player hands same high card', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('7c'));
+    round.dealPlayerBySeat(0, card('3h'));
+
+    round.dealPlayerBySeat(1, card('7s'));
+    round.dealPlayerBySeat(1, card('jc'));
+
+    round.dealPlayerBySeat(2, card('7d'));
+    round.dealPlayerBySeat(2, card('qd'));
+
+    board.addAll([card('6c'), card('5d'), card('ad'), card('4s'), card('3c')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner(), 'push');
+  });
+
   test('Push if board straight plays', () {
     final board = <PlayingCard>[];
 
