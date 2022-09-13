@@ -77,7 +77,7 @@ class Round {
 
   getPlayersWithBestHands() {
     players.sort(sortDesc);
-    List handValues = [];
+    final handValues = [];
     for (var p in players) {
       handValues.add(handRankings[p.hand.outcome]);
     }

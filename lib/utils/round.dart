@@ -22,7 +22,7 @@ printOutcome(round) {
 
 int sortDesc(a, b) => b.hand.ranking.compareTo(a.hand.ranking);
 
-setValuesFromColOfMatrix(matrix, i) {
+getValsFromCol(matrix, i) {
   final values = Set();
   for (var j = 0; j < matrix.length; j++) {
     values.add(matrix[j][i]);
@@ -31,12 +31,12 @@ setValuesFromColOfMatrix(matrix, i) {
   return values;
 }
 
-getColHighValue(values) {
+getHighVal(values) {
   return values.reduce((c, n) => c > n ? c : n);
 }
 
-getPlayerFromHighVal(values, players, i) {
-  final highestValue = getColHighValue(values);
+getPlayerFromHighVal(vals, players, i) {
+  final highestValue = getHighVal(vals);
 
   for (var p in players) {
     if (p.hand.cardValues[i] == highestValue) {
@@ -45,26 +45,22 @@ getPlayerFromHighVal(values, players, i) {
   }
 }
 
-// Full house is tricky because the pair can come from either trips or pair.
-// Here we have 2 trips in the player hand dealt + board
-// [as, kc]
-// [ah, ad, ac, kh, kh, 5h]
-getFullHouseWinner(players, vals, matrix, i) {
-  final highVal = getColHighValue(vals);
+getFullHouseWinner(players, vals, matrix, i, type) {
+  final highVal = getHighVal(vals);
   players = players.where((p) => p.hand.cardValues[i] == highVal).toList();
-  final matrix = getMatrix(players, 'full house');
-  return getWinningPlayerFromType(players, matrix, 'full house');
+  final matrix = getMatrix(players, type);
+  return getWinnerFromType(players, matrix, type);
 }
 
-getWinningPlayerFromType(players, matrix, type) {
+getWinnerFromType(players, matrix, type) {
   for (var i = 0; i < matrix.first.length; i++) {
-    var values = setValuesFromColOfMatrix(matrix, i);
-    if (values.length == 1) continue;
+    var vals = getValsFromCol(matrix, i);
+    if (vals.length == 1) continue;
 
-    if (values.length < matrix.length && type == 'full house') {
-      return getFullHouseWinner(players, values, matrix, i);
+    if (vals.length < matrix.length && type == 'full house') {
+      return getFullHouseWinner(players, vals, matrix, i, type);
     }
-    return getPlayerFromHighVal(values, players, i);
+    return getPlayerFromHighVal(vals, players, i);
   }
 }
 
@@ -108,12 +104,7 @@ setCardValues(players, matrix, i) {
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-// A 2d matrix makes identifying highest card easier.
-// We move left to right in each row until one column has a higher card
-// than the other rows/hands in the same column
-// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
-
-const singleSlidingWindow = [
+const singleSlide = [
   'high card',
   'two pair',
   'straight',
@@ -121,27 +112,32 @@ const singleSlidingWindow = [
   'straight flush'
 ];
 
-const kindOfWindow = ['pair', 'trips', 'quads'];
+const twoSlide = ['pair', 'trips', 'quads'];
 
 getMatrix(players, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (singleSlidingWindow.contains(type)) {
+    if (singleSlide.contains(type)) {
       setCardValues(players, matrix, i);
-    } else if (kindOfWindow.contains(type)) {
+    } else if (twoSlide.contains(type)) {
       setKindOfValues(players, matrix, i, type);
-    } else if (type == 'full house') {
+    } else {
       setFullHouseValues(players, matrix, i);
     }
   }
   return matrix;
 }
 
+// A 2d matrix makes identifying highest card easier.
+// We move left to right in each row until one column has a higher card
+// than the other rows/hands in the same column
+// [[12, 10, 5, 4, 2], [12, 11, 5, 4, 2], [12, 9, 5, 4, 2]]
+
 findBestHandFrom(players, type) {
   final matrix = getMatrix(players, type);
 
-  final player = getWinningPlayerFromType(players, matrix, type);
+  final player = getWinnerFromType(players, matrix, type);
   if (player != null) {
     return player;
   }
