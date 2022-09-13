@@ -1,5 +1,7 @@
 # flutpoke
 
+![Poke](https://s4.gifyu.com/images/demo20089e626b2ebc2e.gif)
+
 Flutter implementation of Poker.
 
 ## Getting Started
@@ -75,7 +77,6 @@ final state = {
 
 [ ] Add button.
 [ ] Move button after round.
-
 
 
 [ ] Prompt winning hands when push.
