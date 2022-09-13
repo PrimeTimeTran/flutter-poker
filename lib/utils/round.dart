@@ -104,26 +104,18 @@ setCardValues(players, matrix, i) {
   setMatrixAndValues(players, matrix, rankings, i);
 }
 
-const singleSlide = [
-  'high card',
-  'two pair',
-  'straight',
-  'flush',
-  'straight flush'
-];
-
 const twoSlide = ['pair', 'trips', 'quads'];
 
 getMatrix(players, type) {
   final matrix = List.generate(players.length, (_) => []);
 
   for (var i = 0; i < players.length; i++) {
-    if (singleSlide.contains(type)) {
-      setCardValues(players, matrix, i);
+    if (type == 'full house') {
+      setFullHouseValues(players, matrix, i);
     } else if (twoSlide.contains(type)) {
       setKindOfValues(players, matrix, i, type);
     } else {
-      setFullHouseValues(players, matrix, i);
+      setCardValues(players, matrix, i);
     }
   }
   return matrix;

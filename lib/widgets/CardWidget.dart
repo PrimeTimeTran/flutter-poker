@@ -24,7 +24,6 @@ class CardWidget extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
       padding: EdgeInsets.all(10),
       decoration: const BoxDecoration(
-        // color: Color(0xFFE3F2FD),
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
@@ -43,10 +42,10 @@ class CardWidget extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 getIcon(suit),
               ],
-              mainAxisAlignment: MainAxisAlignment.center,
             ),
           ),
           Row(

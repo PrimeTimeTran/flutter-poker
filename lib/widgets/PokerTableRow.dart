@@ -24,9 +24,9 @@ class PokerTableRow extends StatelessWidget {
   getCenterPlayer() {
     if (centerPlayer) {
       return PlayerHand(
-        seatNumber: seatNumbers[2],
         status: status,
         player: players[2],
+        seatNumber: seatNumbers[2],
         winningPlayer: winningPlayer,
       );
     } else {
@@ -41,16 +41,16 @@ class PokerTableRow extends StatelessWidget {
         mainAxisAlignment: alignment,
         children: [
           PlayerHand(
-            seatNumber: seatNumbers[0],
             status: status,
             player: players[0],
+            seatNumber: seatNumbers[0],
             winningPlayer: winningPlayer,
           ),
           getCenterPlayer(),
           PlayerHand(
-            seatNumber: seatNumbers[1],
-              status: status,
+            status: status,
             player: players[1],
+            seatNumber: seatNumbers[1],
             winningPlayer: winningPlayer,
           )
         ],

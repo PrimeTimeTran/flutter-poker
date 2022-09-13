@@ -30,9 +30,8 @@ class _BoardState extends State<Board> {
                   width: 100,
                   child: SvgPicture.asset(widget.cards[idx].path),
                 );
-
-                
-              }),
+            },
+          ),
         ],
       ),
     );

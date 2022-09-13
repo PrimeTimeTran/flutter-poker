@@ -14,7 +14,7 @@ class PlayerHand extends StatefulWidget {
 
   final int seatNumber;
   final Player player;
-  var winningPlayer;
+  Player? winningPlayer;
   String status;
 
   @override
@@ -33,14 +33,14 @@ class _PlayerHandState extends State<PlayerHand> {
   getCards() {
     if (widget.player.hand.playerHand.length == 2) {
       return <Widget>[
-        Container(
-          height: 100,
+        SizedBox(
           width: 100,
+          height: 100,
           child: SvgPicture.asset(widget.player.hand.playerHand[0].path),
         ),
-        Container(
-          height: 100,
+        SizedBox(
           width: 100,
+          height: 100,
           child: SvgPicture.asset(widget.player.hand.playerHand[1].path),
         ),
       ];
@@ -53,23 +53,23 @@ class _PlayerHandState extends State<PlayerHand> {
   Widget build(BuildContext context) {
     var winner = false;
 
-    if (widget.winningPlayer != 'push') {
+    if (widget.winningPlayer is Player) {
       winner = widget.winningPlayer?.seat == widget.seatNumber;
     }
 
     return Container(
       width: 250,
       height: 250,
-      color: winner ? Colors.orange : Colors.grey,
       alignment: Alignment.center,
+      color: winner ? Colors.orange : Colors.grey,
       child: Center(
         child: Column(
           children: [
             Text(widget.seatNumber.toString()),
             Text(widget.player.name),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: getCards(),
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
             getOutcome(),
           ],

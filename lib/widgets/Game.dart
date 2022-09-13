@@ -64,6 +64,7 @@ class _GameState extends State<Game> {
     flop();
     turn();
     river();
+    history.add(round);
   }
 
   flop() {
@@ -98,13 +99,25 @@ class _GameState extends State<Game> {
     });
   }
 
+  back() {
+    round = history[history.length - 2];
+    print(round);
+    print(round.winner().name);
+    print(round.winner().seat);
+    setState(() {
+      round = round;
+      status = 'river';
+      winningPlayer = round.winner();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.keyC): completeRound,
         const SingleActivator(LogicalKeyboardKey.keyD): dealCards,
-        const SingleActivator(LogicalKeyboardKey.keyR): completeRound,
+        const SingleActivator(LogicalKeyboardKey.keyB): back,
       },
       child: Focus(
         autofocus: true,

@@ -12,7 +12,7 @@ class Round {
   late Deck deck;
   String step = 'ante';
   List<PlayingCard> board = [];
-  List players = [];
+  var players = [];
 
   Round(currentPlayers) {
     deck = Deck();
