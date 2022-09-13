@@ -6,16 +6,16 @@ import 'package:flutpoke/classes/Player.dart';
 class PlayerHand extends StatefulWidget {
   PlayerHand(
       {Key? key,
-      required this.idx,
-      required this.cards,
+      required this.seatNumber,
       required this.status,
+      required this.winningPlayer,
       required this.player})
       : super(key: key);
 
-  final int idx;
+  final int seatNumber;
   final Player player;
+  var winningPlayer;
   String status;
-  final List<dynamic> cards;
 
   @override
   State<PlayerHand> createState() => _PlayerHandState();
@@ -43,16 +43,18 @@ class _PlayerHandState extends State<PlayerHand> {
 
   @override
   Widget build(BuildContext context) {
+    var winner = widget.winningPlayer?.seat == widget.seatNumber;
 
     return Container(
       width: 250,
       height: 250,
-      // color: Colors.orange,
+      color: winner ? Colors.orange : Colors.grey,
       alignment: Alignment.center,
       child: Center(
         child: Column(
           children: [
-            Text(widget.idx.toString()),
+            Text(widget.seatNumber.toString()),
+            Text(widget.player.name),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: getCards(),

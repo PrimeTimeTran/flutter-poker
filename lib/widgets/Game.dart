@@ -14,23 +14,24 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  late Round round = Round(getPlayers());
-  var status = 'ante';
   var seatIdx = 0;
   var timer = null;
+  var history = [];
+  var status = 'ante';
+  var winningPlayer = null;
+  late Round round = Round(getPlayers());
 
   getPlayers() {
     var seats = [
-      {'name': 'Ace', 'seat': 0},
-      {'name': 'Bill', 'seat': 1},
-      {'name': 'Cay', 'seat': 2},
-      {'name': 'Dan', 'seat': 3},
-      {'name': 'Ear', 'seat': 4},
-      {'name': 'Kay', 'seat': 5},
-      {'name': 'Loi', 'seat': 6},
-      {'name': 'Tim', 'seat': 7},
-      {'name': 'Jim', 'seat': 8},
-      {'name': 'Who', 'seat': 9},
+      {'name': 'Alpha', 'seat': 0},
+      {'name': 'Bravo', 'seat': 1},
+      {'name': 'Charlie', 'seat': 2},
+      {'name': 'Delta', 'seat': 3},
+      {'name': 'Echo', 'seat': 4},
+      {'name': 'Foxtrot', 'seat': 5},
+      {'name': 'Golf', 'seat': 6},
+      {'name': 'Hotel', 'seat': 7},
+      {'name': 'India', 'seat': 8},
     ];
 
     final players = [];
@@ -41,11 +42,24 @@ class _GameState extends State<Game> {
     return players;
   }
 
+  // dealCards() {
+  //   round.dealPlayers();
+  //   setState(() {
+  //     status = 'preFlop';
+  //   });
+  // }
+
   dealCards() {
+    round = Round(getPlayers());
     round.dealPlayers();
     setState(() {
+      round = round;
       status = 'preFlop';
     });
+
+    flop();
+    turn();
+    river();
   }
 
   flop() {
@@ -63,18 +77,25 @@ class _GameState extends State<Game> {
   }
 
   river() {
-    round.river();
+    var player = round.river();
+    print('WINNER!');
+    print(player?.name);
+    print(player?.seat);
+    print(player?.hand.bestHand);
     setState(() {
       status = round.step;
+      winningPlayer = player;
     });
-    var timer = Timer(const Duration(seconds: 10), () => endRound());
+    // var timer = Timer(const Duration(seconds: 20), () => endRound());
   }
 
   endRound() {
+    history.add(round);
     setState(() {
       round = Round(getPlayers());
-      seatIdx = seatIdx + 1;
-      status = status = 'ante';
+      // seatIdx = seatIdx + 1;
+      winningPlayer = null;
+      status = 'ante';
     });
   }
 
@@ -86,7 +107,9 @@ class _GameState extends State<Game> {
       river: river,
       round: round,
       status: status,
+      endRound: endRound,
       dealCards: dealCards,
+      winningPlayer: winningPlayer,
     );
   }
 }

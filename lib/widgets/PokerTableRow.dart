@@ -6,26 +6,28 @@ import 'package:flutpoke/widgets/PlayerHand.dart';
 class PokerTableRow extends StatelessWidget {
   final String status;
   final MainAxisAlignment alignment;
-  final List seats;
+  final List seatNumbers;
   final List players;
   final bool centerPlayer;
+  var winningPlayer;
 
-  const PokerTableRow(
+  PokerTableRow(
       {Key? key,
-      required this.seats,
+      required this.seatNumbers,
       required this.status,
       required this.players,
       required this.alignment,
+      required this.winningPlayer,
       this.centerPlayer = false})
       : super(key: key);
 
   getCenterPlayer() {
     if (centerPlayer) {
       return PlayerHand(
-        idx: seats[2],
-        cards: players[2].hand.playerHand,
+        seatNumber: seatNumbers[2],
         status: status,
         player: players[2],
+        winningPlayer: winningPlayer,
       );
     } else {
       return Container();
@@ -39,17 +41,17 @@ class PokerTableRow extends StatelessWidget {
         mainAxisAlignment: alignment,
         children: [
           PlayerHand(
-            idx: seats[0],
+            seatNumber: seatNumbers[0],
             status: status,
             player: players[0],
-            cards: players[0].hand.playerHand,
+            winningPlayer: winningPlayer,
           ),
           getCenterPlayer(),
           PlayerHand(
-              idx: seats[1],
+            seatNumber: seatNumbers[1],
               status: status,
             player: players[1],
-            cards: players[1].hand.playerHand,
+            winningPlayer: winningPlayer,
           )
         ],
       ),

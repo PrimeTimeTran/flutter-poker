@@ -26,8 +26,8 @@ class Round {
     }
   }
 
-  dealPlayerBySeat(seatIdx, card) {
-    players.firstWhere((p) => p.seat == seatIdx).hand.add(card);
+  dealPlayerBySeat(seatNumber, card) {
+    players.firstWhere((p) => p.seat == seatNumber).hand.add(card);
   }
 
   dealPlayers() {
@@ -59,6 +59,7 @@ class Round {
     step = 'river';
     board.add(deck.river());
     evaluateHands();
+    return winner();
   }
 
   evaluateHands() {

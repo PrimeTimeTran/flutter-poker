@@ -2,7 +2,7 @@ import 'package:flutpoke/utils/cards.dart';
 import 'package:flutpoke/utils/hand.dart';
 
 class Hand {
-  int seatIdx;
+  int seatNumber;
   List cards = [];
   late int ranking;
   List bestHand = [];
@@ -10,7 +10,7 @@ class Hand {
   List playerHand = [];
   List? cardValues;
 
-  Hand(this.seatIdx);
+  Hand(this.seatNumber);
 
   add(card) {
     cards.add(card);
@@ -18,7 +18,9 @@ class Hand {
   }
 
   toString() {
-    return seatIdx.toString() + ': ' + playerHand.map((c) => '$c').join(', ');
+    return seatNumber.toString() +
+        ': ' +
+        playerHand.map((c) => '$c').join(', ');
   }
 
   evaluateHand(board) {

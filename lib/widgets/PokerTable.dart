@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutpoke/widgets/Board.dart';
 import 'package:flutpoke/classes/Round.dart';
 import 'package:flutpoke/classes/Player.dart';
-import 'package:flutpoke/widgets/PlayerHand.dart';
 import 'package:flutpoke/widgets/PokerTableRow.dart';
 
 class PokerTable extends StatefulWidget {
@@ -14,6 +13,8 @@ class PokerTable extends StatefulWidget {
       required this.flop,
       required this.turn,
       required this.river,
+      required this.winningPlayer,
+      required this.endRound,
       required this.round})
       : super(key: key);
 
@@ -23,6 +24,8 @@ class PokerTable extends StatefulWidget {
   final Function flop;
   final Function turn;
   final Function river;
+  final Function endRound;
+  var winningPlayer;
 
   @override
   State<PokerTable> createState() => _PokerTableState();
@@ -31,8 +34,15 @@ class PokerTable extends StatefulWidget {
 class _PokerTableState extends State<PokerTable> {
   @override
   Widget build(BuildContext context) {
-    final players = widget.round.players;
     final status = widget.status;
+    final players = widget.round.players;
+    final winningPlayer = widget.winningPlayer;
+
+    print('Poker Table');
+    print(players[0]);
+    print(players[8]);
+
+    players.sort((a, b) => a.seat.compareTo(b.seat));
 
     return Center(
       child: Stack(
@@ -54,15 +64,19 @@ class _PokerTableState extends State<PokerTable> {
           Column(
             children: <Widget>[
               PokerTableRow(
-                  status: status,
-                  seats: const [8, 0],
-                  players: [players[8], players[0]],
-                  alignment: MainAxisAlignment.spaceAround),
+                status: status,
+                seatNumbers: const [8, 0],
+                winningPlayer: winningPlayer,
+                players: [players[8], players[0]],
+                alignment: MainAxisAlignment.spaceAround,
+              ),
               PokerTableRow(
-                  status: status,
-                  seats: const [7, 1],
-                  players: [players[7], players[1]],
-                  alignment: MainAxisAlignment.spaceBetween),
+                status: status,
+                seatNumbers: const [7, 1],
+                winningPlayer: winningPlayer,
+                players: [players[7], players[1]],
+                alignment: MainAxisAlignment.spaceBetween,
+              ),
               Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,16 +86,19 @@ class _PokerTableState extends State<PokerTable> {
                 ),
               ),
               PokerTableRow(
-                  status: status,
-                  seats: const [6, 2],
-                  players: [players[6], players[2]],
-                  alignment: MainAxisAlignment.spaceBetween),
+                status: status,
+                seatNumbers: const [6, 2],
+                winningPlayer: winningPlayer,
+                players: [players[6], players[2]],
+                alignment: MainAxisAlignment.spaceBetween,
+              ),
               PokerTableRow(
                 status: status,
-                seats: const [5, 3, 4],
-                players: [players[5], players[3], players[4]],
-                alignment: MainAxisAlignment.spaceAround,
                 centerPlayer: true,
+                seatNumbers: const [5, 3, 4],
+                winningPlayer: winningPlayer,
+                alignment: MainAxisAlignment.spaceAround,
+                players: [players[5], players[3], players[4]],
               ),
               Expanded(
                 child: Container(
@@ -115,6 +132,13 @@ class _PokerTableState extends State<PokerTable> {
                         },
                         child:
                             Container(color: Colors.grey, child: Text('River')),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          widget.endRound();
+                        },
+                        child: Container(
+                            color: Colors.grey, child: Text('Next Round')),
                       ),
                     ],
                   ),
