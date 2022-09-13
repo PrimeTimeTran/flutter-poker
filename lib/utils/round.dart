@@ -71,21 +71,17 @@ getFullHouseWinner(players, values, matrix, i) {
   return player;
 }
 
-const slidingWindow = ['high card', 'pair', 'trips', 'quads'];
-const sameValColPush = ['straight', 'flush', 'straight flush'];
-
 getWinningPlayerFromType(players, matrix, type) {
   for (var i = 0; i < matrix.first.length; i++) {
     var values = setValuesFromColOfMatrix(matrix, i);
-    if (values.length > 1 && slidingWindow.contains(type)) {
-      return getPlayerFromHighVal(values, players, i);
-    } else if (sameValColPush.contains(type)) {
-      if (values.length == 1) return null;
-      return getPlayerFromHighVal(values, players, i);
-    } else if (type == 'full house') {
+    if (values.length == 1) continue;
+
+    if (type == 'full house') {
       if (values.length < matrix.length) {
         return getFullHouseWinner(players, values, matrix, i);
       }
+      return getPlayerFromHighVal(values, players, i);
+    } else {
       return getPlayerFromHighVal(values, players, i);
     }
   }
@@ -158,7 +154,7 @@ getMatrix(players, type) {
       setFullHouseValues(players, matrix, i);
     }
   }
-  return matrix;
+return matrix;
 }
 
 findPlayerWithBestTwoPairHand(players) {

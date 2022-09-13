@@ -609,6 +609,29 @@ void main() {
     expect(round.winner(), 'push');
   });
 
+  test('Flush with high card on board delegates to next highes', () {
+    final board = <PlayingCard>[];
+
+    final players = [player1, player2, player3];
+    final round = Round(players);
+
+    round.dealPlayerBySeat(0, card('9c'));
+    round.dealPlayerBySeat(0, card('5c'));
+
+    round.dealPlayerBySeat(1, card('10c'));
+    round.dealPlayerBySeat(1, card('8c'));
+
+    round.dealPlayerBySeat(2, card('5c'));
+    round.dealPlayerBySeat(2, card('6c'));
+
+    board.addAll([card('ac'), card('kc'), card('3c'), card('6h'), card('7h')]);
+
+    round.dealCardsForTest(board);
+    round.evaluateHands();
+
+    expect(round.winner().seat, player2.seat);
+  });
+
   test('Board flush pushes', () {
     final board = <PlayingCard>[];
 
