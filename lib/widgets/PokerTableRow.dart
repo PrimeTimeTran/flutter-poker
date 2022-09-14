@@ -14,13 +14,13 @@ class PokerTableRow extends StatelessWidget {
 
   PokerTableRow({
     Key? key,
-    required this.seatNumbers,
     required this.status,
     required this.players,
     required this.alignment,
+    this.centerPlayer = false,
+    required this.seatNumbers,
     required this.winningPlayer,
     required this.buttonSeatNumber,
-    this.centerPlayer = false,
   })
       : super(key: key);
 

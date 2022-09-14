@@ -1,8 +1,11 @@
+import 'package:flutpoke/widgets/ControlPanel.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutpoke/widgets/Board.dart';
 import 'package:flutpoke/classes/Round.dart';
 import 'package:flutpoke/classes/Player.dart';
+
+import 'package:flutpoke/widgets/Board.dart';
+import 'package:flutpoke/widgets/ControlPanel.dart';
 import 'package:flutpoke/widgets/PokerTableRow.dart';
 
 class PokerTable extends StatefulWidget {
@@ -109,58 +112,15 @@ class _PokerTableState extends State<PokerTable> {
                   alignment: MainAxisAlignment.spaceAround,
                   players: [players[5], players[3], players[4]],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            widget.completeRound();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('Round')),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.dealCards();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('Deal')),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.flop();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('Flop')),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.turn();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('Turn')),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.river();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('River')),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            widget.endRound();
-                          },
-                          child: Container(
-                              color: Colors.grey, child: Text('Next Round')),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                ControlPanel(
+                  completeRound: widget.completeRound,
+                  dealCards: widget.dealCards,
+                  flop: widget.flop,
+                  turn: widget.turn,
+                  river: widget.river,
+                  endRound: widget.endRound,
+                )
+
               ],
             )
           ],

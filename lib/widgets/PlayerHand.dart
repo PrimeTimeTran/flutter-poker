@@ -53,7 +53,7 @@ class _PlayerHandState extends State<PlayerHand> {
       return Container(
         width: 150,
         height: 150,
-        decoration: new BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.blue,
           shape: BoxShape.circle,
         ),
@@ -87,19 +87,17 @@ class _PlayerHandState extends State<PlayerHand> {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(widget.seatNumber.toString()),
-                    Text(
-                      widget.player.name,
-                      style: TextStyle(color: buttonColor),
-                    ),
-                    getOutcome()
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(widget.seatNumber.toString()),
+                  Text(
+                    widget.player.name,
+                    style: TextStyle(color: buttonColor),
+                  ),
+                  getOutcome()
+                ],
               ),
             ),
             Expanded(
