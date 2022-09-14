@@ -51,8 +51,8 @@ class _PlayerHandState extends State<PlayerHand> {
       );
     } else {
       return Container(
-        width: 150,
-        height: 150,
+        width: 125,
+        height: 125,
         decoration: const BoxDecoration(
           color: Colors.blue,
           shape: BoxShape.circle,
@@ -96,6 +96,7 @@ class _PlayerHandState extends State<PlayerHand> {
                     widget.player.name,
                     style: TextStyle(color: buttonColor),
                   ),
+                  Text(widget.player.money.toString()),
                   getOutcome()
                 ],
               ),
