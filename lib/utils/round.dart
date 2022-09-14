@@ -1,24 +1,6 @@
-import 'package:colorize/colorize.dart';
 import 'package:collection/collection.dart';
 
 import 'package:flutpoke/utils/cards.dart';
-
-printOutcome(round) {
-  Colorize string = Colorize("\n------------------");
-  string.green();
-
-  print(string);
-  print(string);
-  print(round.board);
-  print('\n');
-  for (var player in round.players) {
-    print(player.hand.outcome);
-    print(player.hand.bestHand);
-    print(player.hand.cardValues);
-  }
-  print(string);
-  print('\n');
-}
 
 int sortDesc(a, b) => b.hand.ranking.compareTo(a.hand.ranking);
 

@@ -8,29 +8,22 @@ Flutter implementation of Poker.
 
 ```dart
 final state = {
-  playerIds: [],
-  board: [],
   blind: 100,
-  buttonIdx: 0,
-  playerCount: 2,
-  hands: [
-    0: {
-      state: 
-      cards: [],
-    },
-    1: [],
-    3: [],
-    4: [],
-  ],
-  handHistory: [
+  players: [],
+  seatButtonNumber: 0,
+  round: {
+    status: ante | preflop | flop | turn | river,
+  },
+  round: [
     {
+      players: [
+        player: {
 
+        }
+      ]
     }
   ]
-
-  deck: [],
-  cards: [[], []],
-  status: ante | preflop | flop | turn | river,
+  
 }
 ```
 

@@ -1,11 +1,10 @@
 import 'package:flutpoke/widgets/ControlPanel.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutpoke/classes/Round.dart';
-import 'package:flutpoke/classes/Player.dart';
+import 'package:flutpoke/classes/round.dart';
+import 'package:flutpoke/classes/player.dart';
 
 import 'package:flutpoke/widgets/Board.dart';
-import 'package:flutpoke/widgets/ControlPanel.dart';
 import 'package:flutpoke/widgets/PokerTableRow.dart';
 
 class PokerTable extends StatefulWidget {

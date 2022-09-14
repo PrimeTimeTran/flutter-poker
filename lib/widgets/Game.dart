@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
 
-import 'package:flutpoke/classes/Round.dart';
-import 'package:flutpoke/classes/Player.dart';
+import 'package:flutpoke/classes/round.dart';
+import 'package:flutpoke/classes/player.dart';
 import 'package:flutter/services.dart';
 
 class DealIntent extends Intent {}

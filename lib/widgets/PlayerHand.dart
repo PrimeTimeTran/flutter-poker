@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:flutpoke/classes/Player.dart';
+import 'package:flutpoke/classes/player.dart';
 
 class PlayerHand extends StatefulWidget {
   PlayerHand({
