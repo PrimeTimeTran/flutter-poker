@@ -11,8 +11,7 @@ class PlayerHand extends StatefulWidget {
     required this.seatNumber,
     required this.winningPlayer,
     required this.buttonSeatNumber,
-  })
-      : super(key: key);
+  }) : super(key: key);
 
   final int seatNumber;
   final int buttonSeatNumber;
@@ -35,20 +34,30 @@ class _PlayerHandState extends State<PlayerHand> {
 
   getCards() {
     if (widget.player.hand.playerHand.length == 2) {
-      return <Widget>[
-        SizedBox(
-          width: 100,
-          height: 150,
-          child: SvgPicture.asset(widget.player.hand.playerHand[0].path),
-        ),
-        SizedBox(
-          width: 100,
-          height: 150,
-          child: SvgPicture.asset(widget.player.hand.playerHand[1].path),
-        ),
-      ];
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: 100,
+            height: 150,
+            child: SvgPicture.asset(widget.player.hand.playerHand[0].path),
+          ),
+          SizedBox(
+            width: 100,
+            height: 150,
+            child: SvgPicture.asset(widget.player.hand.playerHand[1].path),
+          ),
+        ],
+      );
     } else {
-      return <Widget>[];
+      return Container(
+        width: 150,
+        height: 150,
+        decoration: new BoxDecoration(
+          color: Colors.blue,
+          shape: BoxShape.circle,
+        ),
+      );
     }
   }
 
@@ -64,15 +73,21 @@ class _PlayerHandState extends State<PlayerHand> {
 
     return Container(
       width: 350,
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
       alignment: Alignment.center,
-      color: winner ? Colors.orange : Colors.grey,
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
+      decoration: BoxDecoration(
+        color: winner ? Colors.green.shade900 : Colors.black54,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+              color: winner ? Colors.green : Colors.grey, spreadRadius: 3),
+        ],
+      ),
       child: Center(
         child: Row(
           children: [
             Expanded(
               child: Container(
-                // color: Colors.red,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,10 +104,7 @@ class _PlayerHandState extends State<PlayerHand> {
             ),
             Expanded(
               flex: 2,
-              child: Row(
-                children: getCards(),
-                mainAxisAlignment: MainAxisAlignment.center,
-              ),
+              child: getCards(),
             ),
           ],
         ),

@@ -58,7 +58,7 @@ class _PokerTableState extends State<PokerTable> {
               right: 150,
               bottom: 100,
               child: Container(
-                color: Colors.blue,
+                color: Colors.green[900],
                 child: Column(
                   children: [
                     Text(widget.round.step),
