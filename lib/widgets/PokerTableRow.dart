@@ -41,6 +41,7 @@ class PokerTableRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 2,
       child: Row(
         mainAxisAlignment: alignment,
         children: [

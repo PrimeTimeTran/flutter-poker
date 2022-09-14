@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
@@ -19,10 +18,10 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
-  var buttonSeatNumber = 0;
   var history = [];
   var status = 'ante';
   Player? winningPlayer;
+  var buttonSeatNumber = -1;
   late Round round = Round(getPlayers());
 
   getPlayers() {

@@ -38,12 +38,12 @@ class _PlayerHandState extends State<PlayerHand> {
       return <Widget>[
         SizedBox(
           width: 100,
-          height: 100,
+          height: 150,
           child: SvgPicture.asset(widget.player.hand.playerHand[0].path),
         ),
         SizedBox(
           width: 100,
-          height: 100,
+          height: 150,
           child: SvgPicture.asset(widget.player.hand.playerHand[1].path),
         ),
       ];
@@ -55,6 +55,7 @@ class _PlayerHandState extends State<PlayerHand> {
   @override
   Widget build(BuildContext context) {
     final button = widget.seatNumber == widget.buttonSeatNumber;
+    final buttonColor = button ? Colors.red : Colors.black;
     var winner = false;
 
     if (widget.winningPlayer is Player) {
@@ -62,23 +63,37 @@ class _PlayerHandState extends State<PlayerHand> {
     }
 
     return Container(
-      width: 250,
-      height: 250,
+      width: 350,
+      margin: const EdgeInsets.only(top: 5, bottom: 5),
       alignment: Alignment.center,
       color: winner ? Colors.orange : Colors.grey,
       child: Center(
-        child: Column(
+        child: Row(
           children: [
-            Text(widget.seatNumber.toString()),
-            Text(
-              widget.player.name,
-              style: TextStyle(color: button ? Colors.red : Colors.black),
+            Expanded(
+              child: Container(
+                // color: Colors.red,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(widget.seatNumber.toString()),
+                    Text(
+                      widget.player.name,
+                      style: TextStyle(color: buttonColor),
+                    ),
+                    getOutcome()
+                  ],
+                ),
+              ),
             ),
-            Row(
-              children: getCards(),
-              mainAxisAlignment: MainAxisAlignment.center,
+            Expanded(
+              flex: 2,
+              child: Row(
+                children: getCards(),
+                mainAxisAlignment: MainAxisAlignment.center,
+              ),
             ),
-            getOutcome(),
           ],
         ),
       ),
