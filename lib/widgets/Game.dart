@@ -22,6 +22,7 @@ class _GameState extends State<Game> {
   var status = 'ante';
   Player? winningPlayer;
   var buttonSeatNumber = -1;
+  Player currentPlayer = Player('Loi', 3);
   late Round round = Round(getPlayers());
 
   getPlayers() {
@@ -30,7 +31,7 @@ class _GameState extends State<Game> {
       {'name': 'Bravo', 'seat': 1},
       {'name': 'Charlie', 'seat': 2},
       {'name': 'Delta', 'seat': 3},
-      {'name': 'Echo', 'seat': 4},
+      {'name': 'Loi', 'seat': 4},
       {'name': 'Foxtrot', 'seat': 5},
       {'name': 'Golf', 'seat': 6},
       {'name': 'Hotel', 'seat': 7},

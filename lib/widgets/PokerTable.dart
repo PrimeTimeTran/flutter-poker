@@ -30,9 +30,9 @@ class PokerTable extends StatefulWidget {
   final Function turn;
   final Function river;
   Player? winningPlayer;
-  final buttonSeatNumber;
   final Function endRound;
   final Function dealCards;
+  final int buttonSeatNumber;
   final Function completeRound;
 
   @override
@@ -86,14 +86,7 @@ class _PokerTableState extends State<PokerTable> {
                   buttonSeatNumber: buttonSeatNumber,
                   alignment: MainAxisAlignment.spaceBetween,
                 ),
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Board(cards: widget.round.board),
-                    ],
-                  ),
-                ),
+                Board(cards: widget.round.board),
                 PokerTableRow(
                   status: status,
                   seatNumbers: const [6, 2],
@@ -112,14 +105,13 @@ class _PokerTableState extends State<PokerTable> {
                   players: [players[5], players[3], players[4]],
                 ),
                 ControlPanel(
-                  completeRound: widget.completeRound,
-                  dealCards: widget.dealCards,
                   flop: widget.flop,
                   turn: widget.turn,
                   river: widget.river,
                   endRound: widget.endRound,
+                  dealCards: widget.dealCards,
+                  completeRound: widget.completeRound,
                 )
-
               ],
             )
           ],
