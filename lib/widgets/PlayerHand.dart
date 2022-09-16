@@ -76,11 +76,11 @@ class _PlayerHandState extends State<PlayerHand> {
       alignment: Alignment.center,
       margin: const EdgeInsets.only(top: 5, bottom: 5),
       decoration: BoxDecoration(
-        color: winner ? Colors.green.shade900 : Colors.black54,
+        color: winner ? Colors.blue.shade900 : Colors.black54,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-              color: winner ? Colors.green : Colors.grey, spreadRadius: 3),
+              color: winner ? Colors.blue : Colors.grey, spreadRadius: 3),
         ],
       ),
       child: Center(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutpoke/widgets/PokerTable.dart';
@@ -19,11 +21,13 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   var history = [];
+  var _selected = true;
   var status = 'ante';
   Player? winningPlayer;
   var buttonSeatNumber = -1;
   Player currentPlayer = Player('Loi', 3);
   late Round round = Round(getPlayers());
+  var username = '';
 
   getPlayers() {
     var seats = [
@@ -31,7 +35,7 @@ class _GameState extends State<Game> {
       {'name': 'Bravo', 'seat': 1},
       {'name': 'Charlie', 'seat': 2},
       {'name': 'Delta', 'seat': 3},
-      {'name': 'Loi', 'seat': 4},
+      {'name': username, 'seat': 4},
       {'name': 'Foxtrot', 'seat': 5},
       {'name': 'Golf', 'seat': 6},
       {'name': 'Hotel', 'seat': 7},
@@ -67,19 +71,6 @@ class _GameState extends State<Game> {
     turn();
     river();
     history.add(round);
-
-    print('Result!');
-    if (round.winner() == 'push') {
-      setState(() {
-        winningPlayer = null;
-      });
-      print('Push!');
-    } else {
-      print('Winner!');
-      print(round);
-      print(round.winner().name);
-      print(round.winner().seat);
-    }
   }
 
   flop() {
@@ -113,12 +104,29 @@ class _GameState extends State<Game> {
   }
 
   endRound() {
+    final newSeatNumber = buttonSeatNumber + 1 == 9 ? 0 : buttonSeatNumber + 1;
     history.add(round);
     setState(() {
       status = 'ante';
       winningPlayer = null;
       round = Round(getPlayers());
+      buttonSeatNumber = newSeatNumber;
     });
+
+    Timer(const Duration(seconds: 5), () => startRound());
+  }
+
+  startRound() {
+    final bigBlind = buttonSeatNumber + 2;
+    final smallBlind = buttonSeatNumber + 1;
+
+    final bigBlindPlayer =
+        getPlayers().where((p) => p.seat == buttonSeatNumber + 2);
+    final smallBlindPlayer =
+        getPlayers().where((p) => p.seat == buttonSeatNumber + 1);
+
+    bigBlindPlayer.money = bigBlindPlayer.money - 100;
+    smallBlindPlayer.money = smallBlindPlayer.money - 50;
   }
 
   back() {
@@ -130,12 +138,61 @@ class _GameState extends State<Game> {
     });
   }
 
+  void _submitUsername(String name) {
+    print(name);
+    Navigator.pop(context, "Pizza");
+
+    setState(() {
+      username = name;
+    });
+    completeRound();
+  }
+
+  _displayDialog(BuildContext context) async {
+    _selected = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // ignore: prefer_const_constructors
+        return SimpleDialog(
+          elevation: 10,
+          title: Text('Name'),
+          children: [
+            SimpleDialogOption(
+              child: TextField(
+                onSubmitted: _submitUsername,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'John Doe',
+                ),
+              ),
+            ),
+          ],
+          // backgroundColor: Colors.green,
+        );
+      },
+    );
+
+    if (_selected != null) {
+      setState(() {
+        _selected = _selected;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (username == '') {
+      Future.delayed(Duration.zero, () => _displayDialog(context));
+    }
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.keyC): completeRound,
         const SingleActivator(LogicalKeyboardKey.keyD): dealCards,
+        const SingleActivator(LogicalKeyboardKey.keyF): flop,
+        const SingleActivator(LogicalKeyboardKey.keyT): turn,
+        const SingleActivator(LogicalKeyboardKey.keyR): river,
+        const SingleActivator(LogicalKeyboardKey.keyE): endRound,
         const SingleActivator(LogicalKeyboardKey.keyB): back,
       },
       child: Focus(
