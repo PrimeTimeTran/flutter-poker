@@ -6,12 +6,12 @@ import 'package:flutpoke/utils/round.dart';
 import 'package:flutpoke/utils/cards.dart';
 
 class Round {
-  int blind = 100;
-  int buttonIdx = 0;
   late Deck deck;
+  int blind = 100;
+  var players = [];
+  int buttonIdx = 0;
   String step = 'ante';
   List<PlayingCard> board = [];
-  var players = [];
 
   Round(currentPlayers) {
     deck = Deck();

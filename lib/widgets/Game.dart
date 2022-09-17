@@ -21,13 +21,13 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   var history = [];
-  var _selected = true;
+  var username = '';
+  var _selected;
   var status = 'ante';
   Player? winningPlayer;
   var buttonSeatNumber = -1;
   Player currentPlayer = Player('Loi', 3);
   late Round round = Round(getPlayers());
-  var username = '';
 
   getPlayers() {
     var seats = [
@@ -139,7 +139,6 @@ class _GameState extends State<Game> {
   }
 
   void _submitUsername(String name) {
-    print(name);
     Navigator.pop(context, "Pizza");
 
     setState(() {
@@ -150,9 +149,9 @@ class _GameState extends State<Game> {
 
   _displayDialog(BuildContext context) async {
     _selected = await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        // ignore: prefer_const_constructors
         return SimpleDialog(
           elevation: 10,
           title: Text('Name'),
@@ -167,7 +166,6 @@ class _GameState extends State<Game> {
               ),
             ),
           ],
-          // backgroundColor: Colors.green,
         );
       },
     );

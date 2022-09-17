@@ -71,41 +71,54 @@ class _PlayerHandState extends State<PlayerHand> {
       winner = widget.winningPlayer?.seat == widget.seatNumber;
     }
 
-    return Container(
-      width: 350,
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
+    return Tooltip(
+      height: 100,
+      preferBelow: false,
+      padding: const EdgeInsets.all(8.0),
+      message: "A lot of good information",
       decoration: BoxDecoration(
-        color: winner ? Colors.blue.shade900 : Colors.black54,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: winner ? Colors.blue : Colors.grey, spreadRadius: 3),
-        ],
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(25),
       ),
-      child: Center(
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(widget.seatNumber.toString()),
-                  Text(
-                    widget.player.name,
-                    style: TextStyle(color: buttonColor),
-                  ),
-                  Text(widget.player.money.toString()),
-                  getOutcome()
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: getCards(),
-            ),
+      textStyle: const TextStyle(
+        fontSize: 20,
+      ),
+      child: Container(
+        width: 350,
+        alignment: Alignment.center,
+        margin: const EdgeInsets.only(top: 5, bottom: 5),
+        decoration: BoxDecoration(
+          color: winner ? Colors.blue.shade900 : Colors.black54,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+                color: winner ? Colors.blue : Colors.grey, spreadRadius: 3),
           ],
+        ),
+        child: Center(
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(widget.seatNumber.toString()),
+                    Text(
+                      widget.player.name,
+                      style: TextStyle(color: buttonColor),
+                    ),
+                    Text(widget.player.money.toString()),
+                    getOutcome()
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: getCards(),
+              ),
+            ],
+          ),
         ),
       ),
     );
