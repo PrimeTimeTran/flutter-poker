@@ -8,10 +8,6 @@ import 'package:flutpoke/classes/round.dart';
 import 'package:flutpoke/classes/player.dart';
 import 'package:flutter/services.dart';
 
-class DealIntent extends Intent {}
-
-class ResetIntent extends Intent {}
-
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
 
