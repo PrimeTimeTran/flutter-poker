@@ -1,7 +1,7 @@
 # flutpoke
 
 ![Poke](https://s4.gifyu.com/images/demoabe973cb0e4ec1ab.gif)
-[Demo](https://chic-wisp-f1f009.netlify.app/#/)
+[Demo](http://ec2co-ecsel-18vvvddhb7n1d-1484352155.us-east-1.elb.amazonaws.com/#/)
 Flutter implementation of Poker.
 
 ## Getting Started
