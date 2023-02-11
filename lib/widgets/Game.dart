@@ -25,24 +25,20 @@ class _GameState extends State<Game> {
   Player currentPlayer = Player('Loi', 3);
   late Round round = Round(getPlayers());
 
+  late List<Player> players = [];
+
   getPlayers() {
-    var seats = [
-      {'name': 'Alpha', 'seat': 0},
-      {'name': 'Bravo', 'seat': 1},
-      {'name': 'Charlie', 'seat': 2},
-      {'name': 'Delta', 'seat': 3},
-      {'name': username, 'seat': 4},
-      {'name': 'Foxtrot', 'seat': 5},
-      {'name': 'Golf', 'seat': 6},
-      {'name': 'Hotel', 'seat': 7},
-      {'name': 'India', 'seat': 8},
+    players = [
+      Player('Alpha', 0),
+      Player('Bravo', 1),
+      Player('Charlie', 2),
+      Player('Delta', 3),
+      Player('Loi', 4),
+      Player('Echo', 5),
+      Player('Foxtrot', 6),
+      Player('Golf', 7),
+      Player('Hotel', 8),
     ];
-
-    final players = [];
-    for (var player in seats) {
-      players.add(Player(player['name'] as String, player['seat'] as int));
-    }
-
     return players;
   }
 
@@ -54,7 +50,7 @@ class _GameState extends State<Game> {
   }
 
   completeRound() {
-    round = Round(getPlayers());
+    round = Round(players);
     round.dealPlayers();
     final newSeatNumber = buttonSeatNumber + 1 == 9 ? 0 : buttonSeatNumber + 1;
     setState(() {
@@ -105,7 +101,7 @@ class _GameState extends State<Game> {
     setState(() {
       status = 'ante';
       winningPlayer = null;
-      round = Round(getPlayers());
+      round = Round(players);
       buttonSeatNumber = newSeatNumber;
     });
 
@@ -116,13 +112,15 @@ class _GameState extends State<Game> {
     final bigBlind = buttonSeatNumber + 2;
     final smallBlind = buttonSeatNumber + 1;
 
-    final bigBlindPlayer =
-        getPlayers().where((p) => p.seat == buttonSeatNumber + 2);
-    final smallBlindPlayer =
-        getPlayers().where((p) => p.seat == buttonSeatNumber + 1);
+    final Player bigBlindPlayer =
+        players.firstWhere((p) => p.seat == (buttonSeatNumber % players.length) + 2);
 
-    bigBlindPlayer.money = bigBlindPlayer.money - 100;
-    smallBlindPlayer.money = smallBlindPlayer.money - 50;
+    print(bigBlindPlayer);
+    // final Player      =
+    //     players.firstWhere((p) => p.seat == buttonSeatNumber + 1);
+
+    // bigBlindPlayer.money = bigBlindPlayer.money - 100;
+    // smallBlindPlayer.money = smallBlindPlayer.money - 50;
   }
 
   back() {
