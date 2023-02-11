@@ -4,6 +4,35 @@
 [Demo](http://ec2co-ecsel-18vvvddhb7n1d-1484352155.us-east-1.elb.amazonaws.com/#/)
 Flutter implementation of Poker.
 
+
+
+## 
+
+classes
+
+Game
+- Start new round
+- number of players
+- big blind, small blind,
+
+
+Round
+- 
+- 
+
+
+Hand
+-
+-
+-
+
+
+Player
+- What's my hand
+- What
+
+
+
 ## Getting Started
 
 ```dart

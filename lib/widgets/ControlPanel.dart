@@ -35,37 +35,57 @@ class _ControlPanelState extends State<ControlPanel> {
               onTap: () {
                 widget.completeRound();
               },
-              child: Container(color: Colors.grey, child: Text('Round')),
+              child: Container(
+                  color: Colors.grey, child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Complete Round / c'),
+                  )),
             ),
             GestureDetector(
               onTap: () {
                 widget.dealCards();
               },
-              child: Container(color: Colors.grey, child: Text('Deal')),
+              child: Container(color: Colors.grey, child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Deal / d'),
+              )),
             ),
             GestureDetector(
               onTap: () {
                 widget.flop();
               },
-              child: Container(color: Colors.grey, child: Text('Flop')),
+              child: Container(color: Colors.grey, child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Flop / f'),
+              )),
             ),
             GestureDetector(
               onTap: () {
                 widget.turn();
               },
-              child: Container(color: Colors.grey, child: Text('Turn')),
+              child: Container(color: Colors.grey, child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Turn / t'),
+              )),
             ),
             GestureDetector(
               onTap: () {
                 widget.river();
               },
-              child: Container(color: Colors.grey, child: Text('River')),
+              child: Container(color: Colors.grey, child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('River / r'),
+              )),
             ),
             GestureDetector(
               onTap: () {
                 widget.endRound();
               },
-              child: Container(color: Colors.grey, child: Text('Next Round')),
+              child:
+                  Container(color: Colors.grey, child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Next Round / e'),
+                  )),
             ),
           ],
         ),
