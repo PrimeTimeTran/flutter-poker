@@ -15,6 +15,7 @@ class Round {
 
   Round(currentPlayers) {
     deck = Deck();
+    deck.shuffle();
     players = currentPlayers;
     prepareHands();
   }
@@ -31,13 +32,12 @@ class Round {
 
   dealPlayers() {
     final numOfHands = players.length;
-    deck.cards.shuffle();
     deck.cards.removeAt(0);
 
     for (var i = 0; i < 2; i++) {
       var handIdx = 0;
       while (handIdx < numOfHands) {
-        var card = deck.cards.removeAt(0);
+        var card = deck.draw();
         dealPlayerBySeat(handIdx, card);
         handIdx++;
       }

@@ -154,6 +154,7 @@ class _GameState extends State<Game> {
           children: [
             SimpleDialogOption(
               child: TextField(
+                autofocus: true,
                 onSubmitted: _submitUsername,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),

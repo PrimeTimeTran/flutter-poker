@@ -4,34 +4,44 @@
 [Demo](http://ec2co-ecsel-18vvvddhb7n1d-1484352155.us-east-1.elb.amazonaws.com/#/)
 Flutter implementation of Poker.
 
-
-
-## 
-
-classes
+## Classes
 
 Game
-- Start new round
-- number of players
-- big blind, small blind,
 
+- Start round
+- Set blinds
+- Set number of players
 
 Round
-- 
-- 
 
+- Deal hands
+- Deal flop
+- Deal turn
+- Deal river
+- Calculate winner/winning hands
+- Pay winner/winning hands
+- Calculate pot total
+
+- Cycle actions
+- Bet
+- Identify live/folded hands
+- Raise pot
+- End round.
+  Reset deck,
+  Reset hands
+  Reset pot
+  Move 
 
 Hand
--
--
--
 
+- Outcome
+- Probability of winning
+-
 
 Player
+
 - What's my hand
 - What
-
-
 
 ## Getting Started
 

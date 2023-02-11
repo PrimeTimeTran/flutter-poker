@@ -2,6 +2,7 @@ import 'package:flutpoke/classes/playing_card.dart';
 
 class Deck {
   List<PlayingCard> cards = [];
+
   Deck() {
     final ranks = [
       '2',
@@ -29,12 +30,16 @@ class Deck {
     }
   }
 
+  @override
   toString() {
     return cards.toString();
   }
 
+  draw() {
+    return cards.removeAt(0);
+  }
+
   deal(numOfHands) {
-    cards.shuffle();
     List<List> handsDealt = [[], [], [], [], [], [], [], [], [], []];
     cards.removeAt(0);
 
@@ -56,7 +61,6 @@ class Deck {
 
     return handsDealt;
   }
-
 
   shuffle() {
     cards.shuffle();

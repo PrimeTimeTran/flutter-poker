@@ -6,6 +6,7 @@ class PlayingCard {
 
   PlayingCard(this.rank, this.suit, this.value, this.path);
 
+  @override
   toString() {
     return '$rank$suit';
   }
